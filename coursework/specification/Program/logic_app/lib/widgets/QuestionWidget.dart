@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:logic_app/providers/Providers.dart';
+import 'package:tex_text/tex_text.dart';
 
 final selectedIndexProvider = StateProvider<int?>((ref) => null);
 
@@ -33,9 +34,7 @@ class QuestionCardWidget extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    TeXView(
-                        renderingEngine: const TeXViewRenderingEngine.katex(),
-                        child: TeXViewDocument(currentQuestion.question)),
+                    TexText(currentQuestion.question),
                     SizedBox(height: 20),
                     for (var i = 0; i < currentQuestion.options.length; i++)
                       ListTile(
@@ -63,7 +62,6 @@ class QuestionCardWidget extends ConsumerWidget {
                         onTap: selectedIndex == null
                             ? () {
                           ref.read(selectedIndexProvider.notifier).state = i;
-
                         }
                             : null,
                       ),
@@ -94,7 +92,7 @@ class QuestionCardWidget extends ConsumerWidget {
                             return Container(
                               height: 200,
                               color: Colors.blue,
-                              child: Text("explanation")
+                              child: TexText(r"explanation $A\times B$")
                             );
                           });
                         }, icon: Icon(Icons.info))
