@@ -3,26 +3,108 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:logic_app/widgets/QuestionWidget.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
-import 'package:flutter_tex/flutter_tex.dart';
 import 'package:logic_app/functions/CustomSearchDelegate.dart';
+
 class QuizPage extends ConsumerWidget {
   const QuizPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const double kDefaultPadding = 20.0;
-    QuestionCard questionCard = new QuestionCard(
-        id: 6,
-        question: r"$$P \rightarrow Q$$",
-        options: ["true", "false"],
-        correctIndex: 1,
-        createdTime: "createdTime",
-        modifiedTime: "modifiedTime");
+    const double kDefaultPadding = 5.0;
+    List<QuestionCard> questionCards = [
+      QuestionCard(
+          id: 0,
+          question: r"$P \rightarrow Q$ if P is true, Q is false",
+          options: ["true", "false"],
+          correctIndex: 1,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+      QuestionCard(
+          id: 1,
+          question: r"$P \land Q$ if P is false and Q is true",
+          options: ["true", "false"],
+          correctIndex: 1,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+      QuestionCard(
+          id: 2,
+          question: r"$P \lor Q$ if P is false and Q is false",
+          options: ["true", "false"],
+          correctIndex: 1,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+      QuestionCard(
+          id: 3,
+          question: r"$\lnot P$ if P is true",
+          options: ["true", "false"],
+          correctIndex: 1,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+      QuestionCard(
+          id: 4,
+          question: r"$P \oplus Q$ if P is true and Q is true",
+          options: ["true", "false"],
+          correctIndex: 1,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+      QuestionCard(
+          id: 5,
+          question: r"$P \iff Q$ if P is true and Q is false",
+          options: ["true", "false"],
+          correctIndex: 1,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+      QuestionCard(
+          id: 6,
+          question: r"$\lnot (P \land Q)$ if P is true and Q is false",
+          options: ["true", "false"],
+          correctIndex: 0,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+      QuestionCard(
+          id: 7,
+          question: r"$\lnot P \lor Q$ if P is true and Q is true",
+          options: ["true", "false"],
+          correctIndex: 0,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+      QuestionCard(
+          id: 8,
+          question: r"$P \rightarrow \lnot Q$ if P is false and Q is true",
+          options: ["true", "false"],
+          correctIndex: 0,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+      QuestionCard(
+          id: 9,
+          question: r"$P \lor \lnot Q$ if P is false and Q is false",
+          options: ["true", "false"],
+          correctIndex: 0,
+          createdTime: "createdTime",
+          modifiedTime: "modifiedTime",
+          completed: 3),
+    ];
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Number"),
+        title: Text("Logic Quiz"),
         centerTitle: true,
-        actions: [IconButton(onPressed: () {showSearch(context: context, delegate: CustomSearchDelegate());}, icon: Icon(Icons.search))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                showSearch(context: context, delegate: CustomSearchDelegate());
+              },
+              icon: Icon(Icons.search))
+        ],
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {},
@@ -31,18 +113,9 @@ class QuizPage extends ConsumerWidget {
       ),
       body: Column(children: [
         QuestionCardWidget(),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-          child: Text.rich(
-            TextSpan(
-              text: "Question 1",
-              children: [TextSpan(text: "/10")],
-            ),
-          ),
-        ),
         ElevatedButton(
             onPressed: () {
-              ref.watch(dataBaseProvider).addQuestions(questionCard);
+              ref.watch(dataBaseProvider).addQuestions(questionCards);
             },
             child: Text("add")),
         ElevatedButton(
@@ -50,8 +123,7 @@ class QuizPage extends ConsumerWidget {
               ref.watch(dataBaseProvider).clearTable();
             },
             child: Text("clear table")),
-
-
+        ElevatedButton(onPressed: ()=>ref.watch(dataBaseProvider).deleteTable(), child: Text("delete table"))
       ]),
     );
   }

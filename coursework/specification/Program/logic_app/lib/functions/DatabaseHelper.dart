@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 class DatabaseHelper extends ChangeNotifier {
   static final DatabaseHelper instance = DatabaseHelper._init();
 
@@ -33,7 +35,8 @@ CREATE TABLE questions (
   options TEXT,
   answer INTEGER,
   created_time TEXT,
-  modified_time TEXT
+  modified_time TEXT,
+  completed INTEGER
 )
 ''');
     await db.execute('''
@@ -46,15 +49,22 @@ CREATE TABLE users (
 ''');
   }
 
-  Future<void> addQuestions(QuestionCard question) async{
+  Future<void> addQuestions(List<dynamic> questions) async{
     final db = await database;
-    await db.insert('questions', question.toMap(),conflictAlgorithm: ConflictAlgorithm.replace);
-
+    for(int i=0; i < questions.length;i++){
+    await db.insert('questions', questions[i].toMap(),conflictAlgorithm: ConflictAlgorithm.replace);}
   }
 
   Future<void> clearTable() async {
     final db = await database;
     await db.delete('questions');
+  }
+
+  Future<void> deleteTable() async{
+    String databasePath = await getDatabasesPath();
+    String path = '$databasePath/quiz_app.db';
+
+    await deleteDatabase(path);
   }
 
   Future<QuestionCard?> getQuestionById(int id) async {
@@ -74,6 +84,7 @@ CREATE TABLE users (
         correctIndex: map['answer'],
         createdTime: map['created_time'],
         modifiedTime: map['modified_time'],
+        completed: map['completed']
       );
     }
   }
@@ -94,10 +105,35 @@ CREATE TABLE users (
     });
   }
 
+  Future<int> getAmount() async{
+    final db = await database;
+    var x = await db.rawQuery("SELECT COUNT(*) FROM questions");
+    int? count = Sqflite.firstIntValue(x);
+    return count ??0;
+  }
 
+  Future<int> getFeatureCount() async {
+    final db = await database;
+    var x = await db.rawQuery('SELECT COUNT(*) FROM questions WHERE completed=3');
+    int? count = Sqflite.firstIntValue(x);
+    return count ?? 0;
+  }
 
+//Get database from server side
+  Future<void> getDatabaseFromServerSide() async {
+    final response = await http.get(Uri.parse("http://10.0.2.2:8080/api/questions"), headers: {'Accept': 'application/json'});
+    List<dynamic> jsonList = jsonDecode(response.body);
+    List<QuestionCard> questionCards = jsonList.map((e) => QuestionCard.fromMap(e)).toList();
 
+    if (response.statusCode == 200) {
+      await addQuestions(questionCards);
+      // 更新你的本地数据库或状态管理解决方案
+    } else {
+      print(jsonList);
 
+      // 错误处理
+    }
+  }
 
 }
 

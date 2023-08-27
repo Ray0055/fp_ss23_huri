@@ -9,7 +9,7 @@ class QuestionCard  {
   final int correctIndex ;
   final String createdTime ;
   final String modifiedTime ;
-
+  final int completed;
 
   QuestionCard({
     required this.id,
@@ -18,6 +18,7 @@ class QuestionCard  {
     required this.correctIndex,
     required this.createdTime,
     required this.modifiedTime,
+    required this.completed,
   });
 
   Map<String, Object> toMap() {
@@ -28,7 +29,20 @@ class QuestionCard  {
       'answer': correctIndex,
       'created_time': createdTime,
       'modified_time': modifiedTime,
+      'completed':completed
     };
+  }
+
+  factory QuestionCard.fromMap(Map<String, dynamic> map) {
+    return QuestionCard(
+      id: map['id'],
+      question: map['question'],
+      options: List<String>.from(map['options']),
+      correctIndex: map['correntIndex'],  // 注意这里是 'correntIndex'，确保与 JSON 匹配
+      createdTime: map['createdTime'],
+      modifiedTime: map['modifiedTime'],
+      completed: map['completed'],
+    );
   }
 }
 

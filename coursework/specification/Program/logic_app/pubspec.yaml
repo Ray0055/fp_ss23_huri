@@ -42,6 +42,7 @@ dependencies:
   flutter_riverpod: ^2.3.6
   flutter_tex: ^4.0.3+4
   tex_text: ^0.1.8
+  http: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

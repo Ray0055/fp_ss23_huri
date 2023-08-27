@@ -10,7 +10,7 @@ class StatisticsPage extends ConsumerWidget {
       appBar: AppBar(title: Text("Statistics"),),
         body: Column(
           children: [
-            TexText(r"text $A \times B$")
+            TexText(r"$P \rightarrow Q$ if P is true Q is false",style: TextStyle(color: Colors.black, fontSize: 20.0),)
           ],
         ),
         
