@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Questions</title>
     <style>
@@ -25,118 +26,186 @@
         }
     </style>
 </head>
+
 <body>
 
-<h1>Questions</h1>
+    <h1>Questions</h1>
 
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Question</th>
-        <th>Options</th>
-        <th>CorrectIndex</th>
-        <th>CreatedTime</th>
-        <th>ModifiedTime</th>
-        <th>Completed</th>
-        
-    </tr>
-    {{range .}}
-    <tr>
-        <td>{{.ID}}</td>
-        <td>{{.Question}}</td>
-        <td>{{.Options}}</td>
-        <td>{{.CorrectIndex}}</td>
-        <td>{{.CreatedTime}}</td>
-        <td>{{.ModifiedTime}}</td>
-        <th>{{.Completed}}</th>
-        <td><button data-id="{{.ID}}" onclick="editQuestion(this)">Edit</button></td>
-        <td><button data-id="{{.ID}}" onclick="deleteQuestion(this)">Delete</button></td>
-    </tr>
-    {{end}}
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Question</th>
+            <th>Options</th>
+            <th>CorrectIndex</th>
+            <th>CreatedTime</th>
+            <th>ModifiedTime</th>
+            <th>Completed</th>
 
-    <form id="addQuestionForm">
-        <input type="text" id="newQuestion" placeholder="New Question" />
-        <input type="text" id="newOptions" placeholder="New Options" />
-        <input type="number" id="newCorrectIndex" placeholder="New Correct Index" />
-        <button type="submit">Add Question</button>
-    </form>
-</table>
+        </tr>
+        {{range .}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Question}}</td>
+            <td>{{.Options}}</td>
+            <td>{{.CorrectIndex}}</td>
+            <td>{{.CreatedTime}}</td>
+            <td>{{.ModifiedTime}}</td>
+            <th>{{.Completed}}</th>
+            <td><button data-id="{{.ID}}" onclick="deleteQuestion(this)">Delete</button></td>
+            <td><button class="updateQuestion">Update</button></td>
+        </tr>
+        {{end}}
 
-<div class="pagination">
-    <a href="/api/questions?page=1">First</a>
-    <a href="#" id="prev">Previous</a>
-    <a href="#" id="next">Next</a>
-    <a href="/api/questions?page=last" id="last">Last</a> <!-- 此处假设'last'为最后一页的页码，应由后端提供 -->
-</div>
+        <form id="addQuestionForm">
+            <input type="text" id="newQuestion" placeholder="New Question" />
+            <input type="text" id="newOptions" placeholder="New Options" />
+            <input type="number" id="newCorrectIndex" placeholder="New Correct Index" />
+            <button type="submit" id="addQuestionForm">Add Question</button>
+        </form>
+    </table>
 
-<script>
-    // 这里是简单的JavaScript代码，用于更新“Previous”和“Next”的链接。
-    // 在一个完整的应用中，你可能会使用更复杂的前端代码来处理这些逻辑。
-    var urlParams = new URLSearchParams(window.location.search);
-    var page = urlParams.get('page');
-    if (page) {
-        var prevPage = parseInt(page) - 1;
-        var nextPage = parseInt(page) + 1;
-        document.getElementById('prev').setAttribute('href', '/api/questions?page=' + prevPage);
-        document.getElementById('next').setAttribute('href', '/api/questions?page=' + nextPage);
-    }
-</script>
-<script>
-    function deleteQuestion(id) {
-        var id = element.getAttribute('data-id');
+    <div class="pagination">
+        <a href="/api/questions?page=1">First</a>
+        <a href="#" id="prev">Previous</a>
+        <a href="#" id="next">Next</a>
+        <a href="/api/questions?page=last" id="last">Last</a> <!-- 此处假设'last'为最后一页的页码，应由后端提供 -->
+    </div>
 
-    fetch(`/api/questions/${id}`, {
-        method: 'DELETE'
-    }).then(response => response.json())
-    .then(data => {
-        // 刷新页面或者其他操作
-    });
-}
+    <script> // prev next button
+        // 这里是简单的JavaScript代码，用于更新“Previous”和“Next”的链接。
+        // 在一个完整的应用中，你可能会使用更复杂的前端代码来处理这些逻辑。
+        var urlParams = new URLSearchParams(window.location.search);
+        var page = urlParams.get('page');
+        if (page) {
+            var prevPage = parseInt(page) - 1;
+            var nextPage = parseInt(page) + 1;
+            document.getElementById('prev').setAttribute('href', '/api/questions?page=' + prevPage);
+            document.getElementById('next').setAttribute('href', '/api/questions?page=' + nextPage);
+        }
+    </script>
 
-// 编辑问题
-function editQuestion(id) {
-    var id = element.getAttribute('data-id');
-    const newQuestion = prompt('Enter new question text:');
-    const newOptions = prompt('Enter new options:');
-    const newCorrectIndex = prompt('Enter new correct index:');
-    fetch(`/api/questions/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            question: newQuestion,
-            options: newOptions,
-            correctIndex: newCorrectIndex
-        })
-    }).then(response => response.json())
-    .then(data => {
-        // 刷新页面或者其他操作
-    });
-}
+    <script> //deleteQuestion
+        function deleteQuestion(id) {
+            var id = element.getAttribute('data-id');
 
-// 添加问题
-document.getElementById('addQuestionForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const newQuestion = document.getElementById('newQuestion').value;
-    const newOptions = document.getElementById('newOptions').value;
-    const newCorrectIndex = document.getElementById('newCorrectIndex').value;
-    fetch(`/api/questions`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            question: newQuestion,
-            options: newOptions,
-            correctIndex: newCorrectIndex
-        })
-    }).then(response => response.json())
-    .then(data => {
-        // 刷新页面或者其他操作
-    });
-});
-</script>
+            fetch(`/api/questions/${id}`, {
+                method: 'DELETE'
+            }).then(response => response.json())
+                .then(data => {
+                    // 刷新页面或者其他操作
+                });
+        }
+    </script>
+    <script>    // 添加问题
+        document.getElementById('addQuestionForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const newID = 1;
+            const newQuestion = document.getElementById('newQuestion').value;
+            const newOptions = document.getElementById('newOptions').value;
+            const newCorrectIndex = parseInt(document.getElementById('newCorrectIndex').value, 10);
+            const newCreatedTime = getCurrentTimestamp();
+            const newModifiedTime = getCurrentTimestamp();
+            const newCompleted = 3;
+            fetch(`/api/add_question`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: newID,
+                    question: newQuestion,
+                    options: newOptions,
+                    correctIndex: newCorrectIndex,
+                    createdTime: newCreatedTime,
+                    modifiedTime: newModifiedTime,
+                    completed: newCompleted
+                })
+            }).then(response => response.json())
+                .then(data => {
+                    // 刷新页面或者其他操作
+                });
+        });
+        function getCurrentTimestamp() {
+            const now = new Date();
+            const year = now.getFullYear();  // 获取年份
+            const month = String(now.getMonth() + 1).padStart(2, '0');  // 获取月份，并确保是两位数
+            const day = String(now.getDate()).padStart(2, '0');  // 获取日，并确保是两位数
+            const hours = String(now.getHours()).padStart(2, '0');  // 获取小时，并确保是两位数
+            const minutes = String(now.getMinutes()).padStart(2, '0');  // 获取分钟，并确保是两位数
+            const seconds = String(now.getSeconds()).padStart(2, '0');  // 获取秒，并确保是两位数
+
+            return `${year}${month}${day}${hours}${minutes}${seconds}`;
+        }
+
+    </script>
+
+    <script>    //使单元格可编辑
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('table tr td:not(:first-child):not(:nth-last-child(2)):not(:last-child)').forEach(cell => {
+                cell.addEventListener('click', function () {
+                    if (!this.querySelector('input')) {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = this.innerText;
+                        this.innerHTML = '';
+                        this.appendChild(input);
+                        input.focus();
+
+                        input.addEventListener('blur', function () {
+                            const value = this.value;
+                            this.parentElement.innerHTML = value;
+                        });
+                    }
+                });
+            });
+        });
+
+
+    </script>
+
+    <script>    //Update database
+       
+        document.querySelectorAll('.updateQuestion').forEach(function (button) {
+            button.addEventListener('click', function (e) {
+                console.log('click is detected');
+                // 获取这个按钮所在行的所有单元格
+                const row = this.closest('tr');
+                const cells = row.querySelectorAll('td');
+
+                // 从这些单元格中提取数据
+                const newID = parseInt(cells[0].innerText,10);
+                const newQuestion = cells[1].innerText;
+                const newOptions = cells[2].innerText;
+                const newCorrectIndex = parseInt(cells[3].innerText, 10);
+                const newCreatedTime = cells[4].innerText;
+                const newModifiedTime = getCurrentTimestamp();
+                const newCompleted = 3; 
+
+                // send new question to server side
+                fetch(`/api/update_question`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: newID,
+                        question: newQuestion,
+                        options: newOptions,
+                        correctIndex: newCorrectIndex,
+                        createdTime: newCreatedTime,
+                        modifiedTime: newModifiedTime,
+                        completed: newCompleted
+                    })
+                }).then(response => response.json())
+                    .then(data => {
+                        location.reload();
+                    });
+                console.log("Html 已经收到更新, 发送更新到服务器");
+                
+            });
+        });
+    </script>
 
 </body>
+
 </html>

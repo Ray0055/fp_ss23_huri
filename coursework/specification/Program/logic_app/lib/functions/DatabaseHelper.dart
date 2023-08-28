@@ -30,7 +30,7 @@ class DatabaseHelper extends ChangeNotifier {
   Future<void> _createDB(Database db, int version) async {
     await db.execute('''
 CREATE TABLE questions (
-  id INTEGER,
+  id INTEGER PRIMARY KEY,
   question_content TEXT,
   options TEXT,
   answer INTEGER,
@@ -52,7 +52,7 @@ CREATE TABLE users (
   Future<void> addQuestions(List<dynamic> questions) async{
     final db = await database;
     for(int i=0; i < questions.length;i++){
-    await db.insert('questions', questions[i].toMap(),conflictAlgorithm: ConflictAlgorithm.replace);}
+    await db.insert('questions', questions[i].toMap(),conflictAlgorithm: ConflictAlgorithm.ignore);}
   }
 
   Future<void> clearTable() async {
@@ -127,11 +127,9 @@ CREATE TABLE users (
 
     if (response.statusCode == 200) {
       await addQuestions(questionCards);
-      // 更新你的本地数据库或状态管理解决方案
     } else {
-      print(jsonList);
+      print("Error");
 
-      // 错误处理
     }
   }
 
