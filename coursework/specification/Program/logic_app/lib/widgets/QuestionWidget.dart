@@ -16,16 +16,16 @@ class QuestionCardWidget extends ConsumerWidget {
     int index = ref.watch(questionIndexProvider);
     int? selectedIndex = ref.watch(selectedIndexProvider);
     return FutureBuilder<QuestionCard?>(
-      future: ref.watch(dataBaseProvider).getQuestionById(index),
-      // your Future function here
+      future: ref.watch(dataBaseProvider).getUnansweredQuestion(),
       builder: (BuildContext context, AsyncSnapshot<QuestionCard?> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting && index == 0) {
-          return Center(child: CircularProgressIndicator());
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
           // Your main Widget here
           final currentQuestion = snapshot.data;
+
           if (currentQuestion != null) {
             return Column(
               children: [
@@ -62,18 +62,18 @@ class QuestionCardWidget extends ConsumerWidget {
                       }
                     }),
                 Card(
-                  elevation: 5.0,
-                  margin: EdgeInsets.all(20.0),
+                  elevation: 15.0,
+                  margin: const EdgeInsets.all(20.0),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         TexText(currentQuestion.question,
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 20.0)),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 20.0)),
                         //question
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         for (var i = 0; i < currentQuestion.options.length; i++)
                           ListTile(
                             leading: Icon(
@@ -102,13 +102,55 @@ class QuestionCardWidget extends ConsumerWidget {
                                     ref
                                         .read(selectedIndexProvider.notifier)
                                         .state = i;
+
+                                    // 更新数据库
+                                    int newCompletedValue =
+                                        (i == currentQuestion.correctIndex)
+                                            ? 1
+                                            : 0;
+                                    var newQuestion = QuestionCard(
+                                      id: currentQuestion.id,
+                                      question: currentQuestion.question,
+                                      options: currentQuestion.options,
+                                      correctIndex:
+                                          currentQuestion.correctIndex,
+                                      createdTime: currentQuestion.createdTime,
+                                      modifiedTime:
+                                          currentQuestion.modifiedTime,
+                                      completed: newCompletedValue,
+                                    );
+
+                                    ref
+                                        .read(dataBaseProvider)
+                                        .updateQuestionInDatabase(newQuestion);
                                   }
                                 : null,
                           ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  showModalBottomSheet<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Container(
+                                            height: 200,
+                                            color: Colors.blue,
+                                            child: TexText(
+                                                r"explanation $A\times B$"));
+                                      });
+                                },
+                                icon: Icon(Icons.info)),
+                          ],
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ElevatedButton(
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                  textStyle: const TextStyle(fontSize: 20)),
                               onPressed: () {
                                 ref
                                     .watch(selectedIndexProvider.notifier)
@@ -125,14 +167,23 @@ class QuestionCardWidget extends ConsumerWidget {
                               },
                               child: Text("Last"),
                             ),
-                            ElevatedButton(
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                  textStyle: const TextStyle(fontSize: 20)),
                               onPressed: () async {
-                                int? amount = await ref.watch(dataBaseProvider).getAmount();
+                                int? amount = await ref
+                                    .watch(dataBaseProvider)
+                                    .getAmount();
                                 ref
                                     .read(questionIndexProvider.notifier)
                                     .state++;
-                                if (ref.watch(questionIndexProvider.notifier).state > amount) {
-                                  ref.read(questionIndexProvider.notifier).state = 1;
+                                if (ref
+                                        .watch(questionIndexProvider.notifier)
+                                        .state >
+                                    amount) {
+                                  ref
+                                      .read(questionIndexProvider.notifier)
+                                      .state = 1;
                                 }
                                 ref
                                     .watch(selectedIndexProvider.notifier)
@@ -140,35 +191,8 @@ class QuestionCardWidget extends ConsumerWidget {
                               },
                               child: Text("Next"),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  showModalBottomSheet<void>(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Container(
-                                            height: 200,
-                                            color: Colors.blue,
-                                            child: TexText(
-                                                r"explanation $A\times B$"));
-                                      });
-                                },
-                                icon: Icon(Icons.info)),
-                            Text("#$index"),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  int? amount = await ref
-                                      .watch(dataBaseProvider)
-                                      .getAmount();
-                                  print("amount is ${amount}");
-                                },
-                                child: Text("Amount")),
-
                           ],
-                        ),ElevatedButton(
-                            onPressed: () async{
-                              ref.read(dataBaseProvider).getDatabaseFromServerSide();
-                            },
-                            child: Text("GetData"))
+                        ),
                       ],
                     ),
                   ),

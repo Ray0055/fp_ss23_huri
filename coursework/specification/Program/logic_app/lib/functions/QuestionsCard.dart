@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:convert';
 
-class QuestionCard  {
-  final int id ;
-  final String question ;
-  final List<String> options ;
-  final int correctIndex ;
-  final String createdTime ;
-  final String modifiedTime ;
+class QuestionCard {
+  final int id;
+
+  final String question;
+
+  final List<String> options;
+
+  final int correctIndex;
+
+  final String createdTime;
+
+  final String modifiedTime;
+
   final int completed;
 
   QuestionCard({
@@ -21,15 +27,15 @@ class QuestionCard  {
     required this.completed,
   });
 
-  Map<String, Object> toMap() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'question_content': question,
+      'question': question,
       'options': jsonEncode(options),
-      'answer': correctIndex,
-      'created_time': createdTime,
-      'modified_time': modifiedTime,
-      'completed':completed
+      'correctIndex': correctIndex,
+      'createdTime': createdTime,
+      'modifiedTime': modifiedTime,
+      'completed': completed
     };
   }
 
@@ -37,12 +43,23 @@ class QuestionCard  {
     return QuestionCard(
       id: map['id'],
       question: map['question'],
-      options: List<String>.from(map['options']),
-      correctIndex: map['correntIndex'],  // 注意这里是 'correntIndex'，确保与 JSON 匹配
+      options: (jsonDecode(map['options']) as List).cast<String>(),
+      correctIndex: map['correctIndex'],
       createdTime: map['createdTime'],
       modifiedTime: map['modifiedTime'],
       completed: map['completed'],
     );
   }
-}
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'question': question,
+      'options': jsonEncode(options),
+      'correctIndex': correctIndex,
+      'createdTime': createdTime,
+      'modifiedTime': modifiedTime,
+      'completed': completed
+    };
+  }
+}

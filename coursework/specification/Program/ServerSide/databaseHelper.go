@@ -63,20 +63,24 @@ func addQuestion(db *sql.DB, newQuestion Question) error {
 	return nil
 }
 
-func deleteQuestion(db *sql.DB, id int) {
+func deleteQuestion(db *sql.DB, id int) error {
+	fmt.Println("DeleteQuestion function of databaseHelper is called")
 	var err error
 	_, err = db.Exec("DELETE FROM questions WHERE id=?", id)
 	if err != nil {
 		fmt.Println("Error deleting question:", err)
-		return
+		return err
 	}
+
+	return nil
 }
 
-func updateQuestion(db *sql.DB, updatedQuestion Question) error {
-	fmt.Println("Attempting to update question:", updatedQuestion)
+func updateQuestion(db *sql.DB, updatedQuestions []Question) error {
+	for _, updatedQuestion := range updatedQuestions {
+		fmt.Println("Attempting to update question:", updatedQuestion)
 
-	// SQL UPDATE statement
-	query := `
+		// SQL UPDATE statement
+		query := `
 	UPDATE questions SET
 		question = ?,
 		options = ?,
@@ -87,30 +91,31 @@ func updateQuestion(db *sql.DB, updatedQuestion Question) error {
 	WHERE
 		ID = ?`
 
-	result, err := db.Exec(query,
-		updatedQuestion.Question,
-		updatedQuestion.Options,
-		updatedQuestion.CorrectIndex,
-		updatedQuestion.CreatedTime,
-		updatedQuestion.ModifiedTime,
-		updatedQuestion.Completed,
-		updatedQuestion.ID) // Assuming that 'ID' is a field in your Question struct
+		result, err := db.Exec(query,
+			updatedQuestion.Question,
+			updatedQuestion.Options,
+			updatedQuestion.CorrectIndex,
+			updatedQuestion.CreatedTime,
+			updatedQuestion.ModifiedTime,
+			updatedQuestion.Completed,
+			updatedQuestion.ID) // Assuming that 'ID' is a field in your Question struct
 
-	if err != nil {
-		fmt.Println("Error while updating:", err)
-		return err
-	}
+		if err != nil {
+			fmt.Println("Error while updating:", err)
+			return err
+		}
 
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		fmt.Println("Error while checking affected rows:", err)
-		return err
-	}
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			fmt.Println("Error while checking affected rows:", err)
+			return err
+		}
 
-	if rowsAffected == 0 {
-		fmt.Println("No rows updated. It's possible that the question with the provided ID does not exist.")
-	} else {
-		fmt.Printf("Successfully updated. Rows affected: %d\n", rowsAffected)
+		if rowsAffected == 0 {
+			fmt.Println("No rows updated. It's possible that the question with the provided ID does not exist.")
+		} else {
+			fmt.Printf("Successfully updated. Rows affected: %d\n", rowsAffected)
+		}
 	}
 
 	return nil

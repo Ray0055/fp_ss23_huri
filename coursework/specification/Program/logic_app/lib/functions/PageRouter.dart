@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logic_app/pages/DatabasePage.dart';
 import 'package:logic_app/pages/HomePage.dart';
 import 'package:logic_app/pages/QuizPage.dart';
 import 'package:logic_app/pages/SignInPage.dart';
@@ -37,5 +38,10 @@ final GoRouter router_config = GoRouter(routes: [
       pageBuilder: (context, state) {
         return MaterialPage(child: SignInPage());
       }),
-
+  GoRoute(
+      name: 'database',
+      path: '/settings/database',
+      pageBuilder: (context, state) {
+        return MaterialPage(child: DatabasePage());
+      }),
 ]);

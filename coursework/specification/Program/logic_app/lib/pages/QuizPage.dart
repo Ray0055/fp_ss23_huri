@@ -10,7 +10,6 @@ class QuizPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const double kDefaultPadding = 5.0;
     List<QuestionCard> questionCards = [
       QuestionCard(
           id: 0,
@@ -96,7 +95,7 @@ class QuizPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Logic Quiz"),
+        title: const Text("Logic Quiz"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -113,17 +112,6 @@ class QuizPage extends ConsumerWidget {
       ),
       body: Column(children: [
         QuestionCardWidget(),
-        ElevatedButton(
-            onPressed: () {
-              ref.watch(dataBaseProvider).addQuestions(questionCards);
-            },
-            child: Text("add")),
-        ElevatedButton(
-            onPressed: () {
-              ref.watch(dataBaseProvider).clearTable();
-            },
-            child: Text("clear table")),
-        ElevatedButton(onPressed: ()=>ref.watch(dataBaseProvider).deleteTable(), child: Text("delete table"))
       ]),
     );
   }

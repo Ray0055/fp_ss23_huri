@@ -19,11 +19,11 @@ class DatabaseHelper extends ChangeNotifier {
     _database = await _initDB('quiz_app.db');
     return _database!;
   }
-  
+
   Future<Database> _initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
-    
+
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
@@ -31,11 +31,11 @@ class DatabaseHelper extends ChangeNotifier {
     await db.execute('''
 CREATE TABLE questions (
   id INTEGER PRIMARY KEY,
-  question_content TEXT,
+  question TEXT,
   options TEXT,
-  answer INTEGER,
-  created_time TEXT,
-  modified_time TEXT,
+  correctIndex INTEGER,
+  createdTime TEXT,
+  modifiedTime TEXT,
   completed INTEGER
 )
 ''');
@@ -49,10 +49,12 @@ CREATE TABLE users (
 ''');
   }
 
-  Future<void> addQuestions(List<dynamic> questions) async{
+  Future<void> addQuestions(List<dynamic> questions) async {
     final db = await database;
-    for(int i=0; i < questions.length;i++){
-    await db.insert('questions', questions[i].toMap(),conflictAlgorithm: ConflictAlgorithm.ignore);}
+    for (int i = 0; i < questions.length; i++) {
+      await db.insert('questions', questions[i].toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    }
   }
 
   Future<void> clearTable() async {
@@ -60,7 +62,7 @@ CREATE TABLE users (
     await db.delete('questions');
   }
 
-  Future<void> deleteTable() async{
+  Future<void> deleteTable() async {
     String databasePath = await getDatabasesPath();
     String path = '$databasePath/quiz_app.db';
 
@@ -78,15 +80,38 @@ CREATE TABLE users (
     if (maps.isNotEmpty) {
       final map = maps.first;
       return QuestionCard(
+          id: map['id'],
+          question: map['question'],
+          options: (jsonDecode(map['options']) as List).cast<String>(),
+          correctIndex: map['correctIndex'],
+          createdTime: map['createdTime'],
+          modifiedTime: map['modifiedTime'],
+          completed: map['completed']);
+    }
+  }
+
+  Future<QuestionCard?> getUnansweredQuestion() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'questions', // table name
+      where: 'completed = ?',
+      whereArgs: [3],
+      limit: 1, // Limit to one result
+    );
+
+    if (maps.isNotEmpty) {
+      final map = maps.first;
+      return QuestionCard(
         id: map['id'],
-        question: map['question_content'],
+        question: map['question'],
         options: (jsonDecode(map['options']) as List).cast<String>(),
-        correctIndex: map['answer'],
-        createdTime: map['created_time'],
-        modifiedTime: map['modified_time'],
-        completed: map['completed']
+        correctIndex: map['correctIndex'],
+        createdTime: map['createdTime'],
+        modifiedTime: map['modifiedTime'],
+        completed: map['completed'],
       );
     }
+    return null; // Return null if no unanswered question is found
   }
 
   Future<List<String>> getQuestionsByQuery(String query) async {
@@ -105,34 +130,72 @@ CREATE TABLE users (
     });
   }
 
-  Future<int> getAmount() async{
+  Future<int> getAmount() async {
     final db = await database;
     var x = await db.rawQuery("SELECT COUNT(*) FROM questions");
     int? count = Sqflite.firstIntValue(x);
-    return count ??0;
+    return count ?? 0;
   }
 
   Future<int> getFeatureCount() async {
     final db = await database;
-    var x = await db.rawQuery('SELECT COUNT(*) FROM questions WHERE completed=3');
+    var x =
+        await db.rawQuery('SELECT COUNT(*) FROM questions WHERE completed=3');
     int? count = Sqflite.firstIntValue(x);
     return count ?? 0;
   }
 
 //Get database from server side
   Future<void> getDatabaseFromServerSide() async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8080/api/questions"), headers: {'Accept': 'application/json'});
+    final response = await http.get(
+        Uri.parse("http://10.0.2.2:8080/api/questions"),
+        headers: {'Accept': 'application/json'});
     List<dynamic> jsonList = jsonDecode(response.body);
-    List<QuestionCard> questionCards = jsonList.map((e) => QuestionCard.fromMap(e)).toList();
+    List<QuestionCard> questionCards =
+        jsonList.map((e) => QuestionCard.fromMap(e)).toList();
 
     if (response.statusCode == 200) {
       await addQuestions(questionCards);
     } else {
       print("Error");
-
     }
   }
 
+  Future<void> syncDatabaseToServer() async {
+    final db = await database;
+    final List<Map<String, dynamic>> questionMaps = await db.query('questions');
+    // 使用 fromMap 将 Map 转换为 QuestionCard 对象
+    List<QuestionCard> questionCards =
+        questionMaps.map((e) => QuestionCard.fromMap(e)).toList();
+    // 使用 toJson 将 QuestionCard 对象转换为 Map，然后构建一个 Map 列表
+    List<Map<String, dynamic>> questionCardMaps =
+        questionCards.map((e) => e.toJson()).toList();
+
+    String jsonBody = jsonEncode(questionCardMaps);
+
+    final response = await http.post(
+      Uri.parse("http://10.0.2.2:8080/api/update_question"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: jsonBody,
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print("Successfully synced database to server.");
+    } else {
+      print(
+          "Error syncing database to server. Response code is ${response.statusCode} ");
+    }
+  }
+
+  Future<void> updateQuestionInDatabase(QuestionCard updatedQuestion) async {
+    final db = await database;
+    await db.update(
+      'questions',
+      updatedQuestion.toMap(),
+      where: 'id = ?',
+      whereArgs: [updatedQuestion.id],
+    );
+  }
 }
-
-

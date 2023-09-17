@@ -56,11 +56,11 @@
         </tr>
         {{end}}
 
-        <form id="addQuestionForm">
+        <form id="addQuestionsForm">
             <input type="text" id="newQuestion" placeholder="New Question" />
             <input type="text" id="newOptions" placeholder="New Options" />
             <input type="number" id="newCorrectIndex" placeholder="New Correct Index" />
-            <button type="submit" id="addQuestionForm">Add Question</button>
+            <button type="submit" id="addQuestionsFormButton">Add Question</button>
         </form>
     </table>
 
@@ -85,19 +85,20 @@
     </script>
 
     <script> //deleteQuestion
-        function deleteQuestion(id) {
-            var id = element.getAttribute('data-id');
-
-            fetch(`/api/questions/${id}`, {
-                method: 'DELETE'
+        function deleteQuestion(element) {
+            const id = parseInt(element.getAttribute('data-id'),10) 
+            console.log("Attempting to delete question %d", id)
+            fetch(`/api/delete_question?id=${id}`, {
+                method: 'DELETE',
             }).then(response => response.json())
                 .then(data => {
-                    // 刷新页面或者其他操作
+                    location.reload();
                 });
         }
     </script>
-    <script>    // 添加问题
-        document.getElementById('addQuestionForm').addEventListener('submit', function (e) {
+
+    <script> //add question
+        document.getElementById('addQuestionsForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const newID = 1;
             const newQuestion = document.getElementById('newQuestion').value;
@@ -106,6 +107,7 @@
             const newCreatedTime = getCurrentTimestamp();
             const newModifiedTime = getCurrentTimestamp();
             const newCompleted = 3;
+            console.log("Attempting to send question via html");
             fetch(`/api/add_question`, {
                 method: 'POST',
                 headers: {
@@ -125,6 +127,7 @@
                     // 刷新页面或者其他操作
                 });
         });
+        
         function getCurrentTimestamp() {
             const now = new Date();
             const year = now.getFullYear();  // 获取年份
@@ -139,7 +142,7 @@
 
     </script>
 
-    <script>    //使单元格可编辑
+    <script>    //make cells editable
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('table tr td:not(:first-child):not(:nth-last-child(2)):not(:last-child)').forEach(cell => {
                 cell.addEventListener('click', function () {
@@ -164,7 +167,7 @@
     </script>
 
     <script>    //Update database
-       
+
         document.querySelectorAll('.updateQuestion').forEach(function (button) {
             button.addEventListener('click', function (e) {
                 console.log('click is detected');
@@ -173,13 +176,13 @@
                 const cells = row.querySelectorAll('td');
 
                 // 从这些单元格中提取数据
-                const newID = parseInt(cells[0].innerText,10);
+                const newID = parseInt(cells[0].innerText, 10);
                 const newQuestion = cells[1].innerText;
                 const newOptions = cells[2].innerText;
                 const newCorrectIndex = parseInt(cells[3].innerText, 10);
                 const newCreatedTime = cells[4].innerText;
                 const newModifiedTime = getCurrentTimestamp();
-                const newCompleted = 3; 
+                const newCompleted = 3;
 
                 // send new question to server side
                 fetch(`/api/update_question`, {
@@ -201,7 +204,7 @@
                         location.reload();
                     });
                 console.log("Html 已经收到更新, 发送更新到服务器");
-                
+
             });
         });
     </script>
