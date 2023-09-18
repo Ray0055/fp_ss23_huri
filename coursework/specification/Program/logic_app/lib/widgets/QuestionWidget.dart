@@ -9,7 +9,7 @@ final questionIndexProvider = StateProvider<int>((ref) => 1);
 final questionIDProvider = StateProvider<int?>((ref) => 0);
 final numberQuestionsProvider = StateProvider<int>((ref) => 0);
 final isValueSetProvider = StateProvider<bool>((ref) => false);
-
+final isFinishedProvider = StateProvider<bool>((ref) => false);
 final questionsIdProvider = FutureProvider<List<int>?>((ref) async {
   return await ref.read(dataBaseProvider).getUnansweredQuestions();
 });
@@ -43,6 +43,11 @@ class QuestionCardWidget extends ConsumerWidget {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.data != null) {
+                    if (snapshot.data == 0) {
+                      Future(() {
+                        ref.read(isFinishedProvider.notifier).state = true;
+                      });
+                    } // finished all questions or not
                     if (!isValueSet && snapshot.data != null) {
                       Future(() {
                         ref.read(numberQuestionsProvider.notifier).state = snapshot.data!;
@@ -53,14 +58,14 @@ class QuestionCardWidget extends ConsumerWidget {
                       alignment: Alignment.centerLeft,
                       child: Text.rich(
                         TextSpan(
-                          text: "Question ${questionIndex}",
-                          style: TextStyle(
+                          text: "Question $questionIndex",
+                          style: const TextStyle(
                             fontSize: 40,
                           ),
                           children: [
                             TextSpan(
                                 text: "/${ref.read(numberQuestionsProvider.notifier).state}",
-                                style: TextStyle(fontSize: 20))
+                                style: const TextStyle(fontSize: 20))
                           ],
                         ),
                       ),
@@ -81,6 +86,14 @@ class QuestionCardWidget extends ConsumerWidget {
                   } else {
                     final currentQuestion = snapshot.data;
                     if (currentQuestion != null) {
+                      /// if question is completed, keep selected index
+                      if (currentQuestion.completed != 2) {
+                        if (currentQuestion.completed == 1) { // if answer is correct
+                          selectedIndex = currentQuestion.correctIndex;
+                        } else { // if answer is wrong
+                          selectedIndex = (currentQuestion.correctIndex == 1) ? 0 : 1; // only handle with binary answer!
+                        }
+                      }
                       return Card(
                         elevation: 15.0,
                         margin: const EdgeInsets.all(20.0),
@@ -119,8 +132,10 @@ class QuestionCardWidget extends ConsumerWidget {
                                   title: Text(currentQuestion.options[i]),
                                   onTap: selectedIndex == null
                                       ? () {
-                                          ref.read(selectedIndexProvider.notifier).state = i;
+                                    print("You clicked option index $i");
 
+                                          ref.read(selectedIndexProvider.notifier).state = i;
+                                    print("SelcetIndex is $selectedIndex");
                                           // Update completed value
                                           int newCompletedValue = (i == currentQuestion.correctIndex) ? 1 : 0;
                                           String currentTime = getCurrentTimestamp();
@@ -152,10 +167,10 @@ class QuestionCardWidget extends ConsumerWidget {
                                               return Container(
                                                   height: 200,
                                                   color: Colors.blue,
-                                                  child: TexText(r"explanation $A\times B$"));
+                                                  child: const TexText(r"explanation $A\times B$"));
                                             });
                                       },
-                                      icon: Icon(Icons.info)),
+                                      icon: const Icon(Icons.info)),
                                 ],
                               ),
 
@@ -181,9 +196,9 @@ class QuestionCardWidget extends ConsumerWidget {
                                                   ],
                                                 ));
                                       } else {
-                                        ref.read(questionIndexProvider.notifier).state--;
                                         ref.read(questionIDProvider.notifier).state =
-                                            questionIDList?[questionIndex - 1];
+                                            questionIDList?[questionIndex - 2];
+                                        ref.read(questionIndexProvider.notifier).state--;
                                       }
                                     },
                                     child: const Text("Last"),
@@ -194,30 +209,41 @@ class QuestionCardWidget extends ConsumerWidget {
                                     style: TextButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
                                     onPressed: () async {
                                       int amount = ref.read(numberQuestionsProvider.notifier).state ?? 0;
+                                      bool isFinished = ref.read(isFinishedProvider.notifier).state;
 
-                                      //int? nextQuestionId = await ref.watch(dataBaseProvider).getNextQuestion(questionId);
                                       if (questionIndex < amount) {
-                                        //print(questionIDList);
                                         ref.read(questionIDProvider.notifier).state = questionIDList?[questionIndex];
-                                        //ref.read(questionIDProvider.notifier).state = await ref.watch(dataBaseProvider).getNextQuestion(questionId);
                                         ref.read(questionIndexProvider.notifier).state++;
                                         ref.watch(selectedIndexProvider.notifier).state = null;
+                                      } else if (isFinished) {
+                                        return showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                  content: const Text("You have finished all questions!"),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context, "Ok");
+                                                        },
+                                                        child: const Text("OK"))
+                                                  ],
+                                                ));
                                       } else {
                                         return showDialog(
                                             context: context,
                                             builder: (context) => AlertDialog(
-                                                  content: Text("No more questions!"),
+                                                  content: const Text("No more questions!"),
                                                   actions: [
                                                     TextButton(
                                                         onPressed: () {
                                                           Navigator.pop(context, 'OK');
                                                         },
-                                                        child: Text("OK"))
+                                                        child: const Text("OK"))
                                                   ],
                                                 ));
                                       }
                                     },
-                                    child: Text("Next"),
+                                    child: const Text("Next"),
                                   ),
                                 ],
                               ),
@@ -226,7 +252,7 @@ class QuestionCardWidget extends ConsumerWidget {
                         ),
                       );
                     } else {
-                      return Text("U have finished all questions!");
+                      return const Text("U have finished all questions!");
                     }
                   }
                 })
@@ -234,3 +260,5 @@ class QuestionCardWidget extends ConsumerWidget {
         });
   }
 }
+
+
