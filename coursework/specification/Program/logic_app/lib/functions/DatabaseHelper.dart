@@ -69,8 +69,11 @@ CREATE TABLE users (
     await deleteDatabase(path);
   }
 
-  Future<QuestionCard?> getQuestionById(int id) async {
+  Future<QuestionCard?> getQuestionById(int? id) async {
     final db = await database;
+    if (id == null){
+      return null;
+    }
     final List<Map<String, dynamic>> maps = await db.query(
       'questions', // table name
       where: 'id = ?',
@@ -87,31 +90,72 @@ CREATE TABLE users (
           createdTime: map['createdTime'],
           modifiedTime: map['modifiedTime'],
           completed: map['completed']);
-    }
+    }else{
+      print("Question with id = $id is not found.");
+      return null;}
   }
 
-  Future<QuestionCard?> getUnansweredQuestionByIndex(int i) async {
+  Future<int?> getFirstQuestion() async {
     final db = await database;
-
-    List<Map<String, dynamic>> result = await db.rawQuery(
-        "SELECT * FROM questions WHERE completed = 2 LIMIT 1 OFFSET ?",
-        [i - 1]  // i - 1 because SQL indexing starts from 0, but question index start from 1
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+      'SELECT MIN(id) as min_id FROM questions WHERE completed = 2',
     );
 
-    if (result.isNotEmpty) {
-      final map = result.first;
-      return QuestionCard(
-        id: map['id'],
-        question: map['question'],
-        options: (jsonDecode(map['options']) as List).cast<String>(),
-        correctIndex: map['correctIndex'],
-        createdTime: map['createdTime'],
-        modifiedTime: map['modifiedTime'],
-        completed: map['completed'],
-      );
+    if (result.isNotEmpty && result.first['min_id'] != null) {
+      return result.first['min_id'] as int;
+    }
+    print("All Questions have been finished.");
+
+    return null;
+  }
+
+  Future<int?> getNextQuestion(int? currentId) async {
+    final db = await database; // 假设 database 是你的数据库实例
+    final List<Map<String, dynamic>> maps = await db.query(
+      'questions', // 表名
+      where: 'id > ? AND completed = ?',
+      whereArgs: [currentId, 2],
+      orderBy: 'id ASC',
+      limit: 1,
+    );
+
+    if (maps.isNotEmpty) {
+      final map = maps.first;
+      return map['id'];
+    }
+    print("There is no more next question.");
+    return null;
+  }
+
+  Future<int?> getLastQuestion(int? currentId) async {
+    final db = await database; // 假设 database 是你的数据库实例
+    final List<Map<String, dynamic>> maps = await db.query(
+      'questions', // 表名
+      where: 'id < ? AND completed = ?',
+      whereArgs: [currentId, 2],
+      orderBy: 'id DESC',
+      limit: 1,
+    );
+
+    if (maps.isNotEmpty) {
+      final map = maps.first;
+      return map['id'];
+    }
+    print("There is no more last question.");
+    return null;
+  }
+
+  Future<List<int>?> getUnansweredQuestions() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id FROM questions WHERE completed = 2 ORDER BY id ASC');
+    List<int> ids = maps.map((map) => map['id'] as int).toList();
+    print("DatabaseHelper is $ids");
+    if (ids.isNotEmpty) {
+      return ids;
     }
     return null; // Return null if no unanswered question is found
   }
+
 
   Future<List<String>> getQuestionsByQuery(String query) async {
     final db = await database;
@@ -226,4 +270,6 @@ CREATE TABLE users (
     final db = await database;
     await db.rawUpdate("UPDATE questions SET completed = ?", [2]);
   }
+
+
 }
