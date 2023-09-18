@@ -102,7 +102,7 @@ class QuizPage extends ConsumerWidget {
               onPressed: () {
                 showSearch(context: context, delegate: CustomSearchDelegate());
               },
-              icon: Icon(Icons.search))
+              icon: const Icon(Icons.search))
         ],
         automaticallyImplyLeading: false,
         leading: IconButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logic_app/widgets/QuestionWidget.dart';
 import '../providers/Providers.dart';
 
 class DatabasePage extends ConsumerWidget {
@@ -87,6 +88,12 @@ class DatabasePage extends ConsumerWidget {
                         ));
               },
               child: const Text("SendToServer")),
+          ElevatedButton(
+              onPressed: () {
+                ref.watch(questionIndexProvider.notifier).state = 1;
+                ref.watch(dataBaseProvider).setAllQuestionsUncompleted();
+              },
+              child: Text("Set all questions index = 1 and uncompleted"))
         ],
       ),
     );

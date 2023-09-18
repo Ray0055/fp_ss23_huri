@@ -90,17 +90,16 @@ CREATE TABLE users (
     }
   }
 
-  Future<QuestionCard?> getUnansweredQuestion() async {
+  Future<QuestionCard?> getUnansweredQuestionByIndex(int i) async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      'questions', // table name
-      where: 'completed = ?',
-      whereArgs: [3],
-      limit: 1, // Limit to one result
+
+    List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT * FROM questions WHERE completed = 2 LIMIT 1 OFFSET ?",
+        [i - 1]  // i - 1 because SQL indexing starts from 0, but question index start from 1
     );
 
-    if (maps.isNotEmpty) {
-      final map = maps.first;
+    if (result.isNotEmpty) {
+      final map = result.first;
       return QuestionCard(
         id: map['id'],
         question: map['question'],
@@ -121,18 +120,18 @@ CREATE TABLE users (
     // 您也可以扩展这个查询来在其他字段中搜索。
     final List<Map<String, dynamic>> maps = await db.query(
       'questions',
-      where: 'question_content LIKE ?',
+      where: 'question LIKE ?',
       whereArgs: ['%$query%'],
     );
 
     return List.generate(maps.length, (i) {
-      return maps[i]['question_content'];
+      return maps[i]['question'];
     });
   }
 
   Future<int> getAmount() async {
     final db = await database;
-    var x = await db.rawQuery("SELECT COUNT(*) FROM questions");
+    var x = await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed = 2 ");
     int? count = Sqflite.firstIntValue(x);
     return count ?? 0;
   }
@@ -197,5 +196,34 @@ CREATE TABLE users (
       where: 'id = ?',
       whereArgs: [updatedQuestion.id],
     );
+  }
+
+  Future<String> computeDailyAccuracy() async {
+    final db = await database;
+
+    // get today's data, transform it into string
+    DateTime now = DateTime.now();
+    String today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+
+    // search today's answered questions
+    var completedToday = await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [today]);
+    int? numberCompletedQuestionsToday = Sqflite.firstIntValue(completedToday);
+
+    // search today's answered correctly questions
+    var correctToday = await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed = 1 AND DATE(modifiedTime) = ?", [today]);
+    int? numberCorrectQuestionsToday = Sqflite.firstIntValue(correctToday);
+
+    // compute accuracy
+    if (numberCompletedQuestionsToday == 0) {
+      return "No questions completed today.";
+    } else {
+      double accuracy = (numberCorrectQuestionsToday! / numberCompletedQuestionsToday!) * 100;
+      return "${accuracy.toStringAsFixed(2)}%";
+    }
+  }
+
+  Future<void> setAllQuestionsUncompleted() async {
+    final db = await database;
+    await db.rawUpdate("UPDATE questions SET completed = ?", [2]);
   }
 }

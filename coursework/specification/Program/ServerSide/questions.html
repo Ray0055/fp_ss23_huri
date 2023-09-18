@@ -130,14 +130,7 @@
         
         function getCurrentTimestamp() {
             const now = new Date();
-            const year = now.getFullYear();  // 获取年份
-            const month = String(now.getMonth() + 1).padStart(2, '0');  // 获取月份，并确保是两位数
-            const day = String(now.getDate()).padStart(2, '0');  // 获取日，并确保是两位数
-            const hours = String(now.getHours()).padStart(2, '0');  // 获取小时，并确保是两位数
-            const minutes = String(now.getMinutes()).padStart(2, '0');  // 获取分钟，并确保是两位数
-            const seconds = String(now.getSeconds()).padStart(2, '0');  // 获取秒，并确保是两位数
-
-            return `${year}${month}${day}${hours}${minutes}${seconds}`;
+            return now.toISOString();
         }
 
     </script>

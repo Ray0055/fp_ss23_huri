@@ -30,16 +30,12 @@ Future<int> amout(ref) async{
   return await ref.watch(dataBaseProvider).getAmount();
 }
 
-// confirmDialog() {
-//   showDialog(
-//       context: context,
-//       builder: (context) {
-//         return AlertDialog(
-//           title: Text('标题'),
-//           content: Text('这里可以写描述相关提示信息'),
-//           actions: [ TextButton(child: Text('取消'),onPressed: (){},),
-//             TextButton(child: Text('确认'),onPressed: (){},),],
-//         );
-//       });
-// }
+String getCurrentTimestamp() {
+  final now = DateTime.now();
+  String isoTime = now.toIso8601String();
+  return isoTime;
+}
+
+
+
 
