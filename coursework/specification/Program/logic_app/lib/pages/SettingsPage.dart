@@ -10,18 +10,19 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        appBar: AppBar(title: const Text("settings")),
+        appBar: AppBar(
+          title: const Text("Settings"),
+          automaticallyImplyLeading: false,
+        ),
         body: SettingsList(
           sections: [
             SettingsSection(title: const Text("Common"), tiles: <SettingsTile>[
-              SettingsTile(title: Text("User Account")),
+              SettingsTile(title: const Text("User Account")),
               SettingsTile.switchTile(
                 title: const Text("Darkmode"),
                 initialValue: ref.watch(darkModeProvider).initialValue,
                 onToggle: (value) {
-                  ref
-                      .watch(darkModeProvider)
-                      .onTap(value); //每次按下toggle之后会自动改变value的值
+                  ref.watch(darkModeProvider).onTap(value); //每次按下toggle之后会自动改变value的值
                 },
               ),
               SettingsTile(title: const Text("Contact us")),

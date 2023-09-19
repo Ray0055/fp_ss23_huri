@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
@@ -265,6 +266,58 @@ CREATE TABLE users (
       return "${accuracy.toStringAsFixed(2)}%";
     }
   }
+
+  Future<String> computeDailyCompletedQuestions() async {
+    final db = await database;
+    DateTime now = DateTime.now();
+    String today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+
+    var completedToday = await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [today]);
+    int numberCompletedQuestionsToday = Sqflite.firstIntValue(completedToday) ?? 0;
+
+    return numberCompletedQuestionsToday.toString();
+  }
+
+  Future<List<FlSpot>> computeWeeklyCompletedQuestions() async {
+    final db = await database;
+    List<FlSpot> weeklyData = [];
+
+    for (int i = 6; i >= 0; i--) {
+      DateTime day = DateTime.now().subtract(Duration(days: i));
+      String date = '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+      print(date);
+      var completedOnDay = await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [date]);
+      int numberCompletedQuestionsOnDay = Sqflite.firstIntValue(completedOnDay) ?? 0;
+
+      weeklyData.add(FlSpot((7-i).toDouble(), numberCompletedQuestionsOnDay.toDouble()));
+    }
+
+    return weeklyData ?? [];
+  }
+
+  Future<Map<DateTime, int>> computeAllDatesCompletedQuestions() async {
+    final db = await database;
+    Map<DateTime, int> completedMap = {};
+
+    // Query to get all completed questions with their modifiedTime
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT COUNT(*) as count, DATE(modifiedTime) as date FROM questions WHERE completed != 2 GROUP BY DATE(modifiedTime)"
+    );
+
+    // Loop through the result and populate the map
+    for (var row in result) {
+      String dateStr = row['date'];
+      int count = row['count'];
+
+      DateTime date = DateTime.parse(dateStr);
+      completedMap[date] = count;
+    }
+
+    return completedMap ?? {};
+  }
+
+
+
 
   Future<void> setAllQuestionsUncompleted() async {
     final db = await database;
