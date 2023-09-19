@@ -4,9 +4,12 @@ import 'package:logic_app/functions/DatabaseHelper.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../functions/TimerClock.dart';
+
 final bottomBarProvider = ChangeNotifierProvider((ref) => BottomBar());
 final darkModeProvider = ChangeNotifierProvider((ref) => DarkMode());
 final dataBaseProvider = ChangeNotifierProvider((ref) => DatabaseHelper.instance);
+final timerClockProvider = ChangeNotifierProvider((ref) => TimerClock());
 
 class BottomBar extends ChangeNotifier {
   int selectedIndex = 0;
@@ -18,15 +21,11 @@ class BottomBar extends ChangeNotifier {
 }
 
 class DarkMode extends ChangeNotifier{
-  bool initialValue = true;
+  bool initialValue = false;
   void onTap(bool value){
     initialValue = value;
     notifyListeners();
   }
-}
-
-Future<int> amout(ref) async{
-  return await ref.watch(dataBaseProvider).getAmount();
 }
 
 String getCurrentTimestamp() {

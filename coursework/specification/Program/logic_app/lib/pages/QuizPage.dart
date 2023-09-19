@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linear_timer/linear_timer.dart';
+import 'package:logic_app/functions/TimerClock.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:logic_app/widgets/QuestionWidget.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
@@ -92,6 +94,7 @@ class QuizPage extends ConsumerWidget {
           modifiedTime: "modifiedTime",
           completed: 3),
     ];
+    TimerClock timerClock = ref.watch(timerClockProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -111,7 +114,19 @@ class QuizPage extends ConsumerWidget {
         ),
       ),
       body: Column(children: [
-        QuestionCardWidget(),
+        LinearProgressIndicator(
+          value:timerClock.duration/20,
+          valueColor: AlwaysStoppedAnimation(Colors.green.shade400),
+          minHeight: 10,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        const QuestionCardWidget(),
+        TextButton(
+            onPressed: (){
+              timerClock.startTimer();
+            }, child: Text("Start")),
+        TextButton(onPressed: (){timerClock.stopTimer();timerClock.resetTimer();}, child: Text("Stop")),
+
       ]),
     );
   }
