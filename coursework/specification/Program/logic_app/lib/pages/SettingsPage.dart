@@ -19,7 +19,7 @@ class SettingsPage extends ConsumerWidget {
             SettingsSection(title: const Text("Common"), tiles: <SettingsTile>[
               SettingsTile(title: const Text("User Account")),
               SettingsTile.switchTile(
-                title: const Text("Darkmode"),
+                title: const Text("Dark mode"),
                 initialValue: ref.watch(darkModeProvider).initialValue,
                 onToggle: (value) {
                   ref.watch(darkModeProvider).onTap(value); //每次按下toggle之后会自动改变value的值

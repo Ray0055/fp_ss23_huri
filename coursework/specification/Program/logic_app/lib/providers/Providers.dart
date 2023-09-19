@@ -21,7 +21,6 @@ class DarkMode extends ChangeNotifier{
   bool initialValue = true;
   void onTap(bool value){
     initialValue = value;
-    print(initialValue);
     notifyListeners();
   }
 }

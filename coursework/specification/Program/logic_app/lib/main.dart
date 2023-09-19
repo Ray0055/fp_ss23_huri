@@ -10,21 +10,31 @@ void main() async {
   final db = await DatabaseHelper.instance.database;
   runApp(
     ProviderScope(
-      overrides: [questionsIdProvider.overrideWith((ref) => ref.read(dataBaseProvider).getUnansweredQuestions())],
+      overrides: [
+        questionsIdProvider.overrideWith((ref) => ref.read(dataBaseProvider).getUnansweredQuestions()),
+        darkModeProvider.overrideWith((ref) => DarkMode())
+      ],
       child: MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    DarkMode darkMode = ref.watch(darkModeProvider);
+
     return MaterialApp.router(
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.teal
+      ),
+      themeMode: darkMode.initialValue ?ThemeMode.dark : ThemeMode.light,
       routerConfig: router_config,
     );
   }
