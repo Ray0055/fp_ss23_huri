@@ -6,14 +6,9 @@ class TimerClock extends ChangeNotifier {
   bool isRunning = false;
   Timer? _timer;
   int _duration = 0;
-  List<int> timeStamp = [];
 
   int get duration {
     return _duration;
-  }
-
-  void setDuration(int duration){
-    this._duration = duration;
   }
 
   void startTimer() {
@@ -36,42 +31,9 @@ class TimerClock extends ChangeNotifier {
 
   void resetTimer() {
     _timer?.cancel();
-    timeStamp.add(_duration);
     _duration = 0;
     isRunning = false;
     notifyListeners();
-  }
-
-
-  String getMaximum() {
-    List stamp = timeStamp;
-    int max = 0;
-    if (stamp.isEmpty) {
-      return transformTimer(0);
-    } else {
-      for (int i = 0; i < stamp.length; i++) {
-        if (stamp[i] > max) {
-          max = stamp[i];
-        }
-      }
-      return transformTimer(max);
-    }
-  }
-
-  String getMinimum() {
-    List stamp = timeStamp;
-
-    if (stamp.isEmpty) {
-      return transformTimer(0);
-    } else {
-      int min = 1000000;
-      for (int i = 0; i < stamp.length; i++) {
-        if (stamp[i] < min) {
-          min = stamp[i];
-        }
-      }
-      return transformTimer(min.toInt());
-    }
   }
 
   String transformTimer(int milliseconds) {
@@ -79,11 +41,7 @@ class TimerClock extends ChangeNotifier {
     int minute = seconds % 3600 ~/ 60;
     int second = seconds % 60;
     int millisecond = milliseconds % 10;
-    return reformTimer(minute) +
-        ":" +
-        reformTimer(second) +
-        "." +
-        millisecond.toString();
+    return reformTimer(minute) + ":" + reformTimer(second) + "." + millisecond.toString();
   }
 
   String reformTimer(int time) {

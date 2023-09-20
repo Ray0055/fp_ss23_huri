@@ -106,7 +106,7 @@
             const newCorrectIndex = parseInt(document.getElementById('newCorrectIndex').value, 10);
             const newCreatedTime = getCurrentTimestamp();
             const newModifiedTime = getCurrentTimestamp();
-            const newCompleted = 3;
+            const newCompleted = 2;
             console.log("Attempting to send question via html");
             fetch(`/api/add_question`, {
                 method: 'POST',
@@ -175,7 +175,7 @@
                 const newCorrectIndex = parseInt(cells[3].innerText, 10);
                 const newCreatedTime = cells[4].innerText;
                 const newModifiedTime = getCurrentTimestamp();
-                const newCompleted = 3;
+                const newCompleted = 2;
 
                 // send new question to server side
                 fetch(`/api/update_question`, {

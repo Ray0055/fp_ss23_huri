@@ -12,6 +12,8 @@ class StatisticsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var inputText = ref.watch(inputTextProvider);
+
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -62,9 +64,10 @@ class StatisticsPage extends ConsumerWidget {
                 ),
               ),
               WeeklyCompletedWidget(),
-
-              Padding(padding: EdgeInsets.all(16),
-              child: HeatMapCalendarWidget(),)
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: HeatMapCalendarWidget(),
+              ),
             ],
           ),
         ));

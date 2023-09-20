@@ -7,6 +7,8 @@ import 'package:logic_app/widgets/QuestionWidget.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:logic_app/functions/CustomSearchDelegate.dart';
 
+
+
 class QuizPage extends ConsumerWidget {
   const QuizPage({Key? key}) : super(key: key);
 
@@ -95,7 +97,7 @@ class QuizPage extends ConsumerWidget {
           completed: 3),
     ];
     TimerClock timerClock = ref.watch(timerClockProvider);
-
+    int timerMaximum = ref.watch(timerMaximumProvider.notifier).state;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Logic Quiz"),
@@ -115,7 +117,7 @@ class QuizPage extends ConsumerWidget {
       ),
       body: Column(children: [
         LinearProgressIndicator(
-          value:timerClock.duration/20,
+          value:timerClock.duration/timerMaximum,
           valueColor: AlwaysStoppedAnimation(Colors.green.shade400),
           minHeight: 10,
           borderRadius: BorderRadius.circular(10),

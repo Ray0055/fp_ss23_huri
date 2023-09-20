@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linear_timer/linear_timer.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
+import 'package:logic_app/functions/UserStatistics.dart';
 import 'package:logic_app/providers/Providers.dart';
-import 'package:logic_app/widgets/LinearTimerWidget.dart';
 import 'package:tex_text/tex_text.dart';
 import 'package:logic_app/functions/TimerClock.dart';
 
@@ -17,6 +17,7 @@ final questionsIdProvider = FutureProvider<List<int>?>((ref) async {
   return await ref.read(dataBaseProvider).getUnansweredQuestions();
 });
 final isStudyingProvider = StateProvider((ref) => true);
+final userStatisticsProvider = ChangeNotifierProvider((ref) => UserStatistics());
 
 class QuestionCardWidget extends ConsumerWidget {
   const QuestionCardWidget({super.key});
@@ -30,6 +31,8 @@ class QuestionCardWidget extends ConsumerWidget {
     TimerClock timerClock = ref.read(timerClockProvider);
     bool isStudying = ref.read(isStudyingProvider.notifier).state;
     final AsyncValue<List<int>?> asyncValue = ref.watch(questionsIdProvider);
+    UserStatistics userStatistics = ref.read(userStatisticsProvider);
+
     return asyncValue.when(
         loading: () => const CircularProgressIndicator(),
         error: (err, stack) => Text('Error: $err'),
@@ -92,12 +95,17 @@ class QuestionCardWidget extends ConsumerWidget {
                     return Text('Error: ${snapshot.error}');
                   } else if (!ref.read(isFinishedProvider.notifier).state) {
                     final currentQuestion = snapshot.data;
-                    if (currentQuestion != null) {
+                    if (currentQuestion != null && questionId != null) {
                       /// if question is completed, keep selected index
                       if (currentQuestion.completed != 2) {
+                        // question is already completed
                         Future.delayed(Duration.zero, () {
                           if (timerClock.isRunning) {
                             timerClock.stopTimer();
+                            // update user statics and sync to database
+                            userStatistics.update(
+                                questionId!, currentQuestion.completed, getCurrentTimestamp(), timerClock.duration);
+                            ref.read(dataBaseProvider).addAnswerHistory(userStatistics);
                             timerClock.resetTimer();
                           }
                         });
@@ -110,6 +118,7 @@ class QuestionCardWidget extends ConsumerWidget {
                               (currentQuestion.correctIndex == 1) ? 0 : 1; // only handle with binary answer!
                         }
                       } else {
+                        // question is not completed
                         Future.delayed(Duration.zero, () {
                           if (timerClock.isRunning) {
                             timerClock.stopTimer();

@@ -10,6 +10,8 @@ final bottomBarProvider = ChangeNotifierProvider((ref) => BottomBar());
 final darkModeProvider = ChangeNotifierProvider((ref) => DarkMode());
 final dataBaseProvider = ChangeNotifierProvider((ref) => DatabaseHelper.instance);
 final timerClockProvider = ChangeNotifierProvider((ref) => TimerClock());
+final timerMaximumProvider = StateProvider<int>((ref) => 100);
+final inputTextProvider = ChangeNotifierProvider((ref) => TextEditingController());
 
 class BottomBar extends ChangeNotifier {
   int selectedIndex = 0;

@@ -9,6 +9,11 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    int timerMaximum = ref
+        .watch(timerMaximumProvider.notifier)
+        .state;
+    var inputText = ref.watch(inputTextProvider);
+
     return Scaffold(
         appBar: AppBar(
           title: const Text("Settings"),
@@ -20,7 +25,9 @@ class SettingsPage extends ConsumerWidget {
               SettingsTile(title: const Text("User Account")),
               SettingsTile.switchTile(
                 title: const Text("Dark mode"),
-                initialValue: ref.watch(darkModeProvider).initialValue,
+                initialValue: ref
+                    .watch(darkModeProvider)
+                    .initialValue,
                 onToggle: (value) {
                   ref.watch(darkModeProvider).onTap(value); //每次按下toggle之后会自动改变value的值
                 },
@@ -31,6 +38,54 @@ class SettingsPage extends ConsumerWidget {
                 onPressed: (value) async {
                   context.pushNamed("database");
                 },
+              ),
+              SettingsTile(
+                title: const Text("Timer Maximum: /s"),
+                trailing: SizedBox(
+                  width: 60,
+                  height: 30,
+                  child: TextField(
+                    style: const TextStyle(color: Colors.teal),
+                    textAlign: TextAlign.center,
+                    controller: inputText,
+                    keyboardType: TextInputType.number,
+                    /// input validation
+                    onChanged: (value) {
+                      if (value.isEmpty) {
+                        showDialog(context: context, builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Can't be empty!"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context, "Confirm"), child: const Text("Confirm"))
+                            ],
+                          );
+                        });
+                      } else if ((int.tryParse(value) == null)) {
+                        showDialog(context: context, builder: (context)
+                        {
+                          return AlertDialog(
+                            title: const Text("Input must be an integer."),
+                            actions: [
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context, "Confirm"), child: const Text("Confirm"))
+                            ],
+                          );
+                        });
+                      } else {
+                        ref
+                            .read(timerMaximumProvider.notifier)
+                            .state = int.parse(inputText.text) * 10;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: "${timerMaximum / 10}",
+                      hintStyle: const TextStyle(color: Colors.teal),
+                      contentPadding: EdgeInsets.zero,
+                      border: const OutlineInputBorder(),
+                    ),
+                  ),
+                ),
               )
             ]),
           ],

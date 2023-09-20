@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
+import 'package:logic_app/functions/UserStatistics.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,8 +45,10 @@ CREATE TABLE questions (
 CREATE TABLE users (
   id INTEGER,
   username TEXT,
-  total_done INTEGER,
-  total_correct INTEGER
+  completedQuestionId INTEGER,
+  correct INTEGER,
+  completedDate TEXT,
+  completedTime INTEGER
 )
 ''');
   }
@@ -56,6 +59,11 @@ CREATE TABLE users (
       await db.insert('questions', questions[i].toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
     }
+  }
+
+  Future<void> addAnswerHistory(UserStatistics userStatistics) async{
+    final db = await database;
+    db.insert('users', userStatistics.toMap(),conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> clearTable() async {
@@ -110,42 +118,6 @@ CREATE TABLE users (
     return null;
   }
 
-  Future<int?> getNextQuestion(int? currentId) async {
-    final db = await database; // 假设 database 是你的数据库实例
-    final List<Map<String, dynamic>> maps = await db.query(
-      'questions', // 表名
-      where: 'id > ? AND completed = ?',
-      whereArgs: [currentId, 2],
-      orderBy: 'id ASC',
-      limit: 1,
-    );
-
-    if (maps.isNotEmpty) {
-      final map = maps.first;
-      return map['id'];
-    }
-    print("There is no more next question.");
-    return null;
-  }
-
-  Future<int?> getLastQuestion(int? currentId) async {
-    final db = await database; // 假设 database 是你的数据库实例
-    final List<Map<String, dynamic>> maps = await db.query(
-      'questions', // 表名
-      where: 'id < ? AND completed = ?',
-      whereArgs: [currentId, 2],
-      orderBy: 'id DESC',
-      limit: 1,
-    );
-
-    if (maps.isNotEmpty) {
-      final map = maps.first;
-      return map['id'];
-    }
-    print("There is no more last question.");
-    return null;
-  }
-
   Future<List<int>?> getUnansweredQuestions() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id FROM questions WHERE completed = 2 ORDER BY id ASC');
@@ -156,7 +128,6 @@ CREATE TABLE users (
     }
     return null; // Return null if no unanswered question is found
   }
-
 
   Future<List<String>> getQuestionsByQuery(String query) async {
     final db = await database;
@@ -243,6 +214,8 @@ CREATE TABLE users (
     );
   }
 
+
+
   Future<String> computeDailyAccuracy() async {
     final db = await database;
 
@@ -315,9 +288,6 @@ CREATE TABLE users (
 
     return completedMap ?? {};
   }
-
-
-
 
   Future<void> setAllQuestionsUncompleted() async {
     final db = await database;
