@@ -1,12 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
-import 'package:logic_app/functions/UserStatistics.dart';
+import 'package:logic_app/functions/UsersHistory.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import 'UsersStatistics.dart';
 
 class DatabaseHelper extends ChangeNotifier {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -43,7 +45,7 @@ CREATE TABLE questions (
 )
 ''');
     await db.execute('''
-CREATE TABLE users (
+CREATE TABLE usersHistory (
   id INTEGER,
   username TEXT,
   completedQuestionId INTEGER,
@@ -52,6 +54,17 @@ CREATE TABLE users (
   completedTime INTEGER
 )
 ''');
+
+    await db.execute('''
+    CREATE TABLE usersStatistics (
+  id INTEGER,
+  username TEXT,
+  totalCompletedQuestions INTEGER,
+  totalCorrectQuestions INTEGER,
+  completedDate TEXT,
+  totalCompletedTime INTEGER
+)
+    ''');
   }
 
   Future<void> addQuestions(List<dynamic> questions) async {
@@ -61,14 +74,19 @@ CREATE TABLE users (
     }
   }
 
-  Future<void> addAnswerHistory(UserStatistics userStatistics) async {
+  Future<void> addAnswerHistory(UsersHistory usersHistory) async {
     final db = await database;
-    db.insert('users', userStatistics.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    db.insert('usersHistory', usersHistory.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<void> addUsersStatistics(UsersStatistics usersStatistics) async {
+    final db = await database;
+    db.insert('usersStatistics', usersStatistics.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> clearTable() async {
     final db = await database;
-    await db.delete('users');
+    await db.delete('usersHistory');
   }
 
   Future<void> deleteTable() async {
@@ -99,9 +117,7 @@ CREATE TABLE users (
           createdTime: map['createdTime'],
           modifiedTime: map['modifiedTime'],
           completed: map['completed'],
-        information: map['information']
-
-      );
+          information: map['information']);
     } else {
       print("Question with id = $id is not found.");
       return null;
@@ -113,27 +129,12 @@ CREATE TABLE users (
     if (questionID == null) {
       return null;
     }
-    final List<Map<String, dynamic>> map = await db.rawQuery("SELECT information FROM questions WHERE ID = ?", [questionID]);
+    final List<Map<String, dynamic>> map =
+        await db.rawQuery("SELECT information FROM questions WHERE ID = ?", [questionID]);
 
     if (map.isNotEmpty) {
       return map.first['information'] as String?;
     }
-    return null;
-  }
-
-
-
-  Future<int?> getFirstQuestion() async {
-    final db = await database;
-    final List<Map<String, dynamic>> result = await db.rawQuery(
-      'SELECT MIN(id) as min_id FROM questions WHERE completed = 2',
-    );
-
-    if (result.isNotEmpty && result.first['min_id'] != null) {
-      return result.first['min_id'] as int;
-    }
-    print("All Questions have been finished.");
-
     return null;
   }
 
@@ -251,7 +252,7 @@ CREATE TABLE users (
     }
   }
 
-  Future<String> computeDailyCompletedQuestions() async {
+  Future<int> computeDailyCompletedQuestions() async {
     final db = await database;
     DateTime now = DateTime.now();
     String today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
@@ -260,7 +261,7 @@ CREATE TABLE users (
         await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [today]);
     int numberCompletedQuestionsToday = Sqflite.firstIntValue(completedToday) ?? 0;
 
-    return numberCompletedQuestionsToday.toString();
+    return numberCompletedQuestionsToday;
   }
 
   Future<List<FlSpot>> computeWeeklyCompletedQuestions() async {
@@ -306,7 +307,7 @@ CREATE TABLE users (
     String today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
 
     List<Map> result = await db.rawQuery(
-      'SELECT completedQuestionId, MAX(completedTime) as maxTime FROM users WHERE DATE(completedDate) = ? GROUP BY completedQuestionId',
+      'SELECT completedQuestionId, MAX(completedTime) as maxTime FROM usersHistory WHERE DATE(completedDate) = ? GROUP BY completedQuestionId',
       [today],
     );
     int totalTime = 0;
@@ -316,8 +317,20 @@ CREATE TABLE users (
     return totalTime; //return time is /100 milliseconds
   }
 
+  Future<int> getTodayCorrectQuestionsAmount() async {
+    final db = await database;
+    DateTime now = DateTime.now();
+    String today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+
+    var correctToday =
+        await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed = 1 AND DATE(modifiedTime) = ?", [today]);
+    int? numberCorrectQuestionsToday = Sqflite.firstIntValue(correctToday);
+    return numberCorrectQuestionsToday ?? 0;
+  }
+
   Future<void> setAllQuestionsUncompleted() async {
     final db = await database;
     await db.rawUpdate("UPDATE questions SET completed = ?", [2]);
   }
+
 }

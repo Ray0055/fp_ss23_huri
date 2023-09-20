@@ -7,12 +7,13 @@ import 'package:logic_app/functions/TimerClock.dart';
 import '../widgets/HeatMapCalendarWidget.dart';
 import '../widgets/WeeklyCompletedWidget.dart';
 
+
 class StatisticsPage extends ConsumerWidget {
   const StatisticsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
+    final usersStatistics = ref.watch(usersStatisticsProvider);
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -42,9 +43,9 @@ class StatisticsPage extends ConsumerWidget {
                       },
                     ),
                     const Divider(height: 20, thickness: 1),
-                    FutureBuilder(
+                    FutureBuilder<int>(
                       future: ref.read(dataBaseProvider).computeDailyCompletedQuestions(),
-                      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
@@ -61,15 +62,25 @@ class StatisticsPage extends ConsumerWidget {
                     ),
                     FutureBuilder<int>(
                         future: ref.read(dataBaseProvider).getTodayTotalTime(),
-                        builder: (BuildContext context,  AsyncSnapshot<int> snapshot){
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
                             return const CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
+                          } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
-                            } else{
-                              String _time = formatDuration(snapshot.data!);
-                              return Text("Total Time Used Today: $_time", style: const TextStyle(fontSize: 17));
-                            }
+                          } else {
+                            String _time = formatDuration(snapshot.data!);
+
+                            Future.delayed(Duration.zero, () async {
+                              int totalCompletedQuestions = await ref.read(dataBaseProvider).computeDailyCompletedQuestions();
+                              int totalCorrectQuestions = await ref.read(dataBaseProvider).getTodayCorrectQuestionsAmount();
+                              String completedDate = getCurrentTimestamp();
+                              int totalCompletedTime = await ref.read(dataBaseProvider).getTodayTotalTime();
+
+                              usersStatistics.updateCompletedQuestion(totalCompletedQuestions, totalCorrectQuestions, completedDate, totalCompletedTime);
+                              ref.read(dataBaseProvider).addUsersStatistics(usersStatistics);
+                            });
+                            return Text("Total Time Used Today: $_time", style: const TextStyle(fontSize: 17));
+                          }
                         })
                   ],
                 ),

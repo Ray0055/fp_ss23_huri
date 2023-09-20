@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
-import 'package:logic_app/functions/UserStatistics.dart';
+import 'package:logic_app/functions/UsersHistory.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:tex_text/tex_text.dart';
@@ -17,7 +17,7 @@ final questionsIdProvider = FutureProvider<List<int>?>((ref) async {
   return await ref.read(dataBaseProvider).getUnansweredQuestions();
 });
 final isStudyingProvider = StateProvider((ref) => true);
-final userStatisticsProvider = ChangeNotifierProvider((ref) => UserStatistics());
+final usersHistoryProvider = ChangeNotifierProvider((ref) => UsersHistory());
 
 class QuestionCardWidget extends ConsumerWidget {
   const QuestionCardWidget({super.key});
@@ -29,7 +29,7 @@ class QuestionCardWidget extends ConsumerWidget {
     int? selectedIndex = ref.watch(selectedIndexProvider);
     bool isValueSet = ref.watch(isValueSetProvider.notifier).state;
     TimerClock timerClock = ref.read(timerClockProvider);
-    UserStatistics userStatistics = ref.read(userStatisticsProvider);
+    UsersHistory usersHistory = ref.read(usersHistoryProvider);
 
     final AsyncValue<List<int>?> asyncValue = ref.watch(questionsIdProvider);
 
@@ -114,9 +114,9 @@ class QuestionCardWidget extends ConsumerWidget {
                           if (timerClock.isRunning) {
                             timerClock.stopTimer();
                             // update user statics and sync to database
-                            userStatistics.update(
+                            usersHistory.update(
                                 questionId!, currentQuestion.completed, getCurrentTimestamp(), timerClock.duration);
-                            ref.read(dataBaseProvider).addAnswerHistory(userStatistics);
+                            ref.read(dataBaseProvider).addAnswerHistory(usersHistory);
                             timerClock.resetTimer();
                           }
                         });

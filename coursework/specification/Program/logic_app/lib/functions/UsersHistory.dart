@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserStatistics extends ChangeNotifier{
+class UsersHistory extends ChangeNotifier{
 
   int id = 0; //key
   String userName = "root";

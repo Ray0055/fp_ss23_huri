@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:logic_app/functions/DatabaseHelper.dart';
+import 'package:logic_app/functions/UsersStatistics.dart';
 import '../functions/TimerClock.dart';
 
 final bottomBarProvider = ChangeNotifierProvider((ref) => BottomBar());
@@ -11,7 +12,7 @@ final timerMaximumProvider = StateProvider<int>((ref) => 100);
 final inputTextProvider = ChangeNotifierProvider((ref) => TextEditingController());
 final isFirstTimeProvider = StateProvider((ref) => true);
 final key3Provider = StateProvider((ref) => 0);
-
+final usersStatisticsProvider = ChangeNotifierProvider((ref) => UsersStatistics());
 final GlobalKey tutorialKey1 = GlobalKey();
 final GlobalKey tutorialKey2 = GlobalKey();
 final GlobalKey tutorialKey3 = GlobalKey();

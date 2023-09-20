@@ -94,12 +94,6 @@ class QuizPageState extends ConsumerState<QuizPageStatefulWidget> {
               timerClock.resetTimer();
             },
             child: const Text("Stop")),
-        TextButton(
-            onPressed: () {
-              timerClock.stopTimer();
-              timerClock.resetTimer();
-            },
-            child: const Text("Stop")),
       ]),
     );
   }
