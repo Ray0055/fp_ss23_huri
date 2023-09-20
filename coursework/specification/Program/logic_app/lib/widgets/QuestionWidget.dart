@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:linear_timer/linear_timer.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:logic_app/functions/UserStatistics.dart';
 import 'package:logic_app/providers/Providers.dart';
@@ -30,8 +29,20 @@ class QuestionCardWidget extends ConsumerWidget {
     int? selectedIndex = ref.watch(selectedIndexProvider);
     bool isValueSet = ref.watch(isValueSetProvider.notifier).state;
     TimerClock timerClock = ref.read(timerClockProvider);
-    final AsyncValue<List<int>?> asyncValue = ref.watch(questionsIdProvider);
     UserStatistics userStatistics = ref.read(userStatisticsProvider);
+
+    final AsyncValue<List<int>?> asyncValue = ref.watch(questionsIdProvider);
+
+    /// ensure tutorial3,4,5 show after 1,2
+    var key3State = ref.watch(key3Provider);
+    if (key3State == 1) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ShowCaseWidget.of(context).startShowCase([tutorialKey3, tutorialKey4, tutorialKey5]);
+      });
+      Future.delayed(Duration.zero, () {
+        ref.read(key3Provider.notifier).state++;
+      });
+    }
 
     return asyncValue.when(
         loading: () => const CircularProgressIndicator(),
@@ -40,7 +51,6 @@ class QuestionCardWidget extends ConsumerWidget {
           if (questionIndex == 1) {
             questionId = questionIDList?.first; //Set first question id
           }
-
           return Column(children: [
             /// Widget current question index / amount of questions
             FutureBuilder(
@@ -64,6 +74,7 @@ class QuestionCardWidget extends ConsumerWidget {
                         ref.refresh(isValueSetProvider.notifier).state = true;
                       });
                     }
+
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Text.rich(
@@ -197,33 +208,45 @@ class QuestionCardWidget extends ConsumerWidget {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              showModalBottomSheet<void>(
-                                                  context: context,
-                                                  builder: (BuildContext context) {
-                                                    return SizedBox(
-                                                      height: 200,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(10),
-                                                        child: FutureBuilder(
-                                                            future:
-                                                            ref.read(dataBaseProvider).getInformationById(questionId),
-                                                            builder:
-                                                                (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                                                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                return const Center(child: CircularProgressIndicator());
-                                                              } else if (snapshot.hasError) {
-                                                                return Text('Error: ${snapshot.error}');
-                                                              } else {
-                                                                return TexText("${snapshot.data}", style: TextStyle(fontSize: 20, height: 1.5),);
-                                                              }
-                                                            }),
-                                                      ),
-                                                    );
-                                                  });
-                                            },
-                                            icon: const Icon(Icons.info, color: Colors.teal)),
+                                        Showcase(
+                                          targetPadding: const EdgeInsets.all(3),
+                                          targetShapeBorder: const CircleBorder(),
+                                          key: tutorialKey5,
+                                          description: "Show information of question",
+                                          child: IconButton(
+                                              onPressed: () {
+                                                showModalBottomSheet<void>(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      return SizedBox(
+                                                        height: 200,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(10),
+                                                          child: FutureBuilder(
+                                                              future: ref
+                                                                  .read(dataBaseProvider)
+                                                                  .getInformationById(questionId),
+                                                              builder: (BuildContext context,
+                                                                  AsyncSnapshot<String?> snapshot) {
+                                                                if (snapshot.connectionState ==
+                                                                    ConnectionState.waiting) {
+                                                                  return const Center(
+                                                                      child: CircularProgressIndicator());
+                                                                } else if (snapshot.hasError) {
+                                                                  return Text('Error: ${snapshot.error}');
+                                                                } else {
+                                                                  return TexText(
+                                                                    "${snapshot.data}",
+                                                                    style: const TextStyle(fontSize: 20, height: 1.5),
+                                                                  );
+                                                                }
+                                                              }),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                              icon: const Icon(Icons.info, color: Colors.teal)),
+                                        )
                                       ],
                                     ),
 
@@ -255,14 +278,19 @@ class QuestionCardWidget extends ConsumerWidget {
                                               ref.read(questionIndexProvider.notifier).state--;
                                             }
                                           },
-                                          child: Showcase(key: tutorialKey3, description: "Show last question", child: const Text("Last")),
+                                          child: Showcase(
+                                            key: tutorialKey3,
+                                            description: "Show last question",
+                                            targetPadding: const EdgeInsets.all(5),
+                                            child: const Text("Last"),
+                                          ),
                                         ),
 
                                         /// Next Question Button
                                         TextButton(
                                           style: TextButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
                                           onPressed: () async {
-                                            int amount = ref.read(numberQuestionsProvider.notifier).state ?? 0;
+                                            int amount = ref.read(numberQuestionsProvider.notifier).state;
                                             bool isFinished = ref.read(isFinishedProvider.notifier).state;
 
                                             // current question is not the last question
@@ -305,7 +333,12 @@ class QuestionCardWidget extends ConsumerWidget {
                                                       ));
                                             }
                                           },
-                                          child: const Text("Next"),
+                                          child: Showcase(
+                                            key: tutorialKey4,
+                                            description: "Show next question",
+                                            targetPadding: const EdgeInsets.all(5),
+                                            child: const Text("Next"),
+                                          ),
                                         ),
                                       ],
                                     ),

@@ -50,6 +50,7 @@ dependencies:
   tutorial_coach_mark: ^1.2.9
   showcaseview: ^2.0.3
   shared_preferences: ^2.2.1
+  flutter_hooks: ^0.20.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

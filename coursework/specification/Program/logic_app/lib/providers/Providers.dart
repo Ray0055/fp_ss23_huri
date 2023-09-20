@@ -1,9 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:logic_app/functions/DatabaseHelper.dart';
-import 'package:logic_app/functions/QuestionsCard.dart';
-import 'package:sqflite/sqflite.dart';
-
 import '../functions/TimerClock.dart';
 
 final bottomBarProvider = ChangeNotifierProvider((ref) => BottomBar());
@@ -13,10 +10,13 @@ final timerClockProvider = ChangeNotifierProvider((ref) => TimerClock());
 final timerMaximumProvider = StateProvider<int>((ref) => 100);
 final inputTextProvider = ChangeNotifierProvider((ref) => TextEditingController());
 final isFirstTimeProvider = StateProvider((ref) => true);
+final key3Provider = StateProvider((ref) => 0);
 
 final GlobalKey tutorialKey1 = GlobalKey();
 final GlobalKey tutorialKey2 = GlobalKey();
 final GlobalKey tutorialKey3 = GlobalKey();
+final GlobalKey tutorialKey4 = GlobalKey();
+final GlobalKey tutorialKey5 = GlobalKey();
 
 class BottomBar extends ChangeNotifier {
   int selectedIndex = 0;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:linear_timer/linear_timer.dart';
 import 'package:logic_app/functions/TimerClock.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:logic_app/widgets/QuestionWidget.dart';
@@ -8,13 +7,18 @@ import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:logic_app/functions/CustomSearchDelegate.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-class QuizPage extends StatelessWidget {
+class QuizPage extends ConsumerWidget {
+  const QuizPage({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: ShowCaseWidget(
+        onFinish: () {
+          ref.read(key3Provider.notifier).state++;
+        },
         builder: Builder(
-          builder: (context) => QuizPageStatefulWidget(),
+          builder: (context) => const QuizPageStatefulWidget(),
         ),
       ),
     );
@@ -35,6 +39,7 @@ class QuizPageState extends ConsumerState<QuizPageStatefulWidget> {
     if (ref.read(isFirstTimeProvider.notifier).state) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ShowCaseWidget.of(context).startShowCase([tutorialKey1, tutorialKey2]);
+        ref.read(isFirstTimeProvider.notifier).state = false;
       });
     }
   }
@@ -68,12 +73,15 @@ class QuizPageState extends ConsumerState<QuizPageStatefulWidget> {
         ),
       ),
       body: Column(children: [
-        Showcase(key: tutorialKey2, description: "Used Time", child: LinearProgressIndicator(
-          value: timerClock.duration / timerMaximum,
-          valueColor: AlwaysStoppedAnimation(Colors.green.shade400),
-          minHeight: 10,
-          borderRadius: BorderRadius.circular(10),
-        )),
+        Showcase(
+            key: tutorialKey2,
+            description: "Used Time",
+            child: LinearProgressIndicator(
+              value: timerClock.duration / timerMaximum,
+              valueColor: AlwaysStoppedAnimation(Colors.green.shade400),
+              minHeight: 10,
+              borderRadius: BorderRadius.circular(10),
+            )),
         const QuestionCardWidget(),
         TextButton(
             onPressed: () {
