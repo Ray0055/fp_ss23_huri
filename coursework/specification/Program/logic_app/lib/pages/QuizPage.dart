@@ -6,98 +6,44 @@ import 'package:logic_app/providers/Providers.dart';
 import 'package:logic_app/widgets/QuestionWidget.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:logic_app/functions/CustomSearchDelegate.dart';
+import 'package:showcaseview/showcaseview.dart';
 
+class QuizPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ShowCaseWidget(
+        builder: Builder(
+          builder: (context) => QuizPageStatefulWidget(),
+        ),
+      ),
+    );
+  }
+}
 
-
-class QuizPage extends ConsumerWidget {
-  const QuizPage({Key? key}) : super(key: key);
+class QuizPageStatefulWidget extends ConsumerStatefulWidget {
+  const QuizPageStatefulWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // List<QuestionCard> questionCards = [
-    //   QuestionCard(
-    //       id: 0,
-    //       question: r"$P \rightarrow Q$ if P is true, Q is false",
-    //       options: ["true", "false"],
-    //       correctIndex: 1,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    //   QuestionCard(
-    //       id: 1,
-    //       question: r"$P \land Q$ if P is false and Q is true",
-    //       options: ["true", "false"],
-    //       correctIndex: 1,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    //   QuestionCard(
-    //       id: 2,
-    //       question: r"$P \lor Q$ if P is false and Q is false",
-    //       options: ["true", "false"],
-    //       correctIndex: 1,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    //   QuestionCard(
-    //       id: 3,
-    //       question: r"$\lnot P$ if P is true",
-    //       options: ["true", "false"],
-    //       correctIndex: 1,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    //   QuestionCard(
-    //       id: 4,
-    //       question: r"$P \oplus Q$ if P is true and Q is true",
-    //       options: ["true", "false"],
-    //       correctIndex: 1,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    //   QuestionCard(
-    //       id: 5,
-    //       question: r"$P \iff Q$ if P is true and Q is false",
-    //       options: ["true", "false"],
-    //       correctIndex: 1,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    //   QuestionCard(
-    //       id: 6,
-    //       question: r"$\lnot (P \land Q)$ if P is true and Q is false",
-    //       options: ["true", "false"],
-    //       correctIndex: 0,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    //   QuestionCard(
-    //       id: 7,
-    //       question: r"$\lnot P \lor Q$ if P is true and Q is true",
-    //       options: ["true", "false"],
-    //       correctIndex: 0,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    //   QuestionCard(
-    //       id: 8,
-    //       question: r"$P \rightarrow \lnot Q$ if P is false and Q is true",
-    //       options: ["true", "false"],
-    //       correctIndex: 0,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    //   QuestionCard(
-    //       id: 9,
-    //       question: r"$P \lor \lnot Q$ if P is false and Q is false",
-    //       options: ["true", "false"],
-    //       correctIndex: 0,
-    //       createdTime: "createdTime",
-    //       modifiedTime: "modifiedTime",
-    //       completed: 3),
-    // ];
+  QuizPageState createState() => QuizPageState();
+}
+
+class QuizPageState extends ConsumerState<QuizPageStatefulWidget> {
+  @override
+  void initState() {
+    super.initState();
+    if (ref.read(isFirstTimeProvider.notifier).state) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ShowCaseWidget.of(context).startShowCase([tutorialKey1, tutorialKey2]);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     TimerClock timerClock = ref.watch(timerClockProvider);
     int timerMaximum = ref.watch(timerMaximumProvider.notifier).state;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Logic Quiz"),
@@ -107,7 +53,13 @@ class QuizPage extends ConsumerWidget {
               onPressed: () {
                 showSearch(context: context, delegate: CustomSearchDelegate());
               },
-              icon: const Icon(Icons.search))
+              icon: Showcase(
+                targetPadding: const EdgeInsets.all(10),
+                targetShapeBorder: const CircleBorder(),
+                key: tutorialKey1,
+                description: "Search Question",
+                child: const Icon(Icons.search),
+              ))
         ],
         automaticallyImplyLeading: false,
         leading: IconButton(
@@ -116,19 +68,30 @@ class QuizPage extends ConsumerWidget {
         ),
       ),
       body: Column(children: [
-        LinearProgressIndicator(
-          value:timerClock.duration/timerMaximum,
+        Showcase(key: tutorialKey2, description: "Used Time", child: LinearProgressIndicator(
+          value: timerClock.duration / timerMaximum,
           valueColor: AlwaysStoppedAnimation(Colors.green.shade400),
           minHeight: 10,
           borderRadius: BorderRadius.circular(10),
-        ),
+        )),
         const QuestionCardWidget(),
         TextButton(
-            onPressed: (){
+            onPressed: () {
               timerClock.startTimer();
-            }, child: const Text("Start")),
-        TextButton(onPressed: (){timerClock.stopTimer();timerClock.resetTimer();}, child: const Text("Stop")),
-
+            },
+            child: const Text("Start")),
+        TextButton(
+            onPressed: () {
+              timerClock.stopTimer();
+              timerClock.resetTimer();
+            },
+            child: const Text("Stop")),
+        TextButton(
+            onPressed: () {
+              timerClock.stopTimer();
+              timerClock.resetTimer();
+            },
+            child: const Text("Stop")),
       ]),
     );
   }

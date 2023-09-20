@@ -4,6 +4,7 @@ import 'package:linear_timer/linear_timer.dart';
 import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:logic_app/functions/UserStatistics.dart';
 import 'package:logic_app/providers/Providers.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:tex_text/tex_text.dart';
 import 'package:logic_app/functions/TimerClock.dart';
 
@@ -231,6 +232,7 @@ class QuestionCardWidget extends ConsumerWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         /// Last Question Button
+
                                         TextButton(
                                           style: TextButton.styleFrom(textStyle: const TextStyle(fontSize: 20)),
                                           onPressed: () async {
@@ -253,7 +255,7 @@ class QuestionCardWidget extends ConsumerWidget {
                                               ref.read(questionIndexProvider.notifier).state--;
                                             }
                                           },
-                                          child: const Text("Last"),
+                                          child: Showcase(key: tutorialKey3, description: "Show last question", child: const Text("Last")),
                                         ),
 
                                         /// Next Question Button

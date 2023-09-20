@@ -4,15 +4,20 @@ import 'package:logic_app/functions/PageRouter.dart';
 import 'package:logic_app/functions/DatabaseHelper.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:logic_app/widgets/QuestionWidget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final db = await DatabaseHelper.instance.database;
+  await DatabaseHelper.instance.database;
+  //SharedPreferences prefs = await SharedPreferences.getInstance();
+  //bool isFirstTime = prefs.getBool("first_time") ?? true; // first time launch app or not
+bool isFirstTime = true;
   runApp(
     ProviderScope(
       overrides: [
         questionsIdProvider.overrideWith((ref) => ref.read(dataBaseProvider).getUnansweredQuestions()),
-        darkModeProvider.overrideWith((ref) => DarkMode())
+        darkModeProvider.overrideWith((ref) => DarkMode()),
+        isFirstTimeProvider.overrideWith((ref) => isFirstTime)
       ],
       child: MyApp(),
     ),

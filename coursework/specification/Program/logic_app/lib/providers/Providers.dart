@@ -12,6 +12,11 @@ final dataBaseProvider = ChangeNotifierProvider((ref) => DatabaseHelper.instance
 final timerClockProvider = ChangeNotifierProvider((ref) => TimerClock());
 final timerMaximumProvider = StateProvider<int>((ref) => 100);
 final inputTextProvider = ChangeNotifierProvider((ref) => TextEditingController());
+final isFirstTimeProvider = StateProvider((ref) => true);
+
+final GlobalKey tutorialKey1 = GlobalKey();
+final GlobalKey tutorialKey2 = GlobalKey();
+final GlobalKey tutorialKey3 = GlobalKey();
 
 class BottomBar extends ChangeNotifier {
   int selectedIndex = 0;

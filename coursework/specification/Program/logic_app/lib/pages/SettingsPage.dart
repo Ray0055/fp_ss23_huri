@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -87,7 +88,13 @@ class SettingsPage extends ConsumerWidget {
               SettingsTile(
                 title: const Text("Contact us"),
                 description: const Text("st181247@stud.uni-stuttgart.de"),
-                ),
+              ),
+              SettingsTile.navigation(
+                title: const Text("ShowCase"),
+                onPressed: (value) async {
+                  context.pushNamed("showcase");
+                },
+              ),
             ]),
           ],
         ));

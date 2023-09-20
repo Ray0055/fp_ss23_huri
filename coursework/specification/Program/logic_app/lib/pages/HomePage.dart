@@ -7,7 +7,7 @@ import 'package:logic_app/pages/SettingsPage.dart';
 import 'package:logic_app/pages/StatisticsPage.dart';
 class HomePage extends ConsumerWidget{
   const HomePage({Key? key}) : super(key: key);
-  static const List pages = [
+  static List pages = [
     QuizPage(),
     StatisticsPage(),
     SettingsPage(),
