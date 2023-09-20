@@ -36,6 +36,20 @@ String getCurrentTimestamp() {
   return isoTime;
 }
 
+String formatDuration(int durationIn100ms) {
+  int totalSeconds = (durationIn100ms * 100) ~/ 1000;
+  int hours = totalSeconds ~/ 3600;
+  int minutes = (totalSeconds % 3600) ~/ 60;
+  int seconds = totalSeconds % 60;
+
+  String hoursStr = (hours < 10) ? '0$hours' : '$hours';
+  String minutesStr = (minutes < 10) ? '0$minutes' : '$minutes';
+  String secondsStr = (seconds < 10) ? '0$seconds' : '$seconds';
+
+  return '$hoursStr h $minutesStr m $secondsStr s';
+}
+
+
 
 
 

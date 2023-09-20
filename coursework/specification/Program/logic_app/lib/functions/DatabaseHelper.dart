@@ -56,19 +56,18 @@ CREATE TABLE users (
   Future<void> addQuestions(List<dynamic> questions) async {
     final db = await database;
     for (int i = 0; i < questions.length; i++) {
-      await db.insert('questions', questions[i].toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert('questions', questions[i].toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
     }
   }
 
-  Future<void> addAnswerHistory(UserStatistics userStatistics) async{
+  Future<void> addAnswerHistory(UserStatistics userStatistics) async {
     final db = await database;
-    db.insert('users', userStatistics.toMap(),conflictAlgorithm: ConflictAlgorithm.replace);
+    db.insert('users', userStatistics.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> clearTable() async {
     final db = await database;
-    await db.delete('questions');
+    await db.delete('users');
   }
 
   Future<void> deleteTable() async {
@@ -80,7 +79,7 @@ CREATE TABLE users (
 
   Future<QuestionCard?> getQuestionById(int? id) async {
     final db = await database;
-    if (id == null){
+    if (id == null) {
       return null;
     }
     final List<Map<String, dynamic>> maps = await db.query(
@@ -99,9 +98,10 @@ CREATE TABLE users (
           createdTime: map['createdTime'],
           modifiedTime: map['modifiedTime'],
           completed: map['completed']);
-    }else{
+    } else {
       print("Question with id = $id is not found.");
-      return null;}
+      return null;
+    }
   }
 
   Future<int?> getFirstQuestion() async {
@@ -120,7 +120,8 @@ CREATE TABLE users (
 
   Future<List<int>?> getUnansweredQuestions() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT id FROM questions WHERE completed = 2 ORDER BY id ASC');
+    final List<Map<String, dynamic>> maps =
+        await db.rawQuery('SELECT id FROM questions WHERE completed = 2 ORDER BY id ASC');
     List<int> ids = maps.map((map) => map['id'] as int).toList();
     print("DatabaseHelper is $ids");
     if (ids.isNotEmpty) {
@@ -154,20 +155,17 @@ CREATE TABLE users (
 
   Future<int> getFeatureCount() async {
     final db = await database;
-    var x =
-        await db.rawQuery('SELECT COUNT(*) FROM questions WHERE completed=3');
+    var x = await db.rawQuery('SELECT COUNT(*) FROM questions WHERE completed=3');
     int? count = Sqflite.firstIntValue(x);
     return count ?? 0;
   }
 
 //Get database from server side
   Future<void> getDatabaseFromServerSide() async {
-    final response = await http.get(
-        Uri.parse("http://10.0.2.2:8080/api/questions"),
-        headers: {'Accept': 'application/json'});
+    final response =
+        await http.get(Uri.parse("http://10.0.2.2:8080/api/questions"), headers: {'Accept': 'application/json'});
     List<dynamic> jsonList = jsonDecode(response.body);
-    List<QuestionCard> questionCards =
-        jsonList.map((e) => QuestionCard.fromMap(e)).toList();
+    List<QuestionCard> questionCards = jsonList.map((e) => QuestionCard.fromMap(e)).toList();
 
     if (response.statusCode == 200) {
       await addQuestions(questionCards);
@@ -180,27 +178,21 @@ CREATE TABLE users (
     final db = await database;
     final List<Map<String, dynamic>> questionMaps = await db.query('questions');
     // 使用 fromMap 将 Map 转换为 QuestionCard 对象
-    List<QuestionCard> questionCards =
-        questionMaps.map((e) => QuestionCard.fromMap(e)).toList();
+    List<QuestionCard> questionCards = questionMaps.map((e) => QuestionCard.fromMap(e)).toList();
     // 使用 toJson 将 QuestionCard 对象转换为 Map，然后构建一个 Map 列表
-    List<Map<String, dynamic>> questionCardMaps =
-        questionCards.map((e) => e.toJson()).toList();
+    List<Map<String, dynamic>> questionCardMaps = questionCards.map((e) => e.toJson()).toList();
 
     String jsonBody = jsonEncode(questionCardMaps);
 
     final response = await http.post(
       Uri.parse("http://10.0.2.2:8080/api/update_question"),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
       body: jsonBody,
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
       print("Successfully synced database to server.");
     } else {
-      print(
-          "Error syncing database to server. Response code is ${response.statusCode} ");
+      print("Error syncing database to server. Response code is ${response.statusCode} ");
     }
   }
 
@@ -214,8 +206,6 @@ CREATE TABLE users (
     );
   }
 
-
-
   Future<String> computeDailyAccuracy() async {
     final db = await database;
 
@@ -224,11 +214,13 @@ CREATE TABLE users (
     String today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
 
     // search today's answered questions
-    var completedToday = await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [today]);
+    var completedToday =
+        await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [today]);
     int? numberCompletedQuestionsToday = Sqflite.firstIntValue(completedToday);
 
     // search today's answered correctly questions
-    var correctToday = await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed = 1 AND DATE(modifiedTime) = ?", [today]);
+    var correctToday =
+        await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed = 1 AND DATE(modifiedTime) = ?", [today]);
     int? numberCorrectQuestionsToday = Sqflite.firstIntValue(correctToday);
 
     // compute accuracy
@@ -245,7 +237,8 @@ CREATE TABLE users (
     DateTime now = DateTime.now();
     String today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
 
-    var completedToday = await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [today]);
+    var completedToday =
+        await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [today]);
     int numberCompletedQuestionsToday = Sqflite.firstIntValue(completedToday) ?? 0;
 
     return numberCompletedQuestionsToday.toString();
@@ -258,11 +251,11 @@ CREATE TABLE users (
     for (int i = 6; i >= 0; i--) {
       DateTime day = DateTime.now().subtract(Duration(days: i));
       String date = '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
-      print(date);
-      var completedOnDay = await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [date]);
+      var completedOnDay =
+          await db.rawQuery("SELECT COUNT(*) FROM questions WHERE completed != 2 AND DATE(modifiedTime) = ?", [date]);
       int numberCompletedQuestionsOnDay = Sqflite.firstIntValue(completedOnDay) ?? 0;
 
-      weeklyData.add(FlSpot((7-i).toDouble(), numberCompletedQuestionsOnDay.toDouble()));
+      weeklyData.add(FlSpot((7 - i).toDouble(), numberCompletedQuestionsOnDay.toDouble()));
     }
 
     return weeklyData ?? [];
@@ -274,8 +267,7 @@ CREATE TABLE users (
 
     // Query to get all completed questions with their modifiedTime
     final List<Map<String, dynamic>> result = await db.rawQuery(
-        "SELECT COUNT(*) as count, DATE(modifiedTime) as date FROM questions WHERE completed != 2 GROUP BY DATE(modifiedTime)"
-    );
+        "SELECT COUNT(*) as count, DATE(modifiedTime) as date FROM questions WHERE completed != 2 GROUP BY DATE(modifiedTime)");
 
     // Loop through the result and populate the map
     for (var row in result) {
@@ -289,10 +281,24 @@ CREATE TABLE users (
     return completedMap ?? {};
   }
 
+  Future<int> getTodayTotalTime() async {
+    final db = await database;
+    DateTime now = DateTime.now();
+    String today = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+
+    List<Map> result = await db.rawQuery(
+      'SELECT completedQuestionId, MAX(completedTime) as maxTime FROM users WHERE DATE(completedDate) = ? GROUP BY completedQuestionId',
+      [today],
+    );
+    int totalTime = 0;
+    for (var row in result) {
+      totalTime += (row['maxTime'] as int);
+    }
+    return totalTime; //return time is /100 milliseconds
+  }
+
   Future<void> setAllQuestionsUncompleted() async {
     final db = await database;
     await db.rawUpdate("UPDATE questions SET completed = ?", [2]);
   }
-
-
 }

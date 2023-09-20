@@ -44,6 +44,23 @@ class TimerClock extends ChangeNotifier {
     return reformTimer(minute) + ":" + reformTimer(second) + "." + millisecond.toString();
   }
 
+  String formatDuration(int durationIn100ms) {
+    int totalSeconds = (durationIn100ms * 100) ~/ 1000;
+    int hours = totalSeconds ~/ 3600;
+    int minutes = (totalSeconds % 3600) ~/ 60;
+    int seconds = totalSeconds % 60;
+
+    String hoursStr = (hours < 10) ? '0$hours' : '$hours';
+    String minutesStr = (minutes < 10) ? '0$minutes' : '$minutes';
+    String secondsStr = (seconds < 10) ? '0$seconds' : '$seconds';
+
+    return '$hoursStr hours $minutesStr min $secondsStr s';
+  }
+
+  void main() {
+    print(formatDuration(3600));  // Should print "00 hours 06 min 00 s"
+  }
+
   String reformTimer(int time) {
     return time < 10 ? "0" + time.toString() : time.toString();
   }
