@@ -40,17 +40,19 @@
             <th>CreatedTime</th>
             <th>ModifiedTime</th>
             <th>Completed</th>
+            <th>Information</th>
 
         </tr>
         {{range .}}
         <tr>
             <td>{{.ID}}</td>
-            <td>{{.Question}}</td>
-            <td>{{.Options}}</td>
-            <td>{{.CorrectIndex}}</td>
+            <td class="editable-cell">{{.Question}}</td>
+            <td class="editable-cell">{{.Options}}</td>
+            <td class="editable-cell">{{.CorrectIndex}}</td>
             <td>{{.CreatedTime}}</td>
             <td>{{.ModifiedTime}}</td>
-            <th>{{.Completed}}</th>
+            <td class="editable-cell">{{.Completed}}</td>
+            <td class="editable-cell">{{.Information}}</td>
             <td><button data-id="{{.ID}}" onclick="deleteQuestion(this)">Delete</button></td>
             <td><button class="updateQuestion">Update</button></td>
         </tr>
@@ -60,6 +62,7 @@
             <input type="text" id="newQuestion" placeholder="New Question" />
             <input type="text" id="newOptions" placeholder="New Options" />
             <input type="number" id="newCorrectIndex" placeholder="New Correct Index" />
+            <input type="text" id="newInformation" placeholder="New Information" />
             <button type="submit" id="addQuestionsFormButton">Add Question</button>
         </form>
     </table>
@@ -86,7 +89,7 @@
 
     <script> //deleteQuestion
         function deleteQuestion(element) {
-            const id = parseInt(element.getAttribute('data-id'),10) 
+            const id = parseInt(element.getAttribute('data-id'), 10)
             console.log("Attempting to delete question %d", id)
             fetch(`/api/delete_question?id=${id}`, {
                 method: 'DELETE',
@@ -107,6 +110,7 @@
             const newCreatedTime = getCurrentTimestamp();
             const newModifiedTime = getCurrentTimestamp();
             const newCompleted = 2;
+            const newInformation = document.getElementById('newInformation').value;
             console.log("Attempting to send question via html");
             fetch(`/api/add_question`, {
                 method: 'POST',
@@ -120,14 +124,15 @@
                     correctIndex: newCorrectIndex,
                     createdTime: newCreatedTime,
                     modifiedTime: newModifiedTime,
-                    completed: newCompleted
+                    completed: newCompleted,
+                    information: newInformation
                 })
             }).then(response => response.json())
                 .then(data => {
                     // 刷新页面或者其他操作
                 });
         });
-        
+
         function getCurrentTimestamp() {
             const now = new Date();
             return now.toISOString();
@@ -136,25 +141,24 @@
     </script>
 
     <script>    //make cells editable
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('table tr td:not(:first-child):not(:nth-last-child(2)):not(:last-child)').forEach(cell => {
-                cell.addEventListener('click', function () {
-                    if (!this.querySelector('input')) {
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.value = this.innerText;
-                        this.innerHTML = '';
-                        this.appendChild(input);
-                        input.focus();
+        document.querySelectorAll('table tr td.editable-cell').forEach(cell => {
+            cell.addEventListener('click', function () {
+                if (!this.querySelector('input')) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = this.innerText;
+                    this.innerHTML = '';
+                    this.appendChild(input);
+                    input.focus();
 
-                        input.addEventListener('blur', function () {
-                            const value = this.value;
-                            this.parentElement.innerHTML = value;
-                        });
-                    }
-                });
+                    input.addEventListener('blur', function () {
+                        const value = this.value;
+                        this.parentElement.innerHTML = value;
+                    });
+                }
             });
         });
+
 
 
     </script>
@@ -176,6 +180,7 @@
                 const newCreatedTime = cells[4].innerText;
                 const newModifiedTime = getCurrentTimestamp();
                 const newCompleted = 2;
+                const newInformation = cells[7].innerText;
 
                 // send new question to server side
                 fetch(`/api/update_question`, {
@@ -190,7 +195,8 @@
                         correctIndex: newCorrectIndex,
                         createdTime: newCreatedTime,
                         modifiedTime: newModifiedTime,
-                        completed: newCompleted
+                        completed: newCompleted,
+                        information: newInformation
                     })
                 }).then(response => response.json())
                     .then(data => {

@@ -9,9 +9,7 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    int timerMaximum = ref
-        .watch(timerMaximumProvider.notifier)
-        .state;
+    int timerMaximum = ref.watch(timerMaximumProvider.notifier).state;
     var inputText = ref.watch(inputTextProvider);
 
     return Scaffold(
@@ -25,18 +23,9 @@ class SettingsPage extends ConsumerWidget {
               SettingsTile(title: const Text("User Account")),
               SettingsTile.switchTile(
                 title: const Text("Dark mode"),
-                initialValue: ref
-                    .watch(darkModeProvider)
-                    .initialValue,
+                initialValue: ref.watch(darkModeProvider).initialValue,
                 onToggle: (value) {
                   ref.watch(darkModeProvider).onTap(value); //每次按下toggle之后会自动改变value的值
-                },
-              ),
-              SettingsTile(title: const Text("Contact us")),
-              SettingsTile.navigation(
-                title: const Text("Database"),
-                onPressed: (value) async {
-                  context.pushNamed("database");
                 },
               ),
               SettingsTile(
@@ -49,33 +38,35 @@ class SettingsPage extends ConsumerWidget {
                     textAlign: TextAlign.center,
                     controller: inputText,
                     keyboardType: TextInputType.number,
+
                     /// input validation
                     onChanged: (value) {
                       if (value.isEmpty) {
-                        showDialog(context: context, builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Can't be empty!"),
-                            actions: [
-                              TextButton(
-                                  onPressed: () => Navigator.pop(context, "Confirm"), child: const Text("Confirm"))
-                            ],
-                          );
-                        });
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Can't be empty!"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context, "Confirm"), child: const Text("Confirm"))
+                                ],
+                              );
+                            });
                       } else if ((int.tryParse(value) == null)) {
-                        showDialog(context: context, builder: (context)
-                        {
-                          return AlertDialog(
-                            title: const Text("Input must be an integer."),
-                            actions: [
-                              TextButton(
-                                  onPressed: () => Navigator.pop(context, "Confirm"), child: const Text("Confirm"))
-                            ],
-                          );
-                        });
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Input must be an integer."),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context, "Confirm"), child: const Text("Confirm"))
+                                ],
+                              );
+                            });
                       } else {
-                        ref
-                            .read(timerMaximumProvider.notifier)
-                            .state = int.parse(inputText.text) * 10;
+                        ref.read(timerMaximumProvider.notifier).state = int.parse(inputText.text) * 10;
                       }
                     },
                     decoration: InputDecoration(
@@ -86,7 +77,17 @@ class SettingsPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-              )
+              ),
+              SettingsTile.navigation(
+                title: const Text("Database"),
+                onPressed: (value) async {
+                  context.pushNamed("database");
+                },
+              ),
+              SettingsTile(
+                title: const Text("Contact us"),
+                description: const Text("st181247@stud.uni-stuttgart.de"),
+                ),
             ]),
           ],
         ));

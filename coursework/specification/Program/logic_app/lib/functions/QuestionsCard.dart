@@ -17,6 +17,8 @@ class QuestionCard {
 
   final int completed;
 
+  final String information;
+
   QuestionCard({
     required this.id,
     required this.question,
@@ -25,6 +27,7 @@ class QuestionCard {
     required this.createdTime,
     required this.modifiedTime,
     required this.completed,
+    required this.information
   });
 
   Map<String, dynamic> toMap() {
@@ -35,7 +38,8 @@ class QuestionCard {
       'correctIndex': correctIndex,
       'createdTime': createdTime,
       'modifiedTime': modifiedTime,
-      'completed': completed
+      'completed': completed,
+      'information': information
     };
   }
 
@@ -48,6 +52,7 @@ class QuestionCard {
       createdTime: map['createdTime'],
       modifiedTime: map['modifiedTime'],
       completed: map['completed'],
+      information: map['information']
     );
   }
 
@@ -59,7 +64,8 @@ class QuestionCard {
       'correctIndex': correctIndex,
       'createdTime': createdTime,
       'modifiedTime': modifiedTime,
-      'completed': completed
+      'completed': completed,
+      'information': information
     };
   }
 }

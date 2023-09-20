@@ -16,6 +16,7 @@ type Question struct {
 	CreatedTime  string `json:"createdTime"`
 	ModifiedTime string `json:"modifiedTime"`
 	Completed    int    `json:"completed"`
+	Information  string `json:"information"`
 }
 
 var db *sql.DB
@@ -37,7 +38,7 @@ func getQuestionsFromDB() ([]Question, error) {
 	var questions []Question
 	for rows.Next() {
 		var q Question
-		if err := rows.Scan(&q.ID, &q.Question, &q.Options, &q.CorrectIndex, &q.CreatedTime, &q.ModifiedTime, &q.Completed); err != nil {
+		if err := rows.Scan(&q.ID, &q.Question, &q.Options, &q.CorrectIndex, &q.CreatedTime, &q.ModifiedTime, &q.Completed, &q.Information); err != nil {
 			return nil, err
 		}
 		questions = append(questions, q)
@@ -48,8 +49,8 @@ func getQuestionsFromDB() ([]Question, error) {
 
 func addQuestion(db *sql.DB, newQuestion Question) error {
 	fmt.Println("Attempting to insert question:", newQuestion)
-	result, err := db.Exec("INSERT INTO questions (question, options, correctIndex, createdTime, modifiedTime, completed) VALUES (?, ?, ?, ?, ?, ?)",
-		newQuestion.Question, newQuestion.Options, newQuestion.CorrectIndex, newQuestion.CreatedTime, newQuestion.ModifiedTime, newQuestion.Completed)
+	result, err := db.Exec("INSERT INTO questions (question, options, correctIndex, createdTime, modifiedTime, completed, information) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		newQuestion.Question, newQuestion.Options, newQuestion.CorrectIndex, newQuestion.CreatedTime, newQuestion.ModifiedTime, newQuestion.Completed, newQuestion.Information)
 	if err != nil {
 		fmt.Println("Error while inserting:", err)
 		return err
@@ -87,7 +88,8 @@ func updateQuestion(db *sql.DB, updatedQuestions []Question) error {
 		correctIndex = ?,
 		createdTime = ?,
 		modifiedTime = ?,
-		completed = ?
+		completed = ?,
+		information = ?
 	WHERE
 		ID = ?`
 
@@ -98,7 +100,9 @@ func updateQuestion(db *sql.DB, updatedQuestions []Question) error {
 			updatedQuestion.CreatedTime,
 			updatedQuestion.ModifiedTime,
 			updatedQuestion.Completed,
-			updatedQuestion.ID) // Assuming that 'ID' is a field in your Question struct
+			updatedQuestion.Information,
+			updatedQuestion.ID,
+		) // Assuming that 'ID' is a field in your Question struct
 
 		if err != nil {
 			fmt.Println("Error while updating:", err)

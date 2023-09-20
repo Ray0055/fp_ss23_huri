@@ -14,88 +14,88 @@ class QuizPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<QuestionCard> questionCards = [
-      QuestionCard(
-          id: 0,
-          question: r"$P \rightarrow Q$ if P is true, Q is false",
-          options: ["true", "false"],
-          correctIndex: 1,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-      QuestionCard(
-          id: 1,
-          question: r"$P \land Q$ if P is false and Q is true",
-          options: ["true", "false"],
-          correctIndex: 1,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-      QuestionCard(
-          id: 2,
-          question: r"$P \lor Q$ if P is false and Q is false",
-          options: ["true", "false"],
-          correctIndex: 1,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-      QuestionCard(
-          id: 3,
-          question: r"$\lnot P$ if P is true",
-          options: ["true", "false"],
-          correctIndex: 1,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-      QuestionCard(
-          id: 4,
-          question: r"$P \oplus Q$ if P is true and Q is true",
-          options: ["true", "false"],
-          correctIndex: 1,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-      QuestionCard(
-          id: 5,
-          question: r"$P \iff Q$ if P is true and Q is false",
-          options: ["true", "false"],
-          correctIndex: 1,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-      QuestionCard(
-          id: 6,
-          question: r"$\lnot (P \land Q)$ if P is true and Q is false",
-          options: ["true", "false"],
-          correctIndex: 0,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-      QuestionCard(
-          id: 7,
-          question: r"$\lnot P \lor Q$ if P is true and Q is true",
-          options: ["true", "false"],
-          correctIndex: 0,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-      QuestionCard(
-          id: 8,
-          question: r"$P \rightarrow \lnot Q$ if P is false and Q is true",
-          options: ["true", "false"],
-          correctIndex: 0,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-      QuestionCard(
-          id: 9,
-          question: r"$P \lor \lnot Q$ if P is false and Q is false",
-          options: ["true", "false"],
-          correctIndex: 0,
-          createdTime: "createdTime",
-          modifiedTime: "modifiedTime",
-          completed: 3),
-    ];
+    // List<QuestionCard> questionCards = [
+    //   QuestionCard(
+    //       id: 0,
+    //       question: r"$P \rightarrow Q$ if P is true, Q is false",
+    //       options: ["true", "false"],
+    //       correctIndex: 1,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    //   QuestionCard(
+    //       id: 1,
+    //       question: r"$P \land Q$ if P is false and Q is true",
+    //       options: ["true", "false"],
+    //       correctIndex: 1,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    //   QuestionCard(
+    //       id: 2,
+    //       question: r"$P \lor Q$ if P is false and Q is false",
+    //       options: ["true", "false"],
+    //       correctIndex: 1,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    //   QuestionCard(
+    //       id: 3,
+    //       question: r"$\lnot P$ if P is true",
+    //       options: ["true", "false"],
+    //       correctIndex: 1,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    //   QuestionCard(
+    //       id: 4,
+    //       question: r"$P \oplus Q$ if P is true and Q is true",
+    //       options: ["true", "false"],
+    //       correctIndex: 1,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    //   QuestionCard(
+    //       id: 5,
+    //       question: r"$P \iff Q$ if P is true and Q is false",
+    //       options: ["true", "false"],
+    //       correctIndex: 1,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    //   QuestionCard(
+    //       id: 6,
+    //       question: r"$\lnot (P \land Q)$ if P is true and Q is false",
+    //       options: ["true", "false"],
+    //       correctIndex: 0,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    //   QuestionCard(
+    //       id: 7,
+    //       question: r"$\lnot P \lor Q$ if P is true and Q is true",
+    //       options: ["true", "false"],
+    //       correctIndex: 0,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    //   QuestionCard(
+    //       id: 8,
+    //       question: r"$P \rightarrow \lnot Q$ if P is false and Q is true",
+    //       options: ["true", "false"],
+    //       correctIndex: 0,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    //   QuestionCard(
+    //       id: 9,
+    //       question: r"$P \lor \lnot Q$ if P is false and Q is false",
+    //       options: ["true", "false"],
+    //       correctIndex: 0,
+    //       createdTime: "createdTime",
+    //       modifiedTime: "modifiedTime",
+    //       completed: 3),
+    // ];
     TimerClock timerClock = ref.watch(timerClockProvider);
     int timerMaximum = ref.watch(timerMaximumProvider.notifier).state;
     return Scaffold(
@@ -112,7 +112,7 @@ class QuizPage extends ConsumerWidget {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {},
-          icon: Icon(Icons.list),
+          icon: const Icon(Icons.list),
         ),
       ),
       body: Column(children: [
@@ -126,8 +126,8 @@ class QuizPage extends ConsumerWidget {
         TextButton(
             onPressed: (){
               timerClock.startTimer();
-            }, child: Text("Start")),
-        TextButton(onPressed: (){timerClock.stopTimer();timerClock.resetTimer();}, child: Text("Stop")),
+            }, child: const Text("Start")),
+        TextButton(onPressed: (){timerClock.stopTimer();timerClock.resetTimer();}, child: const Text("Stop")),
 
       ]),
     );

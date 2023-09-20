@@ -29,7 +29,6 @@ class QuestionCardWidget extends ConsumerWidget {
     int? selectedIndex = ref.watch(selectedIndexProvider);
     bool isValueSet = ref.watch(isValueSetProvider.notifier).state;
     TimerClock timerClock = ref.read(timerClockProvider);
-    bool isStudying = ref.read(isStudyingProvider.notifier).state;
     final AsyncValue<List<int>?> asyncValue = ref.watch(questionsIdProvider);
     UserStatistics userStatistics = ref.read(userStatisticsProvider);
 
@@ -179,14 +178,14 @@ class QuestionCardWidget extends ConsumerWidget {
                                                 String currentTime = getCurrentTimestamp();
 
                                                 var newQuestion = QuestionCard(
-                                                  id: currentQuestion.id,
-                                                  question: currentQuestion.question,
-                                                  options: currentQuestion.options,
-                                                  correctIndex: currentQuestion.correctIndex,
-                                                  createdTime: currentQuestion.createdTime,
-                                                  modifiedTime: currentTime,
-                                                  completed: newCompletedValue,
-                                                );
+                                                    id: currentQuestion.id,
+                                                    question: currentQuestion.question,
+                                                    options: currentQuestion.options,
+                                                    correctIndex: currentQuestion.correctIndex,
+                                                    createdTime: currentQuestion.createdTime,
+                                                    modifiedTime: currentTime,
+                                                    completed: newCompletedValue,
+                                                    information: currentQuestion.information);
 
                                                 ref.read(dataBaseProvider).updateQuestionInDatabase(newQuestion);
                                               }
@@ -202,13 +201,28 @@ class QuestionCardWidget extends ConsumerWidget {
                                               showModalBottomSheet<void>(
                                                   context: context,
                                                   builder: (BuildContext context) {
-                                                    return Container(
-                                                        height: 200,
-                                                        color: Colors.blue,
-                                                        child: const TexText(r"explanation $A\times B$"));
+                                                    return SizedBox(
+                                                      height: 200,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(10),
+                                                        child: FutureBuilder(
+                                                            future:
+                                                            ref.read(dataBaseProvider).getInformationById(questionId),
+                                                            builder:
+                                                                (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                                                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                return const Center(child: CircularProgressIndicator());
+                                                              } else if (snapshot.hasError) {
+                                                                return Text('Error: ${snapshot.error}');
+                                                              } else {
+                                                                return TexText("${snapshot.data}", style: TextStyle(fontSize: 20, height: 1.5),);
+                                                              }
+                                                            }),
+                                                      ),
+                                                    );
                                                   });
                                             },
-                                            icon: const Icon(Icons.info)),
+                                            icon: const Icon(Icons.info, color: Colors.teal)),
                                       ],
                                     ),
 

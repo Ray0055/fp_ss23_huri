@@ -68,7 +68,7 @@ class StatisticsPage extends ConsumerWidget {
                             return Text('Error: ${snapshot.error}');
                             } else{
                               String _time = formatDuration(snapshot.data!);
-                              return Text("Total Time Used Today: ${_time}", style: const TextStyle(fontSize: 17));
+                              return Text("Total Time Used Today: $_time", style: const TextStyle(fontSize: 17));
                             }
                         })
                   ],

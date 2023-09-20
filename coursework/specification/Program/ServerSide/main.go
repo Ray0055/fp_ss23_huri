@@ -25,27 +25,10 @@ func getQuestionsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func showQuestions(w http.ResponseWriter, r *http.Request) {
-	page := 1
-	pageStr := r.URL.Query().Get("page")
-	if pageStr != "" {
-		var err error
-		page, err = strconv.Atoi(pageStr)
-		if err != nil {
-			http.Error(w, "Invalid page number", http.StatusBadRequest)
-			return
-		}
-	}
-
 	questions, err := getQuestionsFromDB()
 	if err != nil {
 		http.Error(w, "Failed to get questions from database", http.StatusInternalServerError)
 		return
-	}
-
-	start := (page - 1) * PageSize
-	end := start + PageSize
-	if end > len(questions) {
-		end = len(questions)
 	}
 
 	tmpl, err := template.ParseFiles("questions.html")
@@ -55,7 +38,7 @@ func showQuestions(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = tmpl.Execute(w, questions[start:end])
+	err = tmpl.Execute(w, questions)
 	if err != nil {
 		log.Println("Error executing template:", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -115,6 +98,7 @@ func updateQuestionHander(w http.ResponseWriter, r *http.Request) {
 		singleQuestion.CreatedTime = v["createdTime"].(string)
 		singleQuestion.ModifiedTime = v["modifiedTime"].(string)
 		singleQuestion.Completed = int(v["completed"].(float64))
+		singleQuestion.Information = v["information"].(string)
 		questionsToUpdate = append(questionsToUpdate, singleQuestion)
 	case []interface{}:
 		for _, item := range v {
@@ -127,6 +111,7 @@ func updateQuestionHander(w http.ResponseWriter, r *http.Request) {
 			q.CreatedTime = m["createdTime"].(string)
 			q.ModifiedTime = m["modifiedTime"].(string)
 			q.Completed = int(m["completed"].(float64))
+			q.Information = m["information"].(string)
 			questionsToUpdate = append(questionsToUpdate, q)
 		}
 	default:

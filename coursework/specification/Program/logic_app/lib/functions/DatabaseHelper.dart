@@ -38,7 +38,8 @@ CREATE TABLE questions (
   correctIndex INTEGER,
   createdTime TEXT,
   modifiedTime TEXT,
-  completed INTEGER
+  completed INTEGER,
+  information TEXT
 )
 ''');
     await db.execute('''
@@ -97,12 +98,30 @@ CREATE TABLE users (
           correctIndex: map['correctIndex'],
           createdTime: map['createdTime'],
           modifiedTime: map['modifiedTime'],
-          completed: map['completed']);
+          completed: map['completed'],
+        information: map['information']
+
+      );
     } else {
       print("Question with id = $id is not found.");
       return null;
     }
   }
+
+  Future<String?> getInformationById(int? questionID) async {
+    final db = await database;
+    if (questionID == null) {
+      return null;
+    }
+    final List<Map<String, dynamic>> map = await db.rawQuery("SELECT information FROM questions WHERE ID = ?", [questionID]);
+
+    if (map.isNotEmpty) {
+      return map.first['information'] as String?;
+    }
+    return null;
+  }
+
+
 
   Future<int?> getFirstQuestion() async {
     final db = await database;
