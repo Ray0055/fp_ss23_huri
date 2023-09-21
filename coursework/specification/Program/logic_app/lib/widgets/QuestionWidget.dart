@@ -196,7 +196,7 @@ class QuestionCardWidget extends ConsumerWidget {
                                                       ? Colors.green
                                                       : Colors.grey,
                                         ),
-                                        title: Text(currentQuestion.options[i]),
+                                        title: Text(currentQuestion.options[i], style: const TextStyle(fontSize: 18),),
                                         onTap: selectedIndex == null
                                             ? () {
                                                 ref.read(isStudyingProvider.notifier).state = false;

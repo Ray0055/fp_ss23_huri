@@ -65,30 +65,23 @@
 
         #table {
             border-collapse: collapse;
-            /* 使边框合并为一个单一的边框 */
             width: 100%;
         }
 
         th,
         td {
             border: 1px solid #dddddd;
-            /* 单元格边框 */
             text-align: left;
-            /* 文本对齐方式 */
             padding: 8px;
-            /* 单元格内边距 */
         }
 
         th {
             background-color: #f2f2f2;
-            /* 表头背景颜色 */
             color: black;
-            /* 表头字体颜色 */
         }
 
         tr:nth-child(even) {
             background-color: #f9f9f9;
-            /* 每个偶数行的背景颜色 */
         }
 
         table tr td.editable-cell input {
@@ -210,8 +203,8 @@
             const input = document.createElement('input');
             input.type = 'text';
             input.value = this.innerText;
-            input.style.width = '100%'; // 设置宽度
-            input.style.boxSizing = 'border-box'; // 确保padding和border不会增加宽度
+            input.style.width = '100%'; 
+            input.style.boxSizing = 'border-box';
             this.innerHTML = '';
             this.appendChild(input);
             input.focus();

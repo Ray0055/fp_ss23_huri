@@ -8,7 +8,7 @@ final bottomBarProvider = ChangeNotifierProvider((ref) => BottomBar());
 final darkModeProvider = ChangeNotifierProvider((ref) => DarkMode());
 final dataBaseProvider = ChangeNotifierProvider((ref) => DatabaseHelper.instance);
 final timerClockProvider = ChangeNotifierProvider((ref) => TimerClock());
-final timerMaximumProvider = StateProvider<int>((ref) => 100);
+final timerMaximumProvider = StateProvider<int>((ref) => 300);
 final inputTextProvider = ChangeNotifierProvider((ref) => TextEditingController());
 final isFirstTimeProvider = StateProvider((ref) => true);
 final key3Provider = StateProvider((ref) => 0);

@@ -8,9 +8,9 @@ import 'package:logic_app/pages/StatisticsPage.dart';
 class HomePage extends ConsumerWidget{
   const HomePage({Key? key}) : super(key: key);
   static List pages = [
-    QuizPage(),
-    StatisticsPage(),
-    SettingsPage(),
+    const QuizPage(),
+    const StatisticsPage(),
+    const SettingsPage(),
   ];
 
   @override

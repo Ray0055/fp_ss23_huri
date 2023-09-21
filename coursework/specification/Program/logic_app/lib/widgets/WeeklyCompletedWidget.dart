@@ -18,7 +18,18 @@ class WeeklyCompletedWidget extends ConsumerWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          } else {
+          }
+          else {
+
+            var minX = snapshot.data!.first.x, maxX = snapshot.data!.first.x, minY = snapshot.data!.first.y, maxY = snapshot.data!.first.y;
+
+            for (var spot in snapshot.data!) {
+              if (spot.x < minX) minX = spot.x;
+              if (spot.x > maxX) maxX = spot.x;
+              if (spot.y < minY) minY = spot.y;
+              if (spot.y > maxY) maxY = spot.y;
+            }
+
             return SizedBox(
               height: 200,
               child: LineChart(
@@ -71,10 +82,10 @@ class WeeklyCompletedWidget extends ConsumerWidget {
                       width: 1,
                     ),
                   ),
-                  minX: 1,
-                  maxX: 7,
-                  minY: 0,
-                  maxY: 6,
+                  minX: minX,
+                  maxX: maxX,
+                  minY: minY,
+                  maxY: maxY,
                   lineBarsData: [
                     LineChartBarData(
                       spots: snapshot.data ?? [],

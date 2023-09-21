@@ -49,6 +49,34 @@ class DatabasePage extends ConsumerWidget {
                             ));
                   },
                 ),
+              ),SettingsTile(
+                leading: Icon(Icons.trending_up),
+                title: TextButton(
+                  child: const Text(
+                    "Upload Statistics",
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Update statistics to serverside"),
+                          actions: <Widget>[
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, 'Cancel');
+                                },
+                                child: const Text("Cancel")),
+                            TextButton(
+                                onPressed: () async {
+                                  ref.read(dataBaseProvider).syncUserStatisticsToServer();
+                                  Navigator.pop(context, 'OK');
+                                },
+                                child: const Text("Confirm"))
+                          ],
+                        ));
+                  },
+                ),
               ),
               SettingsTile(
                   leading: const Icon(Icons.download),

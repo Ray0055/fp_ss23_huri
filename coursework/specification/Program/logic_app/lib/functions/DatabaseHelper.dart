@@ -221,9 +221,8 @@ CREATE TABLE usersHistory (
   Future<void> syncDatabaseToServer() async {
     final db = await database;
     final List<Map<String, dynamic>> questionMaps = await db.query('questions');
-    // 使用 fromMap 将 Map 转换为 QuestionCard 对象
+
     List<QuestionCard> questionCards = questionMaps.map((e) => QuestionCard.fromMap(e)).toList();
-    // 使用 toJson 将 QuestionCard 对象转换为 Map，然后构建一个 Map 列表
     List<Map<String, dynamic>> questionCardMaps = questionCards.map((e) => e.toJson()).toList();
 
     String jsonBody = jsonEncode(questionCardMaps);
@@ -234,11 +233,41 @@ CREATE TABLE usersHistory (
       body: jsonBody,
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print("Successfully synced database to server.");
+      debugPrint("Successfully synced database to server.");
     } else {
-      print("Error syncing database to server. Response code is ${response.statusCode} ");
+      debugPrint("Error syncing database to server. Response code is ${response.statusCode} ");
     }
   }
+
+  Future<void> syncUserStatisticsToServer() async {
+    final db = await database;
+
+    try {
+      List<Map<String, dynamic>> result = await db.rawQuery('SELECT * FROM usersStatistics ORDER BY completedDate DESC LIMIT 1');
+
+      if (result.isNotEmpty) {
+        final Map<String, dynamic> maxIdRow = result.first;
+
+        String jsonBody = jsonEncode(maxIdRow);
+        final response = await http.post(
+          Uri.parse("http://10.0.2.2:8080/api/update_statistics"),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonBody,
+        );
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          print("Successfully synced data to server.");
+        } else {
+          print("Error syncing data to server. Response code is ${response.statusCode}");
+        }
+      } else {
+        print("No data found in usersStatistics table.");
+      }
+    } catch (e) {
+      print("Error occurred: $e");
+    }
+  }
+
 
   Future<void> updateQuestionInDatabase(QuestionCard updatedQuestion) async {
     final db = await database;
