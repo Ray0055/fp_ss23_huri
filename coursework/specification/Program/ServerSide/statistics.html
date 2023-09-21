@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Statistics</title>
+    <style>
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            margin: 4px;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+
+
+        }
+
+        #sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #ddd;
+            padding-top: 20px;
+        }
+
+        #sidebar ul {
+            padding: 10;
+
+        }
+
+        #sidebar li {
+            left: 20px;
+            font-family: 'Arial', sans-serif;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        #sidebar li.header {
+            list-style-type: none;
+            font-family: 'Arial', sans-serif;
+            font-size: 30px;
+            color: #333;
+        }
+
+        /*css for hyerlinks*/
+        #sidebar a {
+            text-decoration: none;
+            color: black;
+            list-style-type: circle;
+        }
+
+        #table {
+            border-collapse: collapse;
+            /* 使边框合并为一个单一的边框 */
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            /* 单元格边框 */
+            text-align: left;
+            /* 文本对齐方式 */
+            padding: 8px;
+            /* 单元格内边距 */
+        }
+
+        th {
+            background-color: #f2f2f2;
+            /* 表头背景颜色 */
+            color: black;
+            /* 表头字体颜色 */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+            /* 每个偶数行的背景颜色 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="sidebar">
+        <ul>
+            <li class="header">Quiz App Server</li>
+            <li><a href="questions"><span>Questions</span></a></li>
+            <li><a href="statistics"><span>Statistics</span></a></li>
+        </ul>
+    </div>
+
+
+    <div id="main-content" style="margin-left: 250px;">
+        <div id="statistics-section">
+            <h1>Statistics</h1>
+            <table id="statistics-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>TotalCompletedQuestions</th>
+                    <th>TotalCorrectQuestions</th>
+                    <th>CompletedDate</th>
+                    <th>TotalCompletedTime</th>
+                </tr>
+                {{range .}}
+                <tr>
+                    <td>{{.ID}}</td>
+                    <td>{{.Username}}</td>
+                    <td>{{.TotalCompletedQuestions}}</td>
+                    <td>{{.TotalCorrectQuestions}}</td>
+                    <td>{{.CompletedDate}}</td>
+                    <td>{{.TotalCompletedTime}}</td>
+                </tr>
+                {{end}}
+            </table>
+        </div>
+    </div>
+
+    
+</body>
+
+</html>

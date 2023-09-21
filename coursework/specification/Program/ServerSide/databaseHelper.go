@@ -22,6 +22,15 @@ type Question struct {
 	Information  string   `json:"information"`
 }
 
+type UsersStatistics struct {
+	ID                      int    `json:"id"`
+	Username                string `json:"username"`
+	TotalCompletedQuestions int    `json:"totalCompletedQuestions"`
+	TotalCorrectQuestions   int    `json:"totalCorrectQuestions"`
+	CompletedDate           string `json:"completedDate"`
+	TotalCompletedTime      int    `json:"totalCompletedTime"`
+}
+
 var db *sql.DB
 
 func initDatabase() {
@@ -30,7 +39,16 @@ func initDatabase() {
 	if err != nil {
 		log.Fatal("Failed to connect to the database:", err)
 	}
-
+	_, err = db.Exec(`
+	CREATE TABLE IF NOT EXISTS usersStatistics (
+		id INTEGER,
+		username TEXT NOT NULL,
+		totalCompletedQuestions INTEGER NOT NULL DEFAULT 0,
+		totalCorrectQuestions INTEGER NOT NULL DEFAULT 0,
+		completedDate TEXT NOT NULL,
+		totalCompletedTime INTEGER NOT NULL DEFAULT 0
+	)
+`)
 	// Read JSON file
 	jsonFile, err := os.Open("questions.json")
 	if err != nil {
@@ -88,6 +106,31 @@ func getQuestionsFromDB() ([]Question, error) {
 	}
 
 	return questions, nil
+}
+
+func getStatisticsFromDB() ([]UsersStatistics, error) {
+	rows, err := db.Query("SELECT * FROM usersStatistics")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var usersStatistics []UsersStatistics
+	for rows.Next() {
+		var q UsersStatistics
+
+		if err := rows.Scan(&q.ID, &q.Username, &q.TotalCompletedQuestions, &q.TotalCorrectQuestions, &q.CompletedDate, &q.TotalCompletedTime); err != nil {
+			return nil, err
+		}
+
+		usersStatistics = append(usersStatistics, q)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return usersStatistics, nil
 }
 
 func addQuestion(db *sql.DB, newQuestion Question) error {
@@ -174,5 +217,32 @@ func updateQuestion(db *sql.DB, updatedQuestions []Question) error {
 		}
 	}
 
+	return nil
+}
+
+func updateUsersStatistics(db *sql.DB, newUsersStatistics UsersStatistics) error {
+	fmt.Println("Attempting to insert user statistics:", newUsersStatistics)
+
+	result, err := db.Exec(
+		"REPLACE INTO usersStatistics (id, username, totalCompletedQuestions, totalCorrectQuestions, completedDate, totalCompletedTime) VALUES (?, ?, ?, ?, ?, ?)",
+		newUsersStatistics.ID,
+		newUsersStatistics.Username,
+		newUsersStatistics.TotalCompletedQuestions,
+		newUsersStatistics.TotalCorrectQuestions,
+		newUsersStatistics.CompletedDate,
+		newUsersStatistics.TotalCompletedTime,
+	)
+	if err != nil {
+		fmt.Println("Error while inserting:", err)
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		fmt.Println("Error while checking affected rows:", err)
+		return err
+	}
+
+	fmt.Printf("Successfully inserted. Rows affected: %d\n", rowsAffected)
 	return nil
 }

@@ -45,6 +45,28 @@ func showQuestions(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func showStatistics(w http.ResponseWriter, r *http.Request) {
+	usersStatistics, err := getStatisticsFromDB()
+	if err != nil {
+		http.Error(w, "Failed to get statistics from database", http.StatusInternalServerError)
+		return
+	}
+
+	tmpl, err := template.ParseFiles("statistics.html")
+	if err != nil {
+		log.Println("Error parsing template:", err)
+		http.Error(w, "Internal server error1", http.StatusInternalServerError)
+		return
+	}
+
+	err = tmpl.Execute(w, usersStatistics)
+	if err != nil {
+		log.Println("Error executing template:", err)
+		http.Error(w, "Internal server error2", http.StatusInternalServerError)
+		return
+	}
+}
+
 func addQuestionHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Attempting to add question")
 	if r.Method != "POST" {
@@ -141,6 +163,31 @@ func updateQuestionHander(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Question has been updated")
 }
 
+func updateUserStatisticsHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Attempting to update user statistics")
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var newUserStatistics UsersStatistics
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&newUserStatistics)
+
+	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
+	}
+
+	err = updateUsersStatistics(db, newUserStatistics)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	fmt.Fprint(w, "User statistics have been updated")
+}
 func deleteQuestionHander(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Attempting to delete question, message from server side")
 	if r.Method != "DELETE" {
@@ -169,9 +216,11 @@ func main() {
 	initDatabase()
 	http.HandleFunc("/api/questions", getQuestionsHandler)
 	http.HandleFunc("/questions", showQuestions)
+	http.HandleFunc("/statistics", showStatistics)
 	http.HandleFunc("/api/add_question", addQuestionHandler)
 	http.HandleFunc("/api/update_question", updateQuestionHander)
 	http.HandleFunc("/api/delete_question", deleteQuestionHander)
+	http.HandleFunc("/api/update_statistics", updateUserStatisticsHandler)
 
 	log.Println("Server started on: http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
