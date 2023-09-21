@@ -19,6 +19,8 @@ final GlobalKey tutorialKey3 = GlobalKey();
 final GlobalKey tutorialKey4 = GlobalKey();
 final GlobalKey tutorialKey5 = GlobalKey();
 
+final container = ProviderContainer();
+
 class BottomBar extends ChangeNotifier {
   int selectedIndex = 0;
 

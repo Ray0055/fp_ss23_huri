@@ -14,7 +14,7 @@ final numberQuestionsProvider = StateProvider<int>((ref) => 0);
 final isValueSetProvider = StateProvider<bool>((ref) => false);
 final isFinishedProvider = StateProvider<bool>((ref) => false);
 final questionsIdProvider = FutureProvider<List<int>?>((ref) async {
-  return await ref.read(dataBaseProvider).getUnansweredQuestions();
+  return await ref.watch(dataBaseProvider).getUnansweredQuestions();
 });
 final isStudyingProvider = StateProvider((ref) => true);
 final usersHistoryProvider = ChangeNotifierProvider((ref) => UsersHistory());
@@ -48,6 +48,7 @@ class QuestionCardWidget extends ConsumerWidget {
         loading: () => const CircularProgressIndicator(),
         error: (err, stack) => Text('Error: $err'),
         data: (List<int>? questionIDList) {
+
           if (questionIndex == 1) {
             questionId = questionIDList?.first; //Set first question id
           }
@@ -69,6 +70,7 @@ class QuestionCardWidget extends ConsumerWidget {
                     } // finished all questions or not
                     if (!isValueSet && snapshot.data != null) {
                       // Use Future to ensure the state is updated after the widget tree has finished building
+                      // Use isValueSet to keep amount of question
                       Future(() {
                         ref.read(numberQuestionsProvider.notifier).state = snapshot.data!;
                         ref.refresh(isValueSetProvider.notifier).state = true;
@@ -109,34 +111,53 @@ class QuestionCardWidget extends ConsumerWidget {
                     if (currentQuestion != null && questionId != null) {
                       /// if question is completed, keep selected index
                       if (currentQuestion.completed != 2) {
+                        debugPrint("Question is completed!");
+
                         // question is already completed
-                        Future.delayed(Duration.zero, () {
+                        Future.delayed(Duration.zero, () async {
                           if (timerClock.isRunning) {
                             timerClock.stopTimer();
+                            debugPrint("timer is stopped.");
+                            debugPrint("duration is ${timerClock.duration}");
+
                             // update user statics and sync to database
                             usersHistory.update(
                                 questionId!, currentQuestion.completed, getCurrentTimestamp(), timerClock.duration);
                             ref.read(dataBaseProvider).addAnswerHistory(usersHistory);
                             timerClock.resetTimer();
+                          }else{
+                            timerClock.stopTimer();
+
                           }
+
                         });
                         if (currentQuestion.completed == 1) {
                           // if answer is correct
-                          selectedIndex = currentQuestion.correctIndex;
+                          Future.delayed(Duration.zero, () {
+                            ref.read(selectedIndexProvider.notifier).state = currentQuestion.correctIndex;
+                          });
                         } else {
                           // if answer is wrong
-                          selectedIndex =
-                              (currentQuestion.correctIndex == 1) ? 0 : 1; // only handle with binary answer!
+                          Future.delayed(Duration.zero, () {
+                            ref.read(selectedIndexProvider.notifier).state =
+                                (currentQuestion.correctIndex == 1) ? 0 : 1;
+                          });
+                          // only handle with binary answer!
                         }
                       } else {
                         // question is not completed
-                        Future.delayed(Duration.zero, () {
+
+                        Future.delayed(Duration.zero, () async {
+                          ref.read(selectedIndexProvider.notifier).state = null;
+                          debugPrint("Question is not completed!");
                           if (timerClock.isRunning) {
+                            debugPrint("Start timer clock - QuestionWidget");
                             timerClock.stopTimer();
                             timerClock.resetTimer();
-                            timerClock.startTimer();
+                            timerClock.startTimer(ref.read(timerMaximumProvider.notifier).state);
                           } else {
-                            timerClock.startTimer();
+                            timerClock.resetTimer();
+                            timerClock.startTimer(ref.read(timerMaximumProvider.notifier).state);
                           }
                         });
                       }
@@ -204,7 +225,7 @@ class QuestionCardWidget extends ConsumerWidget {
                                             : null,
                                       ),
 
-                                    /// Explanation for the question
+                                    /// Information for the question
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -235,9 +256,11 @@ class QuestionCardWidget extends ConsumerWidget {
                                                                 } else if (snapshot.hasError) {
                                                                   return Text('Error: ${snapshot.error}');
                                                                 } else {
-                                                                  return TexText(
-                                                                    "${snapshot.data}",
-                                                                    style: const TextStyle(fontSize: 20, height: 1.5),
+                                                                  return SingleChildScrollView(
+                                                                    child: TexText(
+                                                                      "${snapshot.data}",
+                                                                      style: const TextStyle(fontSize: 20, height: 1.5),
+                                                                    ),
                                                                   );
                                                                 }
                                                               }),
@@ -273,6 +296,8 @@ class QuestionCardWidget extends ConsumerWidget {
                                                         ],
                                                       ));
                                             } else {
+
+                                              debugPrint("$questionId");
                                               ref.read(questionIDProvider.notifier).state =
                                                   questionIDList?[questionIndex - 2];
                                               ref.read(questionIndexProvider.notifier).state--;

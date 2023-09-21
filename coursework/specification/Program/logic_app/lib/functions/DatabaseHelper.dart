@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'package:flutter/services.dart';
 
 import 'UsersStatistics.dart';
 
@@ -67,6 +69,16 @@ CREATE TABLE usersHistory (
     ''');
   }
 
+  Future<void> loadQuestionsFromJsonFile() async {
+    final String content = await rootBundle.loadString('assets/questions.json');
+    final List<dynamic> questionsJson = jsonDecode(content);
+
+
+    List<QuestionCard> questionCards = questionsJson.map((e) => QuestionCard.fromMap(e)).toList();
+    //debugPrint(jsonEncode(questionCards[0].toJson()));
+    await addQuestions(questionCards);
+  }
+
   Future<void> addQuestions(List<dynamic> questions) async {
     final db = await database;
     for (int i = 0; i < questions.length; i++) {
@@ -76,8 +88,20 @@ CREATE TABLE usersHistory (
 
   Future<void> addAnswerHistory(UsersHistory usersHistory) async {
     final db = await database;
-    db.insert('usersHistory', usersHistory.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+
+    final questionId = usersHistory.completedQuestionId; // 请根据您的实际数据模型修改这一行
+
+    final existingRecords = await db.query(
+      'usersHistory',
+      where: 'completedQuestionId = ?',
+      whereArgs: [questionId],
+    );
+
+    if (existingRecords.isEmpty) {
+      db.insert('usersHistory', usersHistory.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    }
   }
+
 
   Future<void> addUsersStatistics(UsersStatistics usersStatistics) async {
     final db = await database;
@@ -87,6 +111,7 @@ CREATE TABLE usersHistory (
   Future<void> clearTable() async {
     final db = await database;
     await db.delete('usersHistory');
+    await db.delete('usersStatistics');
   }
 
   Future<void> deleteTable() async {
@@ -332,5 +357,4 @@ CREATE TABLE usersHistory (
     final db = await database;
     await db.rawUpdate("UPDATE questions SET completed = ?", [2]);
   }
-
 }

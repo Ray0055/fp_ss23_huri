@@ -32,17 +32,14 @@ class DatabasePage extends ConsumerWidget {
                 ref.watch(dataBaseProvider).clearTable();
               },
               child: Text("clear table")),
-          ElevatedButton(
-              onPressed: () => ref.watch(dataBaseProvider).deleteTable(),
-              child: Text("delete table")),
+          ElevatedButton(onPressed: () => ref.watch(dataBaseProvider).deleteTable(), child: Text("delete table")),
           ElevatedButton(
               onPressed: () async {
                 showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
                           title: const Text("Get questions from database"),
-                          content:
-                              const Text("Warning! It will overwrite database"),
+                          content: const Text("Warning! It will overwrite database"),
                           actions: <Widget>[
                             TextButton(
                                 onPressed: () {
@@ -51,9 +48,7 @@ class DatabasePage extends ConsumerWidget {
                                 child: const Text("Cancel")),
                             TextButton(
                                 onPressed: () async {
-                                  ref
-                                      .read(dataBaseProvider)
-                                      .getDatabaseFromServerSide();
+                                  ref.read(dataBaseProvider).getDatabaseFromServerSide();
 
                                   Navigator.pop(context, 'OK');
                                 },
@@ -68,8 +63,7 @@ class DatabasePage extends ConsumerWidget {
                     context: context,
                     builder: (context) => AlertDialog(
                           title: const Text("Update questions to database"),
-                          content:
-                              const Text("Warning! It will overwrite database"),
+                          content: const Text("Warning! It will overwrite database"),
                           actions: <Widget>[
                             TextButton(
                                 onPressed: () {
@@ -78,9 +72,7 @@ class DatabasePage extends ConsumerWidget {
                                 child: const Text("Cancel")),
                             TextButton(
                                 onPressed: () async {
-                                  ref
-                                      .read(dataBaseProvider)
-                                      .syncDatabaseToServer();
+                                  ref.read(dataBaseProvider).syncDatabaseToServer();
                                   Navigator.pop(context, 'OK');
                                 },
                                 child: const Text("Confirm"))
@@ -89,11 +81,21 @@ class DatabasePage extends ConsumerWidget {
               },
               child: const Text("SendToServer")),
           ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 ref.watch(questionIndexProvider.notifier).state = 1;
                 ref.watch(dataBaseProvider).setAllQuestionsUncompleted();
+                await ref.refresh(questionsIdProvider.future);
+                ref.read(dataBaseProvider).getAmount();
+                ref.refresh(isValueSetProvider.notifier).state = false;
+                ref.read(isFinishedProvider.notifier).state = false;
+                ref.read(selectedIndexProvider.notifier).state = null;
               },
-              child: Text("Set all questions index = 1 and uncompleted"))
+              child: Text("Set all questions index = 1 and uncompleted")),
+          ElevatedButton(
+              onPressed: () async {
+                ref.read(dataBaseProvider).loadQuestionsFromJsonFile();
+              },
+              child: Text("Test"))
         ],
       ),
     );

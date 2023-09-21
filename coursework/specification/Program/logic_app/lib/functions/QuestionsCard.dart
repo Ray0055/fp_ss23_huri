@@ -47,8 +47,8 @@ class QuestionCard {
     return QuestionCard(
       id: map['id'],
       question: map['question'],
-      options: (jsonDecode(map['options']) as List).cast<String>(),
-      correctIndex: map['correctIndex'],
+        options: List<String>.from(map['options']),
+        correctIndex: map['correctIndex'],
       createdTime: map['createdTime'],
       modifiedTime: map['modifiedTime'],
       completed: map['completed'],

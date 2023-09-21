@@ -6,7 +6,7 @@
     "correctIndex": 1,
     "createdTime": "2023-09-18T10:55:15.156Z",
     "modifiedTime": "2023-09-20T21:00:53.514573",
-    "completed": 1,
+    "completed": 2,
     "information": "The logical AND ($\\land$) operation returns true only if both$P$and$Q$are true. In this case,$P$is false and$Q$is true, so$P \\land Q$is false."
   },
   {
@@ -16,7 +16,7 @@
     "correctIndex": 1,
     "createdTime": "2023-09-18T10:55:15.156Z",
     "modifiedTime": "2023-09-20T21:00:54.946715",
-    "completed": 0,
+    "completed": 2,
     "information": "The logical XOR ($\\oplus$) operation returns true if exactly one of$P$or$Q$is true, but not both. Here, both$P$and$Q$are true, so$P \\oplus Q$is false."
   },
   {
@@ -26,7 +26,7 @@
     "correctIndex": 1,
     "createdTime": "2023-09-18T10:55:15.156Z",
     "modifiedTime": "2023-09-20T21:00:56.263872",
-    "completed": 1,
+    "completed": 2,
     "information": "The logical biconditional ($\\iff$) returns true only if$P$and$Q$are both true or both false. In this case,$P$is true and$Q$is false, so$P \\iff Q$is false."
   },
   {
@@ -36,7 +36,7 @@
     "correctIndex": 0,
     "createdTime": "2023-09-18T10:55:15.156Z",
     "modifiedTime": "2023-09-20T21:00:57.505480",
-    "completed": 1,
+    "completed": 2,
     "information": "$P \\land Q$would be false because$Q$is false. The negation ($\\lnot$) of false is true, so$\\lnot (P \\land Q)$is true."
   },
   {
@@ -46,7 +46,7 @@
     "correctIndex": 0,
     "createdTime": "2023-09-18T10:55:15.156Z",
     "modifiedTime": "2023-09-20T21:00:58.883704",
-    "completed": 0,
+    "completed": 2,
     "information": "$\\lnot P$would be false since$P$is true. However,$Q$is true, and the logical OR ($\\lor$) operation only needs one true value to return true. So,$\\lnot P \\lor Q$is true."
   },
   {
@@ -66,7 +66,7 @@
     "correctIndex": 1,
     "createdTime": "2023-09-20T12:06:00.000Z",
     "modifiedTime": "2023-09-20T12:10:00.000Z",
-    "completed": 0,
+    "completed": 2,
     "information": "The logical OR ($\\lor$) returns true if either $P$ or $Q$ is true. In this case, both $P$ and $Q$ are false, making $P \\lor Q$ false."
   },
   {
@@ -76,8 +76,28 @@
     "correctIndex": 1,
     "createdTime": "2023-09-20T12:06:00.000Z",
     "modifiedTime": "2023-09-20T12:10:00.000Z",
-    "completed": 0,
+    "completed": 2,
     "information": "The logical OR ($\\lor$) returns true if either $P$ or $Q$ is true. In this case, both $P$ and $Q$ are false, making $P \\lor Q$ false."
+  },
+  {
+    "id": 9,
+    "question": "Given $P \\rightarrow (Q \\lor R)$, if $P$ is true, $Q$ is false and $R$ is false, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 1,
+    "createdTime": "2023-09-20T13:00:00.000Z",
+    "modifiedTime": "2023-09-20T13:05:00.000Z",
+    "completed": 2,
+    "information": "The logical implication ($\\rightarrow$) returns false only if the antecedent is true and the consequent is false. Given that $P$ is true, the consequent $Q \\lor R$ must also be true for the implication to hold. However, since both $Q$ and $R$ are false, the consequent is false, making the whole implication $P \\rightarrow (Q \\lor R)$ false."
+  },
+  {
+    "id": 10,
+    "question": "Given $(P \\land Q) \\rightarrow R$, if $P$ is true, $Q$ is true and $R$ is false, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 1,
+    "createdTime": "2023-09-20T13:10:00.000Z",
+    "modifiedTime": "2023-09-20T13:15:00.000Z",
+    "completed": 2,
+    "information": "The logical implication ($\\rightarrow$) returns false only if the antecedent is true and the consequent is false. In this case, the antecedent $(P \\land Q)$ is true because both $P$ and $Q$ are true. However, the consequent $R$ is false. Therefore, the whole implication $(P \\land Q) \\rightarrow R$ is false."
   }
 
 ]

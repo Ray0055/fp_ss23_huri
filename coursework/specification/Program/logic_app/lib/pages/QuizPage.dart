@@ -85,13 +85,12 @@ class QuizPageState extends ConsumerState<QuizPageStatefulWidget> {
         const QuestionCardWidget(),
         TextButton(
             onPressed: () {
-              timerClock.startTimer();
+              timerClock.startTimer(ref.read(timerMaximumProvider.notifier).state);
             },
             child: const Text("Start")),
         TextButton(
             onPressed: () {
               timerClock.stopTimer();
-              timerClock.resetTimer();
             },
             child: const Text("Stop")),
       ]),
