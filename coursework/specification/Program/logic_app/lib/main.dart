@@ -9,15 +9,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper.instance.database;
-  //SharedPreferences prefs = await SharedPreferences.getInstance();
-  //bool isFirstTime = prefs.getBool("first_time") ?? true; // first time launch app or not
-bool isFirstTime = true;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isFirstTime = prefs.getBool("first_time") ?? true; // first time launch app or not
+  if (isFirstTime){
+    prefs.setBool('first_time', true);
+  }
+
   runApp(
     ProviderScope(
       overrides: [
         questionsIdProvider.overrideWith((ref) => ref.read(dataBaseProvider).getUnansweredQuestions()),
         darkModeProvider.overrideWith((ref) => DarkMode()),
-        isFirstTimeProvider.overrideWith((ref) => isFirstTime)
       ],
       child: MyApp(),
     ),

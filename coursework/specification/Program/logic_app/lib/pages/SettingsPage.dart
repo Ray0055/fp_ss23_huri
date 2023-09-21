@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -92,6 +93,18 @@ class SettingsPage extends ConsumerWidget {
                 title: const Text("Contact us"),
                 description: const Text("st181247@stud.uni-stuttgart.de"),
               ),
+              SettingsTile(
+                  leading: const Icon(Icons.support),
+                  title: const Text("Tutorial"),
+                  trailing: TextButton(
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('first_time', true);
+                      debugPrint("${prefs.getBool('first_time')}");
+                    },
+                    child: const Text("Start", style: TextStyle(fontSize: 15),),
+                  ),
+              description: const Text("Watch user guide again. "),)
             ]),
           ],
         ));

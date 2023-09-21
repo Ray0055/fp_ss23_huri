@@ -4,6 +4,7 @@ import 'package:logic_app/functions/TimerClock.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:logic_app/widgets/QuestionWidget.dart';
 import 'package:logic_app/functions/CustomSearchDelegate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class QuizPage extends ConsumerWidget {
@@ -35,13 +36,17 @@ class QuizPageState extends ConsumerState<QuizPageStatefulWidget> {
   @override
   void initState() {
     super.initState();
-    if (ref.read(isFirstTimeProvider.notifier).state) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      final prefs = await SharedPreferences.getInstance();
+      final value = prefs.getBool('first_time');
+      if (value == true) {
         ShowCaseWidget.of(context).startShowCase([tutorialKey1, tutorialKey2]);
-        ref.read(isFirstTimeProvider.notifier).state = false;
-      });
-    }
+        debugPrint("if else : $value");
+        prefs.setBool('first_time', false);
+      }
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
