@@ -48,7 +48,6 @@ class QuestionCardWidget extends ConsumerWidget {
         loading: () => const CircularProgressIndicator(),
         error: (err, stack) => Text('Error: $err'),
         data: (List<int>? questionIDList) {
-
           if (questionIndex == 1) {
             questionId = questionIDList?.first; //Set first question id
           }
@@ -125,11 +124,9 @@ class QuestionCardWidget extends ConsumerWidget {
                                 questionId!, currentQuestion.completed, getCurrentTimestamp(), timerClock.duration);
                             ref.read(dataBaseProvider).addAnswerHistory(usersHistory);
                             timerClock.resetTimer();
-                          }else{
+                          } else {
                             timerClock.stopTimer();
-
                           }
-
                         });
                         if (currentQuestion.completed == 1) {
                           // if answer is correct
@@ -296,7 +293,6 @@ class QuestionCardWidget extends ConsumerWidget {
                                                         ],
                                                       ));
                                             } else {
-
                                               debugPrint("$questionId");
                                               ref.read(questionIDProvider.notifier).state =
                                                   questionIDList?[questionIndex - 2];

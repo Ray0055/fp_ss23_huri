@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logic_app/functions/TimerClock.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:logic_app/widgets/QuestionWidget.dart';
-import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:logic_app/functions/CustomSearchDelegate.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -67,10 +66,6 @@ class QuizPageState extends ConsumerState<QuizPageStatefulWidget> {
               ))
         ],
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.list),
-        ),
       ),
       body: Column(children: [
         Showcase(
@@ -83,16 +78,6 @@ class QuizPageState extends ConsumerState<QuizPageStatefulWidget> {
               borderRadius: BorderRadius.circular(10),
             )),
         const QuestionCardWidget(),
-        TextButton(
-            onPressed: () {
-              timerClock.startTimer(ref.read(timerMaximumProvider.notifier).state);
-            },
-            child: const Text("Start")),
-        TextButton(
-            onPressed: () {
-              timerClock.stopTimer();
-            },
-            child: const Text("Stop")),
       ]),
     );
   }

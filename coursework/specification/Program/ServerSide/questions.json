@@ -1,21 +1,102 @@
 [
-    {
-      "id": 0,
-      "question": "\\( P \\rightarrow Q \\) if \\( P \\) is true, \\( Q \\) is false",
-      "options": ["true", "false"],
-      "correctIndex": 1,
-      "createdTime": "createdTime",
-      "modifiedTime": "modifiedTime",
-      "completed": 3
-    },
-    {
-      "id": 1,
-      "question": "\\( P \\land Q \\) if \\( P \\) is false and \\( Q \\) is true",
-      "options": ["true", "false"],
-      "correctIndex": 1,
-      "createdTime": "createdTime",
-      "modifiedTime": "modifiedTime",
-      "completed": 3
-    }
-  ]
-  
+  {
+    "id": 12,
+    "question": " $P \\lor Q$, if $P$ is false and $Q$ is false, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 1,
+    "createdTime": "2023-09-20T14:00:00.000Z",
+    "modifiedTime": "2023-09-20T14:05:00.000Z",
+    "completed": 2,
+    "information": "The logical OR ($\\lor$) returns true if at least one of the operands is true. Here, both $P$ and $Q$ are false, so the whole proposition is false."
+  },
+  {
+    "id": 13,
+    "question": " $P \\rightarrow Q$, if $P$ is true and $Q$ is true, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 0,
+    "createdTime": "2023-09-20T14:10:00.000Z",
+    "modifiedTime": "2023-09-20T14:15:00.000Z",
+    "completed": 2,
+    "information": "The logical implication ($\\rightarrow$) is true unless a true hypothesis leads to a false conclusion. Here, since $P$ is true and $Q$ is also true, the whole proposition is true."
+  },
+  {
+    "id": 14,
+    "question": " $\\lnot P$, if $P$ is false, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 0,
+    "createdTime": "2023-09-20T14:20:00.000Z",
+    "modifiedTime": "2023-09-20T14:25:00.000Z",
+    "completed": 2,
+    "information": "The logical NOT ($\\lnot$) negates the value of $P$. Since $P$ is false, $\\lnot P$ is true."
+  },
+  {
+    "id": 15,
+    "question": " $P \\land Q$, if $P$ is true and $Q$ is false, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 1,
+    "createdTime": "2023-09-20T14:30:00.000Z",
+    "modifiedTime": "2023-09-20T14:35:00.000Z",
+    "completed": 2,
+    "information": "The logical AND ($\\land$) is true only if both $P$ and $Q$ are true. Here, since $Q$ is false, the whole proposition is false."
+  },
+  {
+    "id": 16,
+    "question": " $\\lnot (P \\lor Q)$, if $P$ is false and $Q$ is true, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 1,
+    "createdTime": "2023-09-20T14:40:00.000Z",
+    "modifiedTime": "2023-09-20T14:45:00.000Z",
+    "completed": 2,
+    "information": "The proposition $\\lnot (P \\lor Q)$ is true only if both $P$ and $Q$ are false. Here, since $Q$ is true, the whole proposition is false."
+  },
+  {
+    "id": 17,
+    "question": " $\\lnot ((P \\land Q) \\rightarrow (\\lnot P \\lor \\lnot Q))$, if $P$ is true and $Q$ is false, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 1,
+    "createdTime": "2023-09-20T14:50:00.000Z",
+    "modifiedTime": "2023-09-20T14:55:00.000Z",
+    "completed": 2,
+    "information": "since $P$ is true and $Q$ is false, the result of $(P \\land Q)$ is false. $(\\lnot P \\lor \\lnot Q)$ is true, the implication $(P \\land Q) \\rightarrow (\\lnot P \\lor \\lnot Q)$ is true. Ultimately, taking the negation of this implication results in $\\lnot ((P \\land Q) \\rightarrow (\\lnot P \\lor \\lnot Q))$ being false."
+  },
+  {
+    "id": 18,
+    "question": " $(P \\lor \\lnot Q) \\land (\\lnot P \\rightarrow Q)$, if $P$ is false and $Q$ is false, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 1,
+    "createdTime": "2023-09-20T15:00:00.000Z",
+    "modifiedTime": "2023-09-20T15:05:00.000Z",
+    "completed": 2,
+    "information": "Since $P$ is false and $Q$ is false, the expression $P \\lor \\lnot Q$ becomes $\\text{false} \\lor \\text{true}$, which is true. The expression $\\lnot P \\rightarrow Q$ becomes $\\text{true} \\rightarrow \\text{false}$, which is false. Therefore, the overall expression $(P \\lor \\lnot Q) \\land ( \\lnot P \\rightarrow Q)$ is $\\text{true} \\land \\text{false}$, which is false."
+  },
+  {
+    "id": 19,
+    "question": " $\\lnot (P \\leftrightarrow (Q \\land (P \\lor \\lnot Q)))$, if $P$ is true and $Q$ is true, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 1,
+    "createdTime": "2023-09-20T15:10:00.000Z",
+    "modifiedTime": "2023-09-20T15:15:00.000Z",
+    "completed": 2,
+    "information": "Given $P$ is true and $Q$ is true, $P \\lor \\lnot Q$ is true. Thus, $Q \\land (P \\lor \\lnot Q)$ is also true, making the biconditional $P \\leftrightarrow (Q \\land (P \\lor \\lnot Q))$ true. Taking the negation of this true biconditional, $\\lnot (P \\leftrightarrow (Q \\land (P \\lor \\lnot Q)))$, results in false."
+  },
+  {
+    "id": 20,
+    "question": " $((P \\rightarrow \\lnot Q) \\land (\\lnot P \\lor Q))$, if $P$ is false and $Q$ is true, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 0,
+    "createdTime": "2023-09-20T15:20:00.000Z",
+    "modifiedTime": "2023-09-20T15:25:00.000Z",
+    "completed": 2,
+    "information": "Given $P$ is false and $Q$ is true, the implication $P \\rightarrow \\lnot Q$ is true as the antecedent is false. Similarly, the disjunction $\\lnot P \\lor Q$ is also true, since the disjunct $\\lnot P$ is true. Consequently, the conjunction $((P \\rightarrow \\lnot Q) \\land (\\lnot P \\lor Q))$ of these true propositions is true."
+  },
+  {
+    "id": 21,
+    "question": " $\\lnot (P \\land (Q \\lor (\\lnot P \\rightarrow Q)))$, if $P$ is true and $Q$ is false, what is the result?",
+    "options": ["true", "false"],
+    "correctIndex": 1,
+    "createdTime": "2023-09-20T15:30:00.000Z",
+    "modifiedTime": "2023-09-20T15:35:00.000Z",
+    "completed": 2,
+    "information": "Given $P$ is true and $Q$ is false, the implication $\\lnot P \\rightarrow Q$ evaluates to true, as the antecedent is false. Then, the disjunction $Q \\lor (\\lnot P \\rightarrow Q)$ becomes true as one of the disjuncts is true. Finally, the conjunction $P \\land (Q \\lor (\\lnot P \\rightarrow Q))$ is true, thus the negation $\\lnot (P \\land (Q \\lor (\\lnot P \\rightarrow Q)))$ is false."
+  }
+]

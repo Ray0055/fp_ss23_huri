@@ -6,7 +6,6 @@ import 'package:logic_app/pages/QuizPage.dart';
 import 'package:logic_app/pages/SignInPage.dart';
 import 'package:logic_app/pages/SettingsPage.dart';
 import 'package:logic_app/pages/StatisticsPage.dart';
-import 'package:logic_app/pages/TestForShowCase.dart';
 
 final GoRouter router_config = GoRouter(routes: [
   GoRoute(
@@ -45,10 +44,4 @@ final GoRouter router_config = GoRouter(routes: [
       pageBuilder: (context, state) {
         return MaterialPage(child: DatabasePage());
       }),
-  // GoRoute(
-  //     name: 'showcase',
-  //     path: '/settings/showcase',
-  //     pageBuilder: (context, state) {
-  //       return MaterialPage(child: TestForShowCaseStateless());
-  //     })
 ]);

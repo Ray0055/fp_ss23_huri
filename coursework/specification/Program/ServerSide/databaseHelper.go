@@ -2,21 +2,24 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type Question struct {
-	ID           int    `json:"id"`
-	Question     string `json:"question"`
-	Options      string `json:"options"`
-	CorrectIndex int    `json:"correctIndex"`
-	CreatedTime  string `json:"createdTime"`
-	ModifiedTime string `json:"modifiedTime"`
-	Completed    int    `json:"completed"`
-	Information  string `json:"information"`
+	ID           int      `json:"id"`
+	Question     string   `json:"question"`
+	Options      []string `json:"options"`
+	CorrectIndex int      `json:"correctIndex"`
+	CreatedTime  string   `json:"createdTime"`
+	ModifiedTime string   `json:"modifiedTime"`
+	Completed    int      `json:"completed"`
+	Information  string   `json:"information"`
 }
 
 var db *sql.DB
@@ -27,6 +30,33 @@ func initDatabase() {
 	if err != nil {
 		log.Fatal("Failed to connect to the database:", err)
 	}
+
+	// Read JSON file
+	jsonFile, err := os.Open("questions.json")
+	if err != nil {
+		log.Fatal("Failed to open JSON file:", err)
+	}
+	defer jsonFile.Close()
+	byteValue, _ := io.ReadAll(jsonFile)
+
+	var questions []Question
+	err = json.Unmarshal(byteValue, &questions)
+
+	if err != nil {
+		log.Fatal("Failed to decode JSON:", err)
+	}
+
+	for _, question := range questions {
+		err = addQuestion(db, question)
+		if err != nil {
+			fmt.Printf("add question failed.")
+			return
+		}
+
+	}
+
+	fmt.Printf("Database has been initialed, questions have been loaded.")
+
 }
 
 func getQuestionsFromDB() ([]Question, error) {
@@ -35,13 +65,26 @@ func getQuestionsFromDB() ([]Question, error) {
 		return nil, err
 	}
 	defer rows.Close()
+
 	var questions []Question
 	for rows.Next() {
 		var q Question
-		if err := rows.Scan(&q.ID, &q.Question, &q.Options, &q.CorrectIndex, &q.CreatedTime, &q.ModifiedTime, &q.Completed, &q.Information); err != nil {
+		var optionsJSON string // 使用 string 类型来接收 JSON 字符串
+
+		if err := rows.Scan(&q.ID, &q.Question, &optionsJSON, &q.CorrectIndex, &q.CreatedTime, &q.ModifiedTime, &q.Completed, &q.Information); err != nil {
 			return nil, err
 		}
+
+		// 反序列化 JSON 字符串到 q.Options
+		if err := json.Unmarshal([]byte(optionsJSON), &q.Options); err != nil {
+			return nil, err
+		}
+
 		questions = append(questions, q)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return questions, nil
@@ -49,17 +92,26 @@ func getQuestionsFromDB() ([]Question, error) {
 
 func addQuestion(db *sql.DB, newQuestion Question) error {
 	fmt.Println("Attempting to insert question:", newQuestion)
-	result, err := db.Exec("INSERT INTO questions (question, options, correctIndex, createdTime, modifiedTime, completed, information) VALUES (?, ?, ?, ?, ?, ?, ?)",
-		newQuestion.Question, newQuestion.Options, newQuestion.CorrectIndex, newQuestion.CreatedTime, newQuestion.ModifiedTime, newQuestion.Completed, newQuestion.Information)
+
+	optionsJSON, err := json.Marshal(newQuestion.Options)
+	if err != nil {
+		fmt.Println("Error while marshalling options:", err)
+		return err
+	}
+
+	result, err := db.Exec("INSERT IGNORE INTO questions (id, question, options, correctIndex, createdTime, modifiedTime, completed, information) VALUES (?,?, ?, ?, ?, ?, ?, ?)",
+		newQuestion.ID, newQuestion.Question, string(optionsJSON), newQuestion.CorrectIndex, newQuestion.CreatedTime, newQuestion.ModifiedTime, newQuestion.Completed, newQuestion.Information)
 	if err != nil {
 		fmt.Println("Error while inserting:", err)
 		return err
 	}
+
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		fmt.Println("Error while checking affected rows:", err)
 		return err
 	}
+
 	fmt.Printf("Successfully inserted. Rows affected: %d\n", rowsAffected)
 	return nil
 }

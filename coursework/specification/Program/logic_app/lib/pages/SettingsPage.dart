@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logic_app/providers/Providers.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -21,8 +20,9 @@ class SettingsPage extends ConsumerWidget {
         body: SettingsList(
           sections: [
             SettingsSection(title: const Text("Common"), tiles: <SettingsTile>[
-              SettingsTile(title: const Text("User Account")),
+              SettingsTile(leading: const Icon(Icons.account_circle), title: const Text("User Account")),
               SettingsTile.switchTile(
+                leading: const Icon(Icons.dark_mode),
                 title: const Text("Dark mode"),
                 initialValue: ref.watch(darkModeProvider).initialValue,
                 onToggle: (value) {
@@ -30,6 +30,7 @@ class SettingsPage extends ConsumerWidget {
                 },
               ),
               SettingsTile(
+                leading: const Icon(Icons.timer),
                 title: const Text("Timer Maximum: /s"),
                 trailing: SizedBox(
                   width: 60,
@@ -80,20 +81,16 @@ class SettingsPage extends ConsumerWidget {
                 ),
               ),
               SettingsTile.navigation(
+                leading: const Icon(Icons.quiz),
                 title: const Text("Database"),
                 onPressed: (value) async {
                   context.pushNamed("database");
                 },
               ),
               SettingsTile(
+                leading: const Icon(Icons.mail),
                 title: const Text("Contact us"),
                 description: const Text("st181247@stud.uni-stuttgart.de"),
-              ),
-              SettingsTile.navigation(
-                title: const Text("ShowCase"),
-                onPressed: (value) async {
-                  context.pushNamed("showcase");
-                },
               ),
             ]),
           ],

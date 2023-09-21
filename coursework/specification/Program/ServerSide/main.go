@@ -93,7 +93,14 @@ func updateQuestionHander(w http.ResponseWriter, r *http.Request) {
 		// Populate singleQuestion from v
 		singleQuestion.ID = int(v["id"].(float64))
 		singleQuestion.Question = v["question"].(string)
-		singleQuestion.Options = v["options"].(string)
+		singleQuestion.Options = func() []string {
+			out := []string{}
+			for _, v := range v["options"].([]interface{}) {
+				out = append(out, v.(string))
+			}
+			return out
+		}()
+
 		singleQuestion.CorrectIndex = int(v["correctIndex"].(float64))
 		singleQuestion.CreatedTime = v["createdTime"].(string)
 		singleQuestion.ModifiedTime = v["modifiedTime"].(string)
@@ -106,7 +113,13 @@ func updateQuestionHander(w http.ResponseWriter, r *http.Request) {
 			var q Question
 			q.ID = int(m["id"].(float64))
 			q.Question = m["question"].(string)
-			q.Options = m["options"].(string)
+			q.Options = func() []string {
+				out := []string{}
+				for _, m := range m["options"].([]interface{}) {
+					out = append(out, m.(string))
+				}
+				return out
+			}()
 			q.CorrectIndex = int(m["correctIndex"].(float64))
 			q.CreatedTime = m["createdTime"].(string)
 			q.ModifiedTime = m["modifiedTime"].(string)

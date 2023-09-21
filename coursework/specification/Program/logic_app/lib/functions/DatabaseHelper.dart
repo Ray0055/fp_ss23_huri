@@ -67,15 +67,14 @@ CREATE TABLE usersHistory (
   totalCompletedTime INTEGER
 )
     ''');
+    loadQuestionsFromJsonFile();
   }
 
   Future<void> loadQuestionsFromJsonFile() async {
     final String content = await rootBundle.loadString('assets/questions.json');
     final List<dynamic> questionsJson = jsonDecode(content);
 
-
     List<QuestionCard> questionCards = questionsJson.map((e) => QuestionCard.fromMap(e)).toList();
-    //debugPrint(jsonEncode(questionCards[0].toJson()));
     await addQuestions(questionCards);
   }
 
@@ -102,7 +101,6 @@ CREATE TABLE usersHistory (
     }
   }
 
-
   Future<void> addUsersStatistics(UsersStatistics usersStatistics) async {
     final db = await database;
     db.insert('usersStatistics', usersStatistics.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
@@ -112,6 +110,7 @@ CREATE TABLE usersHistory (
     final db = await database;
     await db.delete('usersHistory');
     await db.delete('usersStatistics');
+    await db.delete('questions');
   }
 
   Future<void> deleteTable() async {
