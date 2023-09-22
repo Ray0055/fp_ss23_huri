@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UsersStatistics extends ChangeNotifier{
 
+class UsersStatistics extends ChangeNotifier {
   int id = 0; //key
   String userName = "root";
   int totalCompletedQuestions = 0;
@@ -21,7 +20,8 @@ class UsersStatistics extends ChangeNotifier{
     };
   }
 
-  void updateCompletedQuestion(int totalCompletedQuestions, int totalCorrectQuestions, String completedDate, int totalCompletedTime) {
+  void updateCompletedQuestion(
+      int totalCompletedQuestions, int totalCorrectQuestions, String completedDate, int totalCompletedTime) {
     this.totalCompletedQuestions = totalCompletedQuestions;
     this.totalCorrectQuestions = totalCorrectQuestions;
     this.completedDate = completedDate;

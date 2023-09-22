@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:logic_app/widgets/QuestionWidget.dart';
 import 'package:settings_ui/settings_ui.dart';
 import '../providers/Providers.dart';
@@ -21,10 +20,11 @@ class DatabasePage extends ConsumerWidget {
             title: const Text("Synchronization"),
             tiles: [
               SettingsTile(
-                leading: Icon(Icons.upload),
+                leading: const Icon(Icons.upload),
+                description: const Text("   Update your question to serverside"),
                 title: TextButton(
                   child: const Text(
-                    "Sync questions",
+                    "Update questions",
                     style: TextStyle(fontSize: 17),
                   ),
                   onPressed: () async {
@@ -49,8 +49,10 @@ class DatabasePage extends ConsumerWidget {
                             ));
                   },
                 ),
-              ),SettingsTile(
-                leading: Icon(Icons.trending_up),
+              ),
+              SettingsTile(
+                leading: const Icon(Icons.cloud_upload),
+                description: const Text("   Update your statistics to serverside"),
                 title: TextButton(
                   child: const Text(
                     "Upload Statistics",
@@ -60,26 +62,27 @@ class DatabasePage extends ConsumerWidget {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text("Update statistics to serverside"),
-                          actions: <Widget>[
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, 'Cancel');
-                                },
-                                child: const Text("Cancel")),
-                            TextButton(
-                                onPressed: () async {
-                                  ref.read(dataBaseProvider).syncUserStatisticsToServer();
-                                  Navigator.pop(context, 'OK');
-                                },
-                                child: const Text("Confirm"))
-                          ],
-                        ));
+                              title: const Text("Update statistics to serverside"),
+                              actions: <Widget>[
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, 'Cancel');
+                                    },
+                                    child: const Text("Cancel")),
+                                TextButton(
+                                    onPressed: () async {
+                                      ref.read(dataBaseProvider).syncUserStatisticsToServer();
+                                      Navigator.pop(context, 'OK');
+                                    },
+                                    child: const Text("Confirm"))
+                              ],
+                            ));
                   },
                 ),
               ),
               SettingsTile(
                   leading: const Icon(Icons.download),
+                  description: const Text("   Get more questions from serverside."),
                   title: TextButton(
                     child: const Text(
                       "Get questions",
@@ -119,6 +122,7 @@ class DatabasePage extends ConsumerWidget {
             tiles: [
               SettingsTile(
                   leading: const Icon(Icons.restart_alt),
+                  description: const Text("   Reset all question history."),
                   title: TextButton(
                       child: const Text(
                         "Reset all questions",

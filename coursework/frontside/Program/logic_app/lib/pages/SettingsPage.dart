@@ -32,6 +32,7 @@ class SettingsPage extends ConsumerWidget {
               ),
               SettingsTile(
                 leading: const Icon(Icons.timer),
+                description: const Text("Set timer maximum value"),
                 title: const Text("Timer Maximum: /s"),
                 trailing: SizedBox(
                   width: 60,
@@ -83,6 +84,7 @@ class SettingsPage extends ConsumerWidget {
               ),
               SettingsTile.navigation(
                 leading: const Icon(Icons.quiz),
+                description: const Text("Sync your questions"),
                 title: const Text("Database"),
                 onPressed: (value) async {
                   context.pushNamed("database");
@@ -94,17 +96,21 @@ class SettingsPage extends ConsumerWidget {
                 description: const Text("st181247@stud.uni-stuttgart.de"),
               ),
               SettingsTile(
-                  leading: const Icon(Icons.support),
-                  title: const Text("Tutorial"),
-                  trailing: TextButton(
-                    onPressed: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      prefs.setBool('first_time', true);
-                      debugPrint("${prefs.getBool('first_time')}");
-                    },
-                    child: const Text("Start", style: TextStyle(fontSize: 15),),
+                leading: const Icon(Icons.support),
+                title: const Text("Tutorial"),
+                trailing: TextButton(
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setBool('first_time', true);
+                    debugPrint("${prefs.getBool('first_time')}");
+                  },
+                  child: const Text(
+                    "Start",
+                    style: TextStyle(fontSize: 15),
                   ),
-              description: const Text("Watch user guide again. "),)
+                ),
+                description: const Text("Watch user guide again. "),
+              )
             ]),
           ],
         ));

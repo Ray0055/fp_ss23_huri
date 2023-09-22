@@ -47,7 +47,6 @@ class QuizPageState extends ConsumerState<QuizPageStatefulWidget> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     TimerClock timerClock = ref.watch(timerClockProvider);

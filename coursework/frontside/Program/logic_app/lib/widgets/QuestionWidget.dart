@@ -76,7 +76,7 @@ class QuestionCardWidget extends ConsumerWidget {
                       });
                     }
 
-                    return Align(
+                    return Padding(padding: const EdgeInsets.all(15), child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text.rich(
                         TextSpan(
@@ -87,11 +87,11 @@ class QuestionCardWidget extends ConsumerWidget {
                           children: [
                             TextSpan(
                                 text: "/${ref.read(numberQuestionsProvider.notifier).state}",
-                                style: const TextStyle(fontSize: 20))
+                                style: const TextStyle(fontSize: 25, color: Colors.teal))
                           ],
                         ),
                       ),
-                    );
+                    ),);
                   } else {
                     return const Text("No question found");
                   }
@@ -196,7 +196,10 @@ class QuestionCardWidget extends ConsumerWidget {
                                                       ? Colors.green
                                                       : Colors.grey,
                                         ),
-                                        title: Text(currentQuestion.options[i], style: const TextStyle(fontSize: 18),),
+                                        title: Text(
+                                          currentQuestion.options[i],
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
                                         onTap: selectedIndex == null
                                             ? () {
                                                 ref.read(isStudyingProvider.notifier).state = false;

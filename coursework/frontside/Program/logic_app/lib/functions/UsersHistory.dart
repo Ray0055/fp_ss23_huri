@@ -1,9 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UsersHistory extends ChangeNotifier{
-
+class UsersHistory extends ChangeNotifier {
   int id = 0; //key
   String userName = "root";
   int completedQuestionId = 0;

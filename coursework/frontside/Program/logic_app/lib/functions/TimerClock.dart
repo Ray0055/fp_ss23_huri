@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logic_app/providers/Providers.dart';
 
 class TimerClock extends ChangeNotifier {
   bool isRunning = false;
@@ -61,10 +59,6 @@ class TimerClock extends ChangeNotifier {
     String secondsStr = (seconds < 10) ? '0$seconds' : '$seconds';
 
     return '$hoursStr hours $minutesStr min $secondsStr s';
-  }
-
-  void main() {
-    print(formatDuration(3600)); // Should print "00 hours 06 min 00 s"
   }
 
   String reformTimer(int time) {

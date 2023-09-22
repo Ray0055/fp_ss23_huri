@@ -3,13 +3,10 @@ import 'package:logic_app/functions/QuestionsCard.dart';
 import 'package:logic_app/functions/UsersHistory.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'package:flutter/services.dart';
-
 import 'UsersStatistics.dart';
 
 class DatabaseHelper extends ChangeNotifier {
@@ -243,7 +240,8 @@ CREATE TABLE usersHistory (
     final db = await database;
 
     try {
-      List<Map<String, dynamic>> result = await db.rawQuery('SELECT * FROM usersStatistics ORDER BY completedDate DESC LIMIT 1');
+      List<Map<String, dynamic>> result =
+          await db.rawQuery('SELECT * FROM usersStatistics ORDER BY completedDate DESC LIMIT 1');
 
       if (result.isNotEmpty) {
         final Map<String, dynamic> maxIdRow = result.first;
@@ -267,7 +265,6 @@ CREATE TABLE usersHistory (
       print("Error occurred: $e");
     }
   }
-
 
   Future<void> updateQuestionInDatabase(QuestionCard updatedQuestion) async {
     final db = await database;

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:convert';
 
 class QuestionCard {
@@ -19,16 +17,15 @@ class QuestionCard {
 
   final String information;
 
-  QuestionCard({
-    required this.id,
-    required this.question,
-    required this.options,
-    required this.correctIndex,
-    required this.createdTime,
-    required this.modifiedTime,
-    required this.completed,
-    required this.information
-  });
+  QuestionCard(
+      {required this.id,
+      required this.question,
+      required this.options,
+      required this.correctIndex,
+      required this.createdTime,
+      required this.modifiedTime,
+      required this.completed,
+      required this.information});
 
   Map<String, dynamic> toMap() {
     return {
@@ -45,15 +42,14 @@ class QuestionCard {
 
   factory QuestionCard.fromMap(Map<String, dynamic> map) {
     return QuestionCard(
-      id: map['id'],
-      question: map['question'],
+        id: map['id'],
+        question: map['question'],
         options: List<String>.from(map['options']),
         correctIndex: map['correctIndex'],
-      createdTime: map['createdTime'],
-      modifiedTime: map['modifiedTime'],
-      completed: map['completed'],
-      information: map['information']
-    );
+        createdTime: map['createdTime'],
+        modifiedTime: map['modifiedTime'],
+        completed: map['completed'],
+        information: map['information']);
   }
 
   Map<String, dynamic> toJson() {

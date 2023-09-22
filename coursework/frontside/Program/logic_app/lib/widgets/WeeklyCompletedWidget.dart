@@ -18,10 +18,11 @@ class WeeklyCompletedWidget extends ConsumerWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          }
-          else {
-
-            var minX = snapshot.data!.first.x, maxX = snapshot.data!.first.x, minY = snapshot.data!.first.y, maxY = snapshot.data!.first.y;
+          } else {
+            var minX = snapshot.data!.first.x,
+                maxX = snapshot.data!.first.x,
+                minY = snapshot.data!.first.y,
+                maxY = snapshot.data!.first.y;
 
             for (var spot in snapshot.data!) {
               if (spot.x < minX) minX = spot.x;
@@ -89,7 +90,7 @@ class WeeklyCompletedWidget extends ConsumerWidget {
                   lineBarsData: [
                     LineChartBarData(
                       spots: snapshot.data ?? [],
-                      color: Colors.blue,
+                      color: Colors.teal,
                       dotData: const FlDotData(show: true),
                       belowBarData: BarAreaData(show: true),
                     ),
@@ -98,7 +99,6 @@ class WeeklyCompletedWidget extends ConsumerWidget {
               ),
             );
           }
-
         });
   }
 }

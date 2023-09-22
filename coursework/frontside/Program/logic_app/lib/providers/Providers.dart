@@ -30,9 +30,9 @@ class BottomBar extends ChangeNotifier {
   }
 }
 
-class DarkMode extends ChangeNotifier{
+class DarkMode extends ChangeNotifier {
   bool initialValue = false;
-  void onTap(bool value){
+  void onTap(bool value) {
     initialValue = value;
     notifyListeners();
   }
@@ -56,8 +56,3 @@ String formatDuration(int durationIn100ms) {
 
   return '$hoursStr h $minutesStr m $secondsStr s';
 }
-
-
-
-
-

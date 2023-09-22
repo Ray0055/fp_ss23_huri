@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logic_app/providers/Providers.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:logic_app/functions/TimerClock.dart';
 import '../widgets/HeatMapCalendarWidget.dart';
 import '../widgets/WeeklyCompletedWidget.dart';
-
 
 class StatisticsPage extends ConsumerWidget {
   const StatisticsPage({Key? key}) : super(key: key);
@@ -71,12 +67,15 @@ class StatisticsPage extends ConsumerWidget {
                             String _time = formatDuration(snapshot.data!);
 
                             Future.delayed(Duration.zero, () async {
-                              int totalCompletedQuestions = await ref.read(dataBaseProvider).computeDailyCompletedQuestions();
-                              int totalCorrectQuestions = await ref.read(dataBaseProvider).getTodayCorrectQuestionsAmount();
+                              int totalCompletedQuestions =
+                                  await ref.read(dataBaseProvider).computeDailyCompletedQuestions();
+                              int totalCorrectQuestions =
+                                  await ref.read(dataBaseProvider).getTodayCorrectQuestionsAmount();
                               String completedDate = getCurrentTimestamp();
                               int totalCompletedTime = await ref.read(dataBaseProvider).getTodayTotalTime();
 
-                              usersStatistics.updateCompletedQuestion(totalCompletedQuestions, totalCorrectQuestions, completedDate, totalCompletedTime);
+                              usersStatistics.updateCompletedQuestion(
+                                  totalCompletedQuestions, totalCorrectQuestions, completedDate, totalCompletedTime);
                               ref.read(dataBaseProvider).addUsersStatistics(usersStatistics);
                             });
                             return Text("Total Time Used Today: $_time", style: const TextStyle(fontSize: 17));
