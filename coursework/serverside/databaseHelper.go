@@ -2,24 +2,25 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
+
+	"encoding/json"
+	"io"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type Question struct {
-	ID           int      `json:"id"`
-	Question     string   `json:"question"`
-	Options      []string `json:"options"`
-	CorrectIndex int      `json:"correctIndex"`
-	CreatedTime  string   `json:"createdTime"`
-	ModifiedTime string   `json:"modifiedTime"`
-	Completed    int      `json:"completed"`
-	Information  string   `json:"information"`
+	ID           int    `json:"id"`
+	Question     string `json:"question"`
+	Options      string `json:"options"`
+	CorrectIndex int    `json:"correctIndex"`
+	CreatedTime  string `json:"createdTime"`
+	ModifiedTime string `json:"modifiedTime"`
+	Completed    int    `json:"completed"`
+	Information  string `json:"information"`
 }
 
 type UsersStatistics struct {
@@ -49,31 +50,52 @@ func initDatabase() {
 		totalCompletedTime INTEGER NOT NULL DEFAULT 0
 	)
 `)
-	// Read JSON file
+
 	jsonFile, err := os.Open("questions.json")
 	if err != nil {
 		log.Fatal("Failed to open JSON file:", err)
 	}
 	defer jsonFile.Close()
+
 	byteValue, _ := io.ReadAll(jsonFile)
+	if err != nil {
+		log.Fatalf("Error reading file: %v", err)
+	}
+
+	var rawQuestions []struct {
+		ID           int      `json:"id"`
+		Question     string   `json:"question"`
+		Options      []string `json:"options"`
+		CorrectIndex int      `json:"correctIndex"`
+		CreatedTime  string   `json:"createdTime"`
+		ModifiedTime string   `json:"modifiedTime"`
+		Completed    int      `json:"completed"`
+		Information  string   `json:"information"`
+	}
+
+	if err := json.Unmarshal(byteValue, &rawQuestions); err != nil {
+		log.Fatalf("Error unmarshalling: %v", err)
+	}
 
 	var questions []Question
-	err = json.Unmarshal(byteValue, &questions)
-
-	if err != nil {
-		log.Fatal("Failed to decode JSON:", err)
+	for _, rawQuestion := range rawQuestions {
+		questions = append(questions, Question{
+			ID:           rawQuestion.ID,
+			Question:     rawQuestion.Question,
+			Options:      "[\"true\", \"false\"]",
+			CorrectIndex: rawQuestion.CorrectIndex,
+			CreatedTime:  rawQuestion.CreatedTime,
+			ModifiedTime: rawQuestion.ModifiedTime,
+			Completed:    rawQuestion.Completed,
+			Information:  rawQuestion.Information,
+		})
 	}
 
-	for _, question := range questions {
-		err = addQuestion(db, question)
-		if err != nil {
-			fmt.Printf("add question failed.")
-			return
-		}
-
+	// Now, questions slice contains all the questions from the JSON file, with Options as string.
+	for _, q := range questions {
+		addQuestion(db, q)
+		fmt.Printf("ID: %d, Question: %s, Options: %s, Correct Index: %d\n", q.ID, q.Question, q.Options, q.CorrectIndex)
 	}
-
-	fmt.Printf("Database has been initialed, questions have been loaded.")
 
 }
 
@@ -83,26 +105,13 @@ func getQuestionsFromDB() ([]Question, error) {
 		return nil, err
 	}
 	defer rows.Close()
-
 	var questions []Question
 	for rows.Next() {
 		var q Question
-		var optionsJSON string // 使用 string 类型来接收 JSON 字符串
-
-		if err := rows.Scan(&q.ID, &q.Question, &optionsJSON, &q.CorrectIndex, &q.CreatedTime, &q.ModifiedTime, &q.Completed, &q.Information); err != nil {
+		if err := rows.Scan(&q.ID, &q.Question, &q.Options, &q.CorrectIndex, &q.CreatedTime, &q.ModifiedTime, &q.Completed, &q.Information); err != nil {
 			return nil, err
 		}
-
-		// 反序列化 JSON 字符串到 q.Options
-		if err := json.Unmarshal([]byte(optionsJSON), &q.Options); err != nil {
-			return nil, err
-		}
-
 		questions = append(questions, q)
-	}
-
-	if err := rows.Err(); err != nil {
-		return nil, err
 	}
 
 	return questions, nil
@@ -133,29 +142,38 @@ func getStatisticsFromDB() ([]UsersStatistics, error) {
 	return usersStatistics, nil
 }
 
-func addQuestion(db *sql.DB, newQuestion Question) error {
-	fmt.Println("Attempting to insert question:", newQuestion)
+func addQuestion(db *sql.DB, question Question) error {
+	fmt.Println("Attempting to upsert question:", question)
 
-	optionsJSON, err := json.Marshal(newQuestion.Options)
+	// 将 options 从 []string 转换为 JSON 字符串以存储在数据库中
+	//optionsJSON, err := json.Marshal(question.Options)
+	// if err != nil {
+	// 	fmt.Println("Error while marshalling options:", err)
+	// 	return err
+	// }
+
+	question.Options = "[\"true\",\"false\"]"
+
+	query := `
+		INSERT INTO questions (id, question, options, correctIndex, createdTime, modifiedTime, completed, information) 
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
+		ON DUPLICATE KEY UPDATE 
+		question = VALUES(question), 
+		options = VALUES(options), 
+		correctIndex = VALUES(correctIndex), 
+		createdTime = VALUES(createdTime), 
+		modifiedTime = VALUES(modifiedTime), 
+		completed = VALUES(completed), 
+		information = VALUES(information)
+	`
+
+	_, err := db.Exec(query, question.ID, question.Question, question.Options, question.CorrectIndex, question.CreatedTime, question.ModifiedTime, question.Completed, question.Information)
 	if err != nil {
-		fmt.Println("Error while marshalling options:", err)
+		fmt.Println("Error while adding:", err)
 		return err
 	}
 
-	result, err := db.Exec("INSERT IGNORE INTO questions (id, question, options, correctIndex, createdTime, modifiedTime, completed, information) VALUES (?,?, ?, ?, ?, ?, ?, ?)",
-		newQuestion.ID, newQuestion.Question, string(optionsJSON), newQuestion.CorrectIndex, newQuestion.CreatedTime, newQuestion.ModifiedTime, newQuestion.Completed, newQuestion.Information)
-	if err != nil {
-		fmt.Println("Error while inserting:", err)
-		return err
-	}
-
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		fmt.Println("Error while checking affected rows:", err)
-		return err
-	}
-
-	fmt.Printf("Successfully inserted. Rows affected: %d\n", rowsAffected)
+	fmt.Println("Successfully added question.")
 	return nil
 }
 
@@ -172,49 +190,79 @@ func deleteQuestion(db *sql.DB, id int) error {
 }
 
 func updateQuestion(db *sql.DB, updatedQuestions []Question) error {
+
 	for _, updatedQuestion := range updatedQuestions {
 		fmt.Println("Attempting to update question:", updatedQuestion)
 
-		// SQL UPDATE statement
+		// 将 options 从 []string 转换为 JSON 字符串以存储在数据库中
+		//optionsJSON, err := json.Marshal(updatedQuestion.Options)
+
+		// if err != nil {
+		// 	fmt.Println("Error while marshalling options:", err)
+		// 	return err
+		// }
+		updatedQuestion.Options = "[\"true\",\"false\"]"
 		query := `
-	UPDATE questions SET
-		question = ?,
-		options = ?,
-		correctIndex = ?,
-		createdTime = ?,
-		modifiedTime = ?,
-		completed = ?,
-		information = ?
-	WHERE
-		ID = ?`
+		INSERT INTO questions (id, question, options, correctIndex, createdTime, modifiedTime, completed, information) 
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
+		ON DUPLICATE KEY UPDATE 
+		question = VALUES(question), 
+		options = VALUES(options), 
+		correctIndex = VALUES(correctIndex), 
+		createdTime = VALUES(createdTime), 
+		modifiedTime = VALUES(modifiedTime), 
+		completed = VALUES(completed), 
+		information = VALUES(information)
+	`
 
-		result, err := db.Exec(query,
-			updatedQuestion.Question,
-			updatedQuestion.Options,
-			updatedQuestion.CorrectIndex,
-			updatedQuestion.CreatedTime,
-			updatedQuestion.ModifiedTime,
-			updatedQuestion.Completed,
-			updatedQuestion.Information,
-			updatedQuestion.ID,
-		) // Assuming that 'ID' is a field in your Question struct
-
+		_, err := db.Exec(query, updatedQuestion.ID, updatedQuestion.Question, updatedQuestion.Options, updatedQuestion.CorrectIndex, updatedQuestion.CreatedTime, updatedQuestion.ModifiedTime, updatedQuestion.Completed, updatedQuestion.Information)
 		if err != nil {
 			fmt.Println("Error while updating:", err)
 			return err
 		}
 
-		rowsAffected, err := result.RowsAffected()
-		if err != nil {
-			fmt.Println("Error while checking affected rows:", err)
-			return err
-		}
+		fmt.Println("Successfully updated question.")
 
-		if rowsAffected == 0 {
-			fmt.Println("No rows updated. It's possible that the question with the provided ID does not exist.")
-		} else {
-			fmt.Printf("Successfully updated. Rows affected: %d\n", rowsAffected)
-		}
+		// 	// SQL UPDATE statement
+		// 	query := `
+		// UPDATE questions SET
+		// 	question = ?,
+		// 	options = ?,
+		// 	correctIndex = ?,
+		// 	createdTime = ?,
+		// 	modifiedTime = ?,
+		// 	completed = ?,
+		// 	information = ?
+		// WHERE
+		// 	ID = ?`
+
+		// 	result, err := db.Exec(query,
+		// 		updatedQuestion.Question,
+		// 		updatedQuestion.Options,
+		// 		updatedQuestion.CorrectIndex,
+		// 		updatedQuestion.CreatedTime,
+		// 		updatedQuestion.ModifiedTime,
+		// 		updatedQuestion.Completed,
+		// 		updatedQuestion.Information,
+		// 		updatedQuestion.ID,
+		// 	) // Assuming that 'ID' is a field in your Question struct
+
+		// 	if err != nil {
+		// 		fmt.Println("Error while updating:", err)
+		// 		return err
+		// 	}
+
+		// 	rowsAffected, err := result.RowsAffected()
+		// 	if err != nil {
+		// 		fmt.Println("Error while checking affected rows:", err)
+		// 		return err
+		// 	}
+
+		// 	if rowsAffected == 0 {
+		// 		fmt.Println("No rows updated. It's possible that the question with the provided ID does not exist.")
+		// 	} else {
+		// 		fmt.Printf("Successfully updated. Rows affected: %d\n", rowsAffected)
+		// 	}
 	}
 
 	return nil

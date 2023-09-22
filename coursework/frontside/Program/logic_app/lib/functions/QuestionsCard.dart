@@ -41,17 +41,26 @@ class QuestionCard {
   }
 
   factory QuestionCard.fromMap(Map<String, dynamic> map) {
+    List<String> optionsList = [];
+    if (map['options'] is String) {
+      List<String> result = ["true", "false"];// Check if 'options' is a String.
+      //final optionsDecoded = jsonDecode(map['options']); // Decode the JSON string.
+      optionsList = result; // Convert the dynamic list to a list of Strings.
+    } else if (map['options'] is List) { // Optionally handle the case where 'options' is already a list.
+      optionsList = List<String>.from(map['options']);
+    }
+
     return QuestionCard(
         id: map['id'],
         question: map['question'],
-        options: List<String>.from(map['options']),
+        options: optionsList, // Use the decoded options list.
         correctIndex: map['correctIndex'],
         createdTime: map['createdTime'],
         modifiedTime: map['modifiedTime'],
         completed: map['completed'],
-        information: map['information']);
+        information: map['information']
+    );
   }
-
   Map<String, dynamic> toJson() {
     return {
       'id': id,

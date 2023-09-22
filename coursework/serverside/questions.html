@@ -159,7 +159,7 @@
     <script> //add question
         document.getElementById('addQuestionsForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            const newID = 1;
+            const newID = maxId;
             const newQuestion = document.getElementById('newQuestion').value;
             const newOptions = document.getElementById('newOptions').value;
             const newCorrectIndex = parseInt(document.getElementById('newCorrectIndex').value, 10);
@@ -195,27 +195,43 @@
         }
 
     </script>
+    <script>
+        let maxId;
+        document.addEventListener("DOMContentLoaded", function () {
+            let table = document.getElementById('myTable'); // 假设你的表格有一个 id 属性值为 'myTable'
+            let rows = table.querySelectorAll('tbody tr'); // 选择 tbody 中的所有行，排除 thead
+            let maxId = 0;
+
+            rows.forEach(row => {
+                let idCell = row.querySelector('td:first-child'); // 选择每一行的第一个单元格
+                if (idCell) {
+                    let id = parseInt(idCell.textContent, 10); // 提取 ID 值
+                    if (id > maxId) maxId = id; // 更新最大 ID 值
+                }
+            });
+
+        });
+    </script>
 
     <script>    //make cells editable
         document.querySelectorAll('table tr td.editable-cell').forEach(cell => {
-    cell.addEventListener('click', function () {
-        if (!this.querySelector('input')) {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.value = this.innerText;
-            input.style.width = '100%'; 
-            input.style.boxSizing = 'border-box';
-            this.innerHTML = '';
-            this.appendChild(input);
-            input.focus();
+            cell.addEventListener('click', function () {
+                if (!this.querySelector('input')) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = this.innerText;
+                    this.innerHTML = '';
+                    this.appendChild(input);
+                    input.focus();
 
-            input.addEventListener('blur', function () {
-                const value = this.value;
-                this.parentElement.innerHTML = value;
-            });
-        }
-    });
-});
+                    input.addEventListener('blur', function () {
+                        const value = this.value;
+                        this.parentElement.innerHTML = value;
+                    });
+                }
+            }
+            );
+        });
 
 
 
@@ -266,21 +282,7 @@
         });
     </script>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script type="text/javascript" id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-        </script>
-    <script type="text/javascript">
-        MathJax = {
-            tex: {
-                inlineMath: [['$', '$']],
-                displayMath: [['$$', '$$']]
-            },
-            svg: {
-                fontCache: 'global'
-            }
-        };
-    </script>
+
 
 
 </body>
