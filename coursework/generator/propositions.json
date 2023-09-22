@@ -1,0 +1,2604 @@
+{
+    "questions": [
+        {
+            "id": 0,
+            "proposition": "((B \\lor A) \\lor (A \\land B)) \\land ((\\lnot A) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "proposition": "((\\lnot B) \\lor (\\lnot A)) \\lor ((\\lnot B) \\land (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "proposition": "((\\lnot B) \\lor (A \\lor A)) \\land (\\lnot (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "proposition": "\\lnot ((B \\lor A) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "proposition": "\\lnot ((A \\land A) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "proposition": "\\lnot ((B \\lor B) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "proposition": "(\\lnot (\\lnot A)) \\lor (\\lnot (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "proposition": "(\\lnot (\\lnot B)) \\lor (\\lnot (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "proposition": "(\\lnot (A \\lor A)) \\land ((A \\land B) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "proposition": "(\\lnot (B \\land B)) \\lor ((\\lnot B) \\land (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "proposition": "((B \\land A) \\lor (A \\lor A)) \\land (\\lnot (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "proposition": "((B \\lor A) \\land (\\lnot A)) \\lor (\\lnot (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "proposition": "((\\lnot B) \\lor (\\lnot B)) \\land ((A \\land B) \\lor (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "proposition": "\\lnot ((B \\lor A) \\lor (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "proposition": "((\\lnot A) \\lor (B \\land B)) \\lor (\\lnot (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 15,
+            "proposition": "(\\lnot (A \\land A)) \\land ((B \\lor A) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 16,
+            "proposition": "((A \\land B) \\land (A \\lor A)) \\lor ((A \\lor B) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 17,
+            "proposition": "\\lnot ((A \\land B) \\lor (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 18,
+            "proposition": "((\\lnot B) \\lor (B \\land A)) \\land ((\\lnot B) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 19,
+            "proposition": "((\\lnot A) \\lor (B \\lor A)) \\lor ((B \\land B) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 20,
+            "proposition": "((\\lnot B) \\land (A \\land B)) \\lor ((B \\lor B) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 21,
+            "proposition": "\\lnot ((\\lnot B) \\land (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 22,
+            "proposition": "\\lnot (\\lnot (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 23,
+            "proposition": "(\\lnot (A \\land B)) \\land ((\\lnot B) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 24,
+            "proposition": "((A \\lor B) \\lor (B \\lor A)) \\land ((A \\lor A) \\land (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 25,
+            "proposition": "(\\lnot (\\lnot B)) \\lor ((\\lnot B) \\lor (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 26,
+            "proposition": "((A \\lor B) \\land (A \\land B)) \\land ((A \\lor B) \\lor (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 27,
+            "proposition": "\\lnot ((A \\land B) \\lor (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 28,
+            "proposition": "((\\lnot B) \\land (A \\lor A)) \\land ((A \\lor B) \\land (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 29,
+            "proposition": "\\lnot ((A \\lor B) \\land (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 30,
+            "proposition": "((B \\lor A) \\land (A \\lor A)) \\land ((\\lnot A) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 31,
+            "proposition": "\\lnot (\\lnot (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 32,
+            "proposition": "((B \\land B) \\land (A \\land A)) \\lor ((\\lnot B) \\lor (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 33,
+            "proposition": "(\\lnot (\\lnot B)) \\land ((\\lnot A) \\lor (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 34,
+            "proposition": "(\\lnot (B \\land A)) \\lor ((B \\land A) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 35,
+            "proposition": "\\lnot ((A \\land B) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 36,
+            "proposition": "((B \\lor A) \\lor (B \\lor B)) \\land ((A \\land B) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 37,
+            "proposition": "(\\lnot (B \\lor A)) \\lor (\\lnot (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 38,
+            "proposition": "\\lnot ((\\lnot B) \\lor (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 39,
+            "proposition": "(\\lnot (\\lnot B)) \\land ((\\lnot B) \\lor (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 40,
+            "proposition": "((A \\lor A) \\lor (A \\lor A)) \\lor ((\\lnot A) \\land (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 41,
+            "proposition": "\\lnot ((A \\lor A) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 42,
+            "proposition": "(\\lnot (A \\land A)) \\lor ((\\lnot B) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 43,
+            "proposition": "\\lnot (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 44,
+            "proposition": "\\lnot (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 45,
+            "proposition": "((A \\lor B) \\land (A \\lor A)) \\lor ((\\lnot B) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 46,
+            "proposition": "(\\lnot (A \\land A)) \\lor ((A \\lor A) \\lor (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 47,
+            "proposition": "((B \\lor B) \\land (A \\lor B)) \\land (\\lnot (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 48,
+            "proposition": "(\\lnot (A \\land B)) \\lor (\\lnot (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 49,
+            "proposition": "((A \\land B) \\land (B \\land B)) \\land ((A \\lor B) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 50,
+            "proposition": "\\lnot (\\lnot (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 51,
+            "proposition": "((\\lnot A) \\land (A \\land A)) \\lor (\\lnot (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 52,
+            "proposition": "(\\lnot (B \\lor B)) \\lor (\\lnot (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 53,
+            "proposition": "((A \\land B) \\lor (A \\land A)) \\land (\\lnot (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 54,
+            "proposition": "(\\lnot (A \\land B)) \\lor ((A \\land B) \\land (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 55,
+            "proposition": "\\lnot ((A \\lor A) \\lor (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 56,
+            "proposition": "((A \\lor B) \\land (A \\lor B)) \\lor (\\lnot (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 57,
+            "proposition": "((A \\lor B) \\land (\\lnot A)) \\lor (\\lnot (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 58,
+            "proposition": "((A \\land A) \\lor (A \\lor B)) \\land ((A \\land A) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 59,
+            "proposition": "((A \\land B) \\land (A \\land A)) \\lor ((\\lnot B) \\lor (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 60,
+            "proposition": "(\\lnot (A \\lor A)) \\land (\\lnot (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 61,
+            "proposition": "(\\lnot (\\lnot B)) \\lor ((\\lnot A) \\land (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 62,
+            "proposition": "\\lnot ((B \\land B) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 63,
+            "proposition": "(\\lnot (A \\land A)) \\land ((\\lnot B) \\land (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 64,
+            "proposition": "\\lnot ((\\lnot B) \\land (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 65,
+            "proposition": "(\\lnot (\\lnot A)) \\lor (\\lnot (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 66,
+            "proposition": "\\lnot (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 67,
+            "proposition": "((B \\lor A) \\lor (A \\land B)) \\lor (\\lnot (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 68,
+            "proposition": "((B \\land B) \\lor (B \\lor A)) \\land ((B \\land A) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 69,
+            "proposition": "(\\lnot (B \\lor A)) \\land ((\\lnot A) \\land (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 70,
+            "proposition": "(\\lnot (A \\land A)) \\land (\\lnot (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 71,
+            "proposition": "\\lnot ((\\lnot B) \\lor (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 72,
+            "proposition": "((\\lnot B) \\land (A \\lor A)) \\lor ((B \\land B) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 73,
+            "proposition": "(\\lnot (A \\land B)) \\land ((B \\land A) \\lor (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 74,
+            "proposition": "\\lnot ((\\lnot A) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 75,
+            "proposition": "((B \\lor A) \\lor (\\lnot A)) \\lor ((\\lnot A) \\land (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 76,
+            "proposition": "((A \\lor A) \\land (A \\lor B)) \\lor ((B \\land A) \\lor (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 77,
+            "proposition": "(\\lnot (B \\lor B)) \\land ((A \\land A) \\lor (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 78,
+            "proposition": "((A \\land A) \\lor (A \\lor A)) \\land (\\lnot (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 79,
+            "proposition": "(\\lnot (B \\lor B)) \\land ((A \\land B) \\lor (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 80,
+            "proposition": "((A \\land A) \\land (A \\lor B)) \\lor (\\lnot (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 81,
+            "proposition": "((A \\land A) \\land (\\lnot B)) \\land ((\\lnot B) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 82,
+            "proposition": "((\\lnot B) \\lor (B \\land A)) \\land (\\lnot (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 83,
+            "proposition": "((A \\land A) \\lor (B \\lor B)) \\lor ((B \\land A) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 84,
+            "proposition": "\\lnot ((A \\land B) \\land (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 85,
+            "proposition": "((B \\lor A) \\lor (A \\land A)) \\lor ((B \\land B) \\land (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 86,
+            "proposition": "((A \\land B) \\land (A \\lor A)) \\lor ((A \\lor B) \\lor (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 87,
+            "proposition": "(\\lnot (A \\land B)) \\lor (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 88,
+            "proposition": "\\lnot ((B \\land A) \\land (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 89,
+            "proposition": "\\lnot ((\\lnot A) \\lor (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 90,
+            "proposition": "(\\lnot (\\lnot A)) \\land (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 91,
+            "proposition": "\\lnot ((A \\lor A) \\land (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 92,
+            "proposition": "\\lnot (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 93,
+            "proposition": "\\lnot (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 94,
+            "proposition": "\\lnot ((\\lnot A) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 95,
+            "proposition": "\\lnot ((A \\land A) \\land (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 96,
+            "proposition": "\\lnot ((A \\lor B) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 97,
+            "proposition": "((B \\lor B) \\lor (B \\land A)) \\lor ((\\lnot B) \\lor (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 98,
+            "proposition": "((A \\lor B) \\land (B \\land A)) \\land (\\lnot (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 99,
+            "proposition": "((B \\lor A) \\lor (A \\lor A)) \\lor (\\lnot (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 100,
+            "proposition": "((A \\land A) \\land (A \\lor B)) \\lor (\\lnot (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 101,
+            "proposition": "((\\lnot A) \\land (B \\lor B)) \\land ((A \\lor A) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 102,
+            "proposition": "((\\lnot B) \\land (\\lnot A)) \\lor (\\lnot (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 103,
+            "proposition": "((\\lnot A) \\lor (A \\land A)) \\land ((B \\lor A) \\lor (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 104,
+            "proposition": "((\\lnot A) \\lor (\\lnot B)) \\land (\\lnot (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 105,
+            "proposition": "((\\lnot B) \\lor (A \\lor A)) \\land ((A \\lor B) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 106,
+            "proposition": "\\lnot ((\\lnot B) \\land (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 107,
+            "proposition": "\\lnot ((A \\lor B) \\lor (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 108,
+            "proposition": "(\\lnot (B \\lor B)) \\lor ((A \\lor A) \\lor (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 109,
+            "proposition": "(\\lnot (B \\land A)) \\lor ((B \\land B) \\land (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 110,
+            "proposition": "\\lnot ((B \\lor B) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 111,
+            "proposition": "(\\lnot (A \\lor A)) \\lor (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 112,
+            "proposition": "((A \\land A) \\lor (\\lnot B)) \\land (\\lnot (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 113,
+            "proposition": "((A \\land B) \\lor (A \\land A)) \\land ((\\lnot A) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 114,
+            "proposition": "(\\lnot (\\lnot A)) \\lor ((\\lnot B) \\lor (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 115,
+            "proposition": "((\\lnot B) \\land (B \\lor B)) \\land (\\lnot (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 116,
+            "proposition": "(\\lnot (\\lnot A)) \\land ((\\lnot A) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 117,
+            "proposition": "(\\lnot (B \\lor B)) \\lor ((\\lnot B) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 118,
+            "proposition": "((\\lnot B) \\land (B \\land A)) \\lor ((B \\lor A) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 119,
+            "proposition": "\\lnot ((A \\lor A) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 120,
+            "proposition": "\\lnot (\\lnot (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 121,
+            "proposition": "(\\lnot (A \\lor B)) \\lor (\\lnot (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 122,
+            "proposition": "((B \\land A) \\land (\\lnot A)) \\land ((A \\lor B) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 123,
+            "proposition": "(\\lnot (B \\lor A)) \\land ((\\lnot A) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 124,
+            "proposition": "((A \\land B) \\land (A \\lor A)) \\land ((A \\lor A) \\land (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 125,
+            "proposition": "((A \\land A) \\land (B \\land B)) \\land ((A \\land B) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 126,
+            "proposition": "((B \\lor B) \\lor (A \\lor B)) \\land ((B \\lor B) \\land (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 127,
+            "proposition": "(\\lnot (A \\land A)) \\lor (\\lnot (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 128,
+            "proposition": "\\lnot (\\lnot (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 129,
+            "proposition": "\\lnot (\\lnot (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 130,
+            "proposition": "(\\lnot (\\lnot B)) \\lor ((A \\lor B) \\lor (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 131,
+            "proposition": "\\lnot ((B \\land A) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 132,
+            "proposition": "((B \\lor B) \\lor (A \\land B)) \\lor ((\\lnot B) \\lor (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 133,
+            "proposition": "\\lnot (\\lnot (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 134,
+            "proposition": "((B \\land A) \\land (A \\lor A)) \\land ((B \\land B) \\land (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 135,
+            "proposition": "\\lnot (\\lnot (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 136,
+            "proposition": "((\\lnot A) \\land (A \\land A)) \\land ((A \\lor A) \\land (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 137,
+            "proposition": "(\\lnot (\\lnot A)) \\lor ((B \\lor A) \\land (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 138,
+            "proposition": "\\lnot ((B \\land A) \\land (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 139,
+            "proposition": "((A \\lor A) \\land (B \\land A)) \\land ((\\lnot B) \\land (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 140,
+            "proposition": "(\\lnot (B \\land A)) \\lor (\\lnot (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 141,
+            "proposition": "\\lnot ((A \\lor A) \\land (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 142,
+            "proposition": "\\lnot ((\\lnot B) \\land (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 143,
+            "proposition": "(\\lnot (A \\lor B)) \\lor ((\\lnot A) \\lor (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 144,
+            "proposition": "((A \\lor B) \\land (\\lnot B)) \\lor ((B \\land A) \\land (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 145,
+            "proposition": "(\\lnot (\\lnot B)) \\lor ((A \\land B) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 146,
+            "proposition": "\\lnot (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 147,
+            "proposition": "((A \\land B) \\land (\\lnot A)) \\lor (\\lnot (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 148,
+            "proposition": "\\lnot ((A \\lor B) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 149,
+            "proposition": "\\lnot ((\\lnot B) \\land (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 150,
+            "proposition": "\\lnot ((B \\lor B) \\land (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 151,
+            "proposition": "((B \\land A) \\land (B \\lor A)) \\land (\\lnot (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 152,
+            "proposition": "((A \\lor B) \\lor (A \\land A)) \\land ((A \\lor A) \\lor (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 153,
+            "proposition": "((\\lnot A) \\lor (A \\lor B)) \\lor ((\\lnot A) \\lor (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 154,
+            "proposition": "\\lnot ((B \\lor B) \\lor (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 155,
+            "proposition": "\\lnot ((\\lnot A) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 156,
+            "proposition": "\\lnot ((\\lnot B) \\lor (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 157,
+            "proposition": "\\lnot ((\\lnot A) \\land (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 158,
+            "proposition": "\\lnot ((\\lnot A) \\land (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 159,
+            "proposition": "(\\lnot (\\lnot B)) \\lor ((B \\lor B) \\lor (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 160,
+            "proposition": "\\lnot ((A \\land B) \\land (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 161,
+            "proposition": "((B \\land A) \\land (\\lnot A)) \\lor ((\\lnot A) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 162,
+            "proposition": "((A \\land B) \\lor (\\lnot B)) \\lor ((B \\land B) \\land (B \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 163,
+            "proposition": "((A \\land B) \\land (B \\lor B)) \\lor ((B \\land B) \\lor (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 164,
+            "proposition": "((\\lnot A) \\land (\\lnot B)) \\land ((B \\lor B) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 165,
+            "proposition": "((B \\lor B) \\land (A \\land A)) \\lor (\\lnot (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 166,
+            "proposition": "\\lnot (\\lnot (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 167,
+            "proposition": "((\\lnot B) \\lor (\\lnot A)) \\land (\\lnot (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 168,
+            "proposition": "\\lnot ((A \\lor B) \\land (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 169,
+            "proposition": "\\lnot (\\lnot (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 170,
+            "proposition": "\\lnot (\\lnot (B \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 171,
+            "proposition": "((\\lnot A) \\lor (A \\lor A)) \\lor ((B \\lor A) \\land (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 172,
+            "proposition": "(\\lnot (B \\land A)) \\lor ((\\lnot A) \\lor (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 173,
+            "proposition": "\\lnot ((A \\lor A) \\lor (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 174,
+            "proposition": "\\lnot ((B \\land B) \\land (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 175,
+            "proposition": "((\\lnot A) \\lor (\\lnot A)) \\land ((B \\land A) \\lor (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 176,
+            "proposition": "\\lnot ((B \\land B) \\lor (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 177,
+            "proposition": "(\\lnot (\\lnot A)) \\land (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 178,
+            "proposition": "\\lnot ((\\lnot A) \\lor (A \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 179,
+            "proposition": "(\\lnot (B \\land B)) \\lor ((A \\land B) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 180,
+            "proposition": "\\lnot ((\\lnot A) \\land (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 181,
+            "proposition": "\\lnot (\\lnot (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 182,
+            "proposition": "(\\lnot (B \\land A)) \\land ((B \\land B) \\lor (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 183,
+            "proposition": "((B \\lor A) \\lor (\\lnot B)) \\land (\\lnot (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 184,
+            "proposition": "((\\lnot B) \\lor (A \\lor A)) \\lor ((A \\lor B) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 185,
+            "proposition": "(\\lnot (A \\lor B)) \\land ((B \\lor B) \\lor (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 186,
+            "proposition": "\\lnot (\\lnot (\\lnot B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 187,
+            "proposition": "\\lnot ((\\lnot A) \\lor (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 188,
+            "proposition": "\\lnot ((B \\lor A) \\land (B \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 189,
+            "proposition": "\\lnot (\\lnot (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 190,
+            "proposition": "((\\lnot B) \\land (A \\lor A)) \\lor ((A \\land A) \\lor (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 191,
+            "proposition": "\\lnot ((A \\land A) \\lor (A \\lor B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 192,
+            "proposition": "\\lnot (\\lnot (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 193,
+            "proposition": "\\lnot ((\\lnot B) \\lor (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 194,
+            "proposition": "((A \\lor A) \\land (B \\lor A)) \\land ((B \\lor A) \\land (\\lnot A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 195,
+            "proposition": "((\\lnot B) \\land (\\lnot B)) \\land ((B \\lor A) \\lor (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 196,
+            "proposition": "((A \\lor B) \\lor (\\lnot A)) \\land (\\lnot (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 197,
+            "proposition": "((A \\lor B) \\land (\\lnot B)) \\land ((\\lnot A) \\land (B \\lor A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": false
+                }
+            ]
+        },
+        {
+            "id": 198,
+            "proposition": "\\lnot ((A \\land A) \\land (A \\land A))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": false,
+                        "B": false
+                    },
+                    "result": true
+                }
+            ]
+        },
+        {
+            "id": 199,
+            "proposition": "(\\lnot (\\lnot B)) \\land ((B \\lor B) \\land (A \\land B))",
+            "evaluations": [
+                {
+                    "inputs": {
+                        "A": true,
+                        "B": true
+                    },
+                    "result": true
+                }
+            ]
+        }
+    ]
+}
