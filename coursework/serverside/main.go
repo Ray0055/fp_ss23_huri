@@ -68,11 +68,6 @@ func showStatistics(w http.ResponseWriter, r *http.Request) {
 }
 
 func addQuestionHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Attempting to add question")
-	if r.Method != "POST" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 
 	var q Question
 	decoder := json.NewDecoder(r.Body)
